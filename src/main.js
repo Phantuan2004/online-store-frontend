@@ -16,9 +16,47 @@ import './assets/user/css/style.css'
 
 const app = createApp(App)
 app.use(router)
-app.mount('#app')
 
-nextTick(() => {
-  window.__ONLINE_STORE_APP_MOUNTED__ = true
-  window.dispatchEvent(new Event('online-store:app-mounted'))
+const syncAos = () => {
+  nextTick(() => {
+    window.requestAnimationFrame(() => {
+      const aos = window.AOS
+
+      if (!aos) {
+        return
+      }
+
+      if (!window.__ONLINE_STORE_AOS_INITIALIZED__) {
+        aos.init({
+          duration: 2000,
+          once: true,
+        })
+        window.__ONLINE_STORE_AOS_INITIALIZED__ = true
+        return
+      }
+
+      if (typeof aos.refreshHard === 'function') {
+        aos.refreshHard()
+        return
+      }
+
+      if (typeof aos.refresh === 'function') {
+        aos.refresh()
+      }
+    })
+  })
+}
+
+router.afterEach(() => {
+  syncAos()
+})
+
+router.isReady().then(() => {
+  app.mount('#app')
+  syncAos()
+
+  nextTick(() => {
+    window.__ONLINE_STORE_APP_MOUNTED__ = true
+    window.dispatchEvent(new Event('online-store:app-mounted'))
+  })
 })

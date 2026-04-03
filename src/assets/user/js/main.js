@@ -15,9 +15,6 @@
 
         $(document).ready(function () {
             "use strict";
-            AOS.init({
-                once: true,
-            });
 
         /* Product grid & column */
         $(".gridRow").on("click", function () {
