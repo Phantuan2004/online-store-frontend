@@ -145,7 +145,7 @@
         });
 
         /* Popular Slider */
-        $('.cr-popular-product').slick({
+        $('.cr-popular-product').not('.slick-initialized').slick({
             infinite: true,
             dots: false,
             arrows: false,
@@ -256,7 +256,7 @@
         });
 
         /* Product Slider */
-        $('.cr-twocolumns-product').slick({
+        $('.cr-twocolumns-product').not('.slick-initialized').slick({
             infinite: true,
             dots: false,
             arrows: false,

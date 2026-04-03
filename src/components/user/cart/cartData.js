@@ -18,6 +18,7 @@ export const cartItemsData = [
         name: 'Organic Lemon',
         image: getProductImage('1.jpg'),
         price: 56.00,
+        total: 56.00,
         quantity: 1,
         category: 'Fruits'
     },
@@ -26,6 +27,7 @@ export const cartItemsData = [
         name: 'Apple Juice',
         image: getProductImage('2.jpg'),
         price: 75.00,
+        total: 75.00,
         quantity: 1,
         category: 'Beverages'
     },
@@ -34,6 +36,7 @@ export const cartItemsData = [
         name: 'Watermelon 5kg Pack',
         image: getProductImage('3.jpg'),
         price: 48.00,
+        total: 48.00,
         quantity: 1,
         category: 'Fruits'
     },
@@ -42,6 +45,7 @@ export const cartItemsData = [
         name: 'Pomegranate 5kg Pack',
         image: getProductImage('4.jpg'),
         price: 90.00,
+        total: 90.00,
         quantity: 1,
         category: 'Fruits'
     },
@@ -50,6 +54,7 @@ export const cartItemsData = [
         name: 'Organic Peach Fruits',
         image: getProductImage('5.jpg'),
         price: 50.00,
+        total: 50.00,
         quantity: 1,
         category: 'Fruits'
     }
@@ -98,6 +103,16 @@ export const popularProductsData = [
         category: 'Vegetables',
         rating: 4.7,
         reviews: 44
+    },
+    {
+        id: 105,
+        name: 'Fresh bakery toast bread family pack',
+        image: getProductImage('17.jpg'),
+        price: 85.00,
+        oldPrice: 95.00,
+        category: 'Bakery',
+        rating: 4.6,
+        reviews: 39
     }
 ];
 

@@ -12,11 +12,11 @@
     <table v-else>
       <thead>
         <tr>
-          <th>Product</th>
-          <th>Price</th>
-          <th class="text-center">Quantity</th>
-          <th>Total</th>
-          <th>Action</th>
+          <th class="cr-cart-col-product">Product</th>
+          <th class="cr-cart-col-price">Price</th>
+          <th class="cr-cart-col-qty text-center">Quantity</th>
+          <th class="cr-cart-col-total">Total</th>
+          <th class="cr-cart-col-action">Action</th>
         </tr>
       </thead>
       <tbody>
@@ -54,19 +54,21 @@
             </div>
           </td>
 
-          <!-- Subtotal -->
-          <td class="cr-cart-subtotal">${{ formatPrice(item.price * item.quantity) }}</td>
+          <!-- Total -->
+          <td class="cr-cart-subtotal">
+            ${{ formatPrice(getItemTotal(item)) }}
+          </td>
 
           <!-- Remove Button -->
           <td class="cr-cart-remove">
-            <button
-              type="button"
-              @click="removeItem(item.id)"
+            <a
+              href="#"
+              @click.prevent="removeItem(item.id)"
               class="btn-remove"
               title="Remove item"
             >
               <i class="ri-delete-bin-line"></i>
-            </button>
+            </a>
           </td>
         </tr>
       </tbody>
@@ -164,6 +166,13 @@ export default {
      */
     formatPrice(price) {
       return parseFloat(price).toFixed(2);
+    },
+
+    /**
+     * Keep template total as a fixed line value
+     */
+    getItemTotal(item) {
+      return item.total ?? item.price;
     }
   }
 };

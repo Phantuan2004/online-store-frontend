@@ -13,7 +13,7 @@
     </section>
 
     <!-- Cart Section -->
-    <section class="section-cart padding-t-100 padding-b-100">
+    <section class="section-cart padding-t-100 padding-b-50">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -28,24 +28,6 @@
                             @checkout-clicked="proceedToCheckout"
                             @continue-shopping-clicked="continueShopping"
                             @product-clicked="viewProduct"
-                        />
-
-                        <!-- Cart Summary Section -->
-                        <CartSummary
-                            v-if="!isCartEmpty"
-                            :subtotal="cartSubtotal"
-                            :tax="cartTax"
-                            :shipping="shippingCost"
-                            :discount="discountAmount"
-                            :total="cartTotal"
-                            :applied-coupon="couponCode"
-                            :is-cart-empty="isCartEmpty"
-                            :selected-shipping="shippingMethod"
-                            @coupon-applied="applyCoupon"
-                            @coupon-removed="removeCoupon"
-                            @shipping-changed="updateShppingMethod"
-                            @checkout-clicked="proceedToCheckout"
-                            @continue-shopping-clicked="continueShopping"
                         />
                     </div>
                 </div>
@@ -65,7 +47,6 @@
 
 <script>
 import CartTable from '@/components/user/cart/CartTable.vue';
-import CartSummary from '@/components/user/cart/CartSummary.vue';
 import PopularProductsCart from '@/components/user/cart/PopularProductsCart.vue';
 import cartLogic from '@/components/user/cart/cartLogic';
 
@@ -73,7 +54,6 @@ export default {
     name: 'Cart',
     components: {
         CartTable,
-        CartSummary,
         PopularProductsCart
     },
     mixins: [cartLogic],
