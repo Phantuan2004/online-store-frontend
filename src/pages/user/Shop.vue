@@ -23,9 +23,8 @@
                   <input
                     :id="category.id"
                     :value="category.id"
-                    v-model="selectedCategories"
+                    v-model="draftSelectedCategories"
                     type="checkbox"
-                    @change="applyFilters"
                   />
                   <label :for="category.id">{{ category.name }}</label>
                   <span>[{{ category.count }}]</span>
@@ -37,13 +36,13 @@
             <div class="cr-shop-price">
               <h4 class="cr-shop-sub-title">Price</h4>
               <div class="price-range-slider">
-                <div id="slider-range" class="range-bar"></div>
+                <div id="slider-range" ref="priceSlider" class="range-bar"></div>
                 <p class="range-value">
                   <label>Price :</label>
                   <input
                     type="text"
                     readonly
-                    :value="`$${priceRange[0]} - $${priceRange[1]}`"
+                    :value="`$${draftPriceRange[0]} - $${draftPriceRange[1]}`"
                   />
                 </p>
                 <button type="button" class="cr-button" @click="applyFilters">
@@ -187,12 +186,10 @@
           <nav v-if="totalPages > 1" aria-label="pagination" class="cr-pagination">
             <ul class="pagination">
               <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                <a
-                  @click.prevent="previousPage"
-                  href="#"
-                  class="page-link"
-                  :aria-disabled="currentPage === 1"
-                >
+                <span v-if="currentPage === 1" class="page-link">
+                  Previous
+                </span>
+                <a v-else @click.prevent="previousPage" href="#" class="page-link">
                   Previous
                 </a>
               </li>
@@ -202,13 +199,12 @@
                 :key="page"
                 class="page-item"
                 :class="{ active: currentPage === page }"
+                :aria-current="currentPage === page ? 'page' : null"
               >
-                <a
-                  @click.prevent="goToPage(page)"
-                  href="#"
-                  class="page-link"
-                  :aria-current="currentPage === page ? 'page' : null"
-                >
+                <span v-if="currentPage === page" class="page-link">
+                  {{ page }}
+                </span>
+                <a v-else @click.prevent="goToPage(page)" href="#" class="page-link">
                   {{ page }}
                 </a>
               </li>
@@ -217,12 +213,10 @@
                 class="page-item"
                 :class="{ disabled: currentPage === totalPages }"
               >
-                <a
-                  @click.prevent="nextPage"
-                  href="#"
-                  class="page-link"
-                  :aria-disabled="currentPage === totalPages"
-                >
+                <span v-if="currentPage === totalPages" class="page-link">
+                  Next
+                </span>
+                <a v-else @click.prevent="nextPage" href="#" class="page-link">
                   Next
                 </a>
               </li>

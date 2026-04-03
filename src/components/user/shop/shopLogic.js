@@ -1,16 +1,60 @@
-import { productsData, categories, sortOptions } from "./products";
+import { nextTick } from "vue";
+import { productsData, sortOptions } from "./products";
+
+const getPriceBounds = (products) => {
+  const prices = products
+    .map(({ price }) => Number(price))
+    .filter((price) => Number.isFinite(price));
+
+  if (!prices.length) {
+    return { min: 0, max: 0 };
+  }
+
+  return {
+    min: Math.floor(Math.min(...prices)),
+    max: Math.ceil(Math.max(...prices))
+  };
+};
+
+const buildCategoryOptions = (products) => {
+  const categoryMap = new Map();
+
+  products.forEach(({ category }) => {
+    const id = category.toLowerCase();
+    const existingCategory = categoryMap.get(id);
+
+    if (existingCategory) {
+      existingCategory.count += 1;
+      return;
+    }
+
+    categoryMap.set(id, {
+      id,
+      name: category,
+      count: 1
+    });
+  });
+
+  return Array.from(categoryMap.values());
+};
 
 export const shopLogic = {
   data() {
+    const priceBounds = getPriceBounds(productsData);
+    const defaultPriceRange = [priceBounds.min, priceBounds.max];
+
     return {
       products: productsData,
       allProducts: productsData,
-      categories,
+      categories: buildCategoryOptions(productsData),
       sortOptions,
+      priceBounds,
       
       // Filters
       selectedCategories: [],
-      priceRange: [0, 200],
+      draftSelectedCategories: [],
+      priceRange: [...defaultPriceRange],
+      draftPriceRange: [...defaultPriceRange],
       selectedColors: [],
       selectedWeights: [],
       
@@ -20,7 +64,7 @@ export const shopLogic = {
       
       // Pagination
       currentPage: 1,
-      itemsPerPage: 12,
+      itemsPerPage: 8,
       
       // UI State
       showQuickViewModal: false,
@@ -98,14 +142,15 @@ export const shopLogic = {
      */
     resultCount() {
       return this.filteredProducts.length;
-    },
+    }
+  },
 
-    /**
-     * Get unique categories from filtered products
-     */
-    availableCategories() {
-      const cats = new Set(this.filteredProducts.map(p => p.category.toLowerCase()));
-      return Array.from(cats);
+  watch: {
+    draftPriceRange: {
+      deep: true,
+      handler() {
+        this.syncPriceSlider();
+      }
     }
   },
 
@@ -114,6 +159,8 @@ export const shopLogic = {
      * Apply filters and reset pagination
      */
     applyFilters() {
+      this.selectedCategories = [...this.draftSelectedCategories];
+      this.priceRange = [...this.draftPriceRange];
       this.currentPage = 1;
     },
 
@@ -129,21 +176,80 @@ export const shopLogic = {
      * Handle category filter
      */
     toggleCategory(category) {
-      const index = this.selectedCategories.indexOf(category.toLowerCase());
+      const normalizedCategory = category.toLowerCase();
+      const index = this.draftSelectedCategories.indexOf(normalizedCategory);
+
       if (index > -1) {
-        this.selectedCategories.splice(index, 1);
+        this.draftSelectedCategories.splice(index, 1);
       } else {
-        this.selectedCategories.push(category.toLowerCase());
+        this.draftSelectedCategories.push(normalizedCategory);
       }
-      this.applyFilters();
     },
 
     /**
      * Handle price range change
      */
     updatePriceRange(min, max) {
-      this.priceRange = [min, max];
-      this.applyFilters();
+      this.draftPriceRange = [min, max];
+    },
+
+    getPriceSlider() {
+      const $ = window.jQuery || window.$;
+
+      if (!this.$refs.priceSlider || !$ || typeof $.fn?.slider !== "function") {
+        return null;
+      }
+
+      return $(this.$refs.priceSlider);
+    },
+
+    initPriceSlider() {
+      const slider = this.getPriceSlider();
+
+      if (!slider?.length) {
+        return;
+      }
+
+      if (slider.hasClass("ui-slider")) {
+        slider.slider("destroy");
+      }
+
+      slider.slider({
+        range: true,
+        min: this.priceBounds.min,
+        max: this.priceBounds.max,
+        values: [...this.draftPriceRange],
+        slide: (_event, ui) => {
+          this.updatePriceRange(ui.values[0], ui.values[1]);
+        }
+      });
+    },
+
+    syncPriceSlider() {
+      const slider = this.getPriceSlider();
+
+      if (!slider?.length || !slider.hasClass("ui-slider")) {
+        return;
+      }
+
+      const currentValues = slider.slider("values");
+
+      if (
+        currentValues[0] === this.draftPriceRange[0] &&
+        currentValues[1] === this.draftPriceRange[1]
+      ) {
+        return;
+      }
+
+      slider.slider("values", [...this.draftPriceRange]);
+    },
+
+    destroyPriceSlider() {
+      const slider = this.getPriceSlider();
+
+      if (slider?.length && slider.hasClass("ui-slider")) {
+        slider.slider("destroy");
+      }
     },
 
     /**
@@ -211,7 +317,7 @@ export const shopLogic = {
      * Handle filter by category from product card
      */
     filterByCategory(category) {
-      this.selectedCategories = [category.toLowerCase()];
+      this.draftSelectedCategories = [category.toLowerCase()];
       this.applyFilters();
     },
 
@@ -259,8 +365,12 @@ export const shopLogic = {
      * Clear all filters
      */
     clearFilters() {
+      const defaultPriceRange = [this.priceBounds.min, this.priceBounds.max];
+
       this.selectedCategories = [];
-      this.priceRange = [0, 200];
+      this.draftSelectedCategories = [];
+      this.priceRange = [...defaultPriceRange];
+      this.draftPriceRange = [...defaultPriceRange];
       this.selectedColors = [];
       this.selectedWeights = [];
       this.currentPage = 1;
@@ -303,5 +413,12 @@ export const shopLogic = {
   mounted() {
     this.loadWishlist();
     this.loadCart();
+    nextTick(() => {
+      this.initPriceSlider();
+    });
+  },
+
+  beforeUnmount() {
+    this.destroyPriceSlider();
   }
 };

@@ -431,25 +431,6 @@
     /* Product Image Zoom */
     $('.zoom-image-hover').zoom();
 
-    /* Range Slider */
-    $(function () {
-        $("#slider-range").slider({
-            range: true,
-            min: 20,
-            max: 300,
-            values: [0, 250],
-            slide: function (event, ui) {
-                $("#amount").val("$" + ui.values[0] + " - $" + ui.values[1]);
-            },
-        });
-        $("#amount").val(
-            "$" +
-            $("#slider-range").slider("values", 0) +
-            " - $" +
-            $("#slider-range").slider("values", 1)
-        );
-    });
-
     /* Tab to top */
     $(window).scroll(function () {
         if ($(this).scrollTop() > 50) {
