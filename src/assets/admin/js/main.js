@@ -522,8 +522,10 @@
 
         /* Footer year */
         var date = new Date().getFullYear();
-
-        document.getElementById("copyright_year").innerHTML = date;
+        var copyrightElement = document.getElementById("copyright_year");
+        if (copyrightElement) {
+            copyrightElement.innerHTML = date;
+        }
         
         /*========== Search Remix icon page ===========*/
         $('[data-search-icon]').on('keyup', function () {
