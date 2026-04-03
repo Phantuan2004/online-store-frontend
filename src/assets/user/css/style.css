@@ -7105,7 +7105,8 @@ ul.cr-tags li a:hover {
   color: #64b496;
 }
 .cr-about-content .elementor-suffix {
-  margin-left: -12px;
+  display: inline-block;
+  margin-left: 4px;
   font-size: 30px;
 }
 .cr-about-content .elementor-counter-title {
@@ -7121,7 +7122,7 @@ ul.cr-tags li a:hover {
 /* Responsive */
 @media only screen and (max-width: 1199px) {
   .cr-about-content .elementor-suffix {
-    margin-left: -5px;
+    margin-left: 2px;
   }
   .cr-about-content h4.elementor {
     font-size: 45px;
