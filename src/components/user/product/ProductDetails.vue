@@ -66,11 +66,12 @@
             −
           </button>
           <input
-            v-model.number="quantity"
+            :value="quantity"
             type="number"
             placeholder="1"
             min="1"
             class="quantity"
+            @input="onQuantityInput"
             @change="sanitizeQuantity"
           />
           <button
@@ -183,6 +184,14 @@ export default {
         value = 1;
       }
       this.$emit("quantity-changed", value);
+    },
+
+    /**
+     * Sync quantity input without mutating the prop directly
+     */
+    onQuantityInput(event) {
+      const value = parseInt(event.target.value);
+      this.$emit("quantity-changed", isNaN(value) ? 1 : value);
     },
 
     /**

@@ -1,15 +1,23 @@
 (function ($) {
     "use strict";
 
-    $(window).on("load", function () {
-        $("#cr-overlay").fadeOut("slow");
-    });
+    function initializeLegacyUserScripts() {
+        if (window.__ONLINE_STORE_USER_SCRIPTS_INITIALIZED__) {
+            return;
+        }
 
-    $(document).ready(function () {
-        "use strict";
-        AOS.init({
-            once: true,
+        window.__ONLINE_STORE_USER_SCRIPTS_INITIALIZED__ = true;
+        $("#cr-overlay").fadeOut("slow");
+
+        $(window).on("load", function () {
+            $("#cr-overlay").fadeOut("slow");
         });
+
+        $(document).ready(function () {
+            "use strict";
+            AOS.init({
+                once: true,
+            });
 
         /* Product grid & column */
         $(".gridRow").on("click", function () {
@@ -95,17 +103,23 @@
             }
         };
 
-        $(window).on("scroll", function () {
-            var distance = $('.next, .section-breadcrumb').offset().top,
-                $window = $(window);
+            $(window).on("scroll", function () {
+                var $stickyAnchor = $('.next, .section-breadcrumb').first(),
+                    $window = $(window);
 
-            if ($window.scrollTop() <= distance + 5) {
-                $("#cr-main-menu-desk").removeClass("menu_fixed");
-            }
-            else {
-                checkScroll();
-            }
-        });
+                if (!$stickyAnchor.length) {
+                    return;
+                }
+
+                var distance = $stickyAnchor.offset().top;
+
+                if ($window.scrollTop() <= distance + 5) {
+                    $("#cr-main-menu-desk").removeClass("menu_fixed");
+                }
+                else {
+                    checkScroll();
+                }
+            });
 
         /* Service Slider */
         new Swiper('.cr-service-slider', {
@@ -561,8 +575,10 @@
     });
 
     /* Potfolio for Mixit up */
-    var portfolioContent = $(".product-content");
-    portfolioContent.mixItUp();
+        var portfolioContent = $(".product-content");
+        if (portfolioContent.length && typeof portfolioContent.mixItUp === "function") {
+            portfolioContent.mixItUp();
+        }
 
     /* Footer year */
     var date = new Date().getFullYear();
@@ -737,9 +753,16 @@
         $("body").addClass('body-bg-5');
     });
 
-    $(".bg-6").on("click", function () {
-        $("body").addClass('body-bg-6').removeClass();
-        $("#add_bg").remove();
-    });
+        $(".bg-6").on("click", function () {
+            $("body").addClass('body-bg-6').removeClass();
+            $("#add_bg").remove();
+        });
+    }
+
+    if (window.__ONLINE_STORE_APP_MOUNTED__) {
+        initializeLegacyUserScripts();
+    } else {
+        window.addEventListener("online-store:app-mounted", initializeLegacyUserScripts, { once: true });
+    }
 
 })(jQuery);
