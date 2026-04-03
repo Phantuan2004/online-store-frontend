@@ -1,3 +1,21 @@
+const productImages = import.meta.glob('../../../assets/user/img/product/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default'
+});
+
+const reviewImages = import.meta.glob('../../../assets/user/img/review/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default'
+});
+
+const getProductImage = (filename) => {
+  return productImages[`../../../assets/user/img/product/${filename}`] || '';
+};
+
+const getReviewImage = (filename) => {
+  return reviewImages[`../../../assets/user/img/review/${filename}`] || reviewImages['../../../assets/user/img/review/1.jpg'] || '';
+};
+
 export const productDetail = {
   data() {
     return {
@@ -10,14 +28,14 @@ export const productDetail = {
         rating: 5.0,
         reviews: 75,
         images: [
-          "/src/assets/user/img/product/9.jpg",
-          "/src/assets/user/img/product/10.jpg",
-          "/src/assets/user/img/product/11.jpg",
-          "/src/assets/user/img/product/12.jpg",
-          "/src/assets/user/img/product/13.jpg",
-          "/src/assets/user/img/product/14.jpg",
-          "/src/assets/user/img/product/15.jpg",
-          "/src/assets/user/img/product/16.jpg"
+          getProductImage("9.jpg"),
+          getProductImage("10.jpg"),
+          getProductImage("11.jpg"),
+          getProductImage("12.jpg"),
+          getProductImage("13.jpg"),
+          getProductImage("14.jpg"),
+          getProductImage("15.jpg"),
+          getProductImage("16.jpg")
         ],
         specs: {
           Brand: "ESTA BETTERU CO",
@@ -46,7 +64,7 @@ export const productDetail = {
           author: "Oreo Noman",
           date: "Jan 08, 2024",
           rating: 5,
-          image: "/src/assets/user/img/review/1.jpg",
+          image: getReviewImage("1.jpg"),
           comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero sapiente doloribus debitis corporis, eaque dicta, repellat amet, illum adipisci vel perferendis dolor! quae vero in perferendis provident quis."
         },
         {
@@ -54,7 +72,7 @@ export const productDetail = {
           author: "Lina Wilson",
           date: "Mar 22, 2024",
           rating: 4,
-          image: "/src/assets/user/img/review/2.jpg",
+          image: getReviewImage("2.jpg"),
           comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero sapiente doloribus debitis corporis, eaque dicta, repellat amet, illum adipisci vel perferendis dolor! quae vero in perferendis provident quis."
         }
       ],
@@ -76,7 +94,7 @@ export const productDetail = {
           price: 120.25,
           oldPrice: 123.25,
           rating: 4.5,
-          image: "/src/assets/user/img/product/9.jpg"
+          image: getProductImage("9.jpg")
         },
         {
           id: 2,
@@ -85,7 +103,7 @@ export const productDetail = {
           price: 100.00,
           oldPrice: 110.00,
           rating: 5.0,
-          image: "/src/assets/user/img/product/10.jpg"
+          image: getProductImage("10.jpg")
         },
         {
           id: 3,
@@ -94,7 +112,7 @@ export const productDetail = {
           price: 120.25,
           oldPrice: 123.25,
           rating: 4.5,
-          image: "/src/assets/user/img/product/1.jpg"
+          image: getProductImage("1.jpg")
         },
         {
           id: 4,
@@ -103,7 +121,7 @@ export const productDetail = {
           price: 100.00,
           oldPrice: 110.00,
           rating: 5.0,
-          image: "/src/assets/user/img/product/2.jpg"
+          image: getProductImage("2.jpg")
         },
         {
           id: 5,
@@ -112,7 +130,7 @@ export const productDetail = {
           price: 100.00,
           oldPrice: 110.00,
           rating: 5.0,
-          image: "/src/assets/user/img/product/3.jpg"
+          image: getProductImage("3.jpg")
         }
       ]
     };
@@ -263,7 +281,7 @@ export const productDetail = {
             day: "numeric"
           }),
           rating: this.newReview.rating,
-          image: "/src/assets/user/img/review/default.jpg",
+          image: getReviewImage("1.jpg"),
           comment: this.newReview.comment
         };
 

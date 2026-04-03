@@ -46,13 +46,16 @@ import { onMounted, ref } from 'vue';
 import Swiper from 'swiper';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import blogImg1 from '@/assets/user/img/blog/1.jpg';
+import blogImg2 from '@/assets/user/img/blog/2.jpg';
+import blogImg3 from '@/assets/user/img/blog/3.jpg';
 
 const blogSwiper = ref(null);
 const blogs = [
-  { img: '/assets/img/blog/2.jpg', title: 'Urna pretium elit mauris cursus at elit Vestibulum.', author: 'Admin', category: 'Snacks', day: '10', month: 'oct' },
-  { img: '/assets/img/blog/1.jpg', title: 'Best guide to Shopping for organic ingredients.', author: 'Admin', category: 'Food', day: '09', month: 'sep' },
-  { img: '/assets/img/blog/3.jpg', title: 'Cursus at elit vestibulum urna pretium elit mauris.', author: 'Admin', category: 'Snacks', day: '12', month: 'oct' },
-  { img: '/assets/img/blog/2.jpg', title: 'Condimentum Nam enim bestMorbi odio sodales.', author: 'Admin', category: 'Vegetable', day: '22', month: 'jan' }
+  { img: blogImg2, title: 'Urna pretium elit mauris cursus at elit Vestibulum.', author: 'Admin', category: 'Snacks', day: '10', month: 'oct' },
+  { img: blogImg1, title: 'Best guide to Shopping for organic ingredients.', author: 'Admin', category: 'Food', day: '09', month: 'sep' },
+  { img: blogImg3, title: 'Cursus at elit vestibulum urna pretium elit mauris.', author: 'Admin', category: 'Snacks', day: '12', month: 'oct' },
+  { img: blogImg2, title: 'Condimentum Nam enim bestMorbi odio sodales.', author: 'Admin', category: 'Vegetable', day: '22', month: 'jan' }
 ];
 
 onMounted(() => {

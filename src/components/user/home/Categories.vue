@@ -57,7 +57,7 @@
                         <router-link to="/shop" class="cr-button">shop now</router-link>
                       </div>
                     </div>
-                    <img :src="'/assets/img/categories/' + promo.img" :alt="'categories-' + promo.img">
+                    <img :src="getCategoryImage(promo.img)" :alt="'categories-' + promo.img">
                   </div>
                 </div>
               </div>
@@ -70,6 +70,15 @@
 </template>
 
 <script setup>
+const categoryImages = import.meta.glob('../../../assets/user/img/categories/*.{jpg,jpeg,png,webp}', {
+  eager: true,
+  import: 'default'
+});
+
+const getCategoryImage = (filename) => {
+  return categoryImages[`../../../assets/user/img/categories/${filename}`] || '';
+};
+
 const categoryTabs = [
   {
     id: 'cake_milk-tab',
