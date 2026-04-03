@@ -66,7 +66,7 @@
                 <!-- Product Details -->
                 <div class="cr-product-details">
                   <div class="cr-brand">
-                    <a href="#">{{ product.category }}</a>
+                    <RouterLink to="/shop">{{ product.category }}</RouterLink>
                     <div class="cr-star">
                       <i
                         v-for="i in 5"
@@ -80,13 +80,12 @@
                       <p>({{ product.rating }})</p>
                     </div>
                   </div>
-                  <a
-                    @click="viewProduct(product)"
-                    href="#"
+                  <RouterLink
+                    :to="`/product/${product.id}`"
                     class="title"
                   >
                     {{ product.title }}
-                  </a>
+                  </RouterLink>
                   <p class="cr-price">
                     <span class="new-price">${{ formatPrice(product.price) }}</span>
                     <span class="old-price">${{ formatPrice(product.oldPrice) }}</span>

@@ -23,7 +23,7 @@
                   <div class="cr-blog-content">
                     <span><code>By {{ b.author }}</code> | <router-link to="/blog">{{ b.category }}</router-link></span>
                     <h5>{{ b.title }}</h5>
-                    <router-link class="read" to="/blog-details">Read More</router-link>
+                    <RouterLink class="read" to="/blog">Read More</RouterLink>
                   </div>
                   <div class="cr-blog-image">
                     <img :src="b.img" :alt="b.title">

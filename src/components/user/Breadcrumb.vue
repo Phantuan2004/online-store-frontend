@@ -7,7 +7,7 @@
           <div class="col-lg-12">
             <div class="cr-breadcrumb-title">
               <h2>Shop</h2>
-              <span> <a href="index.html">Home</a> - Shop</span>
+              <span><RouterLink to="/">Home</RouterLink> - Shop</span>
             </div>
           </div>
         </div>

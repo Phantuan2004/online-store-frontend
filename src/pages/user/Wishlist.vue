@@ -41,7 +41,7 @@
                             </div>
                             <div class="cr-product-details">
                                 <div class="cr-brand">
-                                    <a href="shop-left-sidebar.html">Vegetables</a>
+                                    <RouterLink to="/shop">Vegetables</RouterLink>
                                     <div class="cr-star">
                                         <i class="ri-star-fill"></i>
                                         <i class="ri-star-fill"></i>
@@ -51,8 +51,8 @@
                                         <p>(4.5)</p>
                                     </div>
                                 </div>
-                                <a href="product-left-sidebar.html" class="title">Fresh organic villa farm lomon
-                                    500gm pack</a>
+                                <RouterLink to="/product/1" class="title">Fresh organic villa farm lomon
+                                    500gm pack</RouterLink>
                                 <p class="cr-price"><span class="new-price">$120.25</span> <span
                                         class="old-price">$123.25</span></p>
                             </div>
@@ -82,7 +82,7 @@
                             </div>
                             <div class="cr-product-details">
                                 <div class="cr-brand">
-                                    <a href="shop-left-sidebar.html">Snacks</a>
+                                    <RouterLink to="/shop">Snacks</RouterLink>
                                     <div class="cr-star">
                                         <i class="ri-star-fill"></i>
                                         <i class="ri-star-fill"></i>
@@ -92,8 +92,8 @@
                                         <p>(5.0)</p>
                                     </div>
                                 </div>
-                                <a href="product-left-sidebar.html" class="title">Best snakes with hazel nut pack
-                                    200gm</a>
+                                <RouterLink to="/product/9" class="title">Best snakes with hazel nut pack
+                                    200gm</RouterLink>
                                 <p class="cr-price"><span class="new-price">$145</span> <span
                                         class="old-price">$150</span></p>
                             </div>
@@ -123,7 +123,7 @@
                             </div>
                             <div class="cr-product-details">
                                 <div class="cr-brand">
-                                    <a href="shop-left-sidebar.html">Fruits</a>
+                                    <RouterLink to="/shop">Fruits</RouterLink>
                                     <div class="cr-star">
                                         <i class="ri-star-fill"></i>
                                         <i class="ri-star-fill"></i>
@@ -133,8 +133,8 @@
                                         <p>(4.5)</p>
                                     </div>
                                 </div>
-                                <a href="product-left-sidebar.html" class="title">Fresh organic apple 1kg simla
-                                    marming</a>
+                                <RouterLink to="/product/2" class="title">Fresh organic apple 1kg simla
+                                    marming</RouterLink>
                                 <p class="cr-price"><span class="new-price">$120.25</span> <span
                                         class="old-price">$123.25</span></p>
                             </div>
@@ -164,7 +164,7 @@
                             </div>
                             <div class="cr-product-details">
                                 <div class="cr-brand">
-                                    <a href="shop-left-sidebar.html">Fruits</a>
+                                    <RouterLink to="/shop">Fruits</RouterLink>
                                     <div class="cr-star">
                                         <i class="ri-star-fill"></i>
                                         <i class="ri-star-fill"></i>
@@ -174,8 +174,8 @@
                                         <p>(3.2)</p>
                                     </div>
                                 </div>
-                                <a href="product-left-sidebar.html" class="title">Organic fresh venila farm
-                                    watermelon 5kg</a>
+                                <RouterLink to="/product/3" class="title">Organic fresh venila farm
+                                    watermelon 5kg</RouterLink>
                                 <p class="cr-price"><span class="new-price">$50.30</span> <span
                                         class="old-price">$72.60</span></p>
                             </div>

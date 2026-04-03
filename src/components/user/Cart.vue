@@ -10,13 +10,11 @@
         </div>
         <ul class="crcart-pro-items">
           <li>
-            <a href="product-left-sidebar.html" class="crside_pro_img"
+            <RouterLink to="/product/4" class="crside_pro_img"
               ><img :src="productImg4" alt="product-1"
-            /></a>
+            /></RouterLink>
             <div class="cr-pro-content">
-              <a href="product-left-sidebar.html" class="cart_pro_title"
-                >Fresh Pomegranate</a
-              >
+              <RouterLink to="/product/4" class="cart_pro_title">Fresh Pomegranate</RouterLink>
               <span class="cart-price"><span>$56.00</span> x 1kg</span>
               <div class="cr-cart-qty">
                 <div class="cart-qty-plus-minus">
@@ -36,13 +34,11 @@
             </div>
           </li>
           <li>
-            <a href="product-left-sidebar.html" class="crside_pro_img"
+            <RouterLink to="/product/2" class="crside_pro_img"
               ><img :src="productImg2" alt="product-2"
-            /></a>
+            /></RouterLink>
             <div class="cr-pro-content">
-              <a href="product-left-sidebar.html" class="cart_pro_title"
-                >Green Apples</a
-              >
+              <RouterLink to="/product/2" class="cart_pro_title">Green Apples</RouterLink>
               <span class="cart-price"><span>$75.00</span> x 1kg</span>
               <div class="cr-cart-qty">
                 <div class="cart-qty-plus-minus">
@@ -62,13 +58,11 @@
             </div>
           </li>
           <li>
-            <a href="product-left-sidebar.html" class="crside_pro_img"
+            <RouterLink to="/product/3" class="crside_pro_img"
               ><img :src="productImg3" alt="product-3"
-            /></a>
+            /></RouterLink>
             <div class="cr-pro-content">
-              <a href="product-left-sidebar.html" class="cart_pro_title"
-                >Watermelon - Small</a
-              >
+              <RouterLink to="/product/3" class="cart_pro_title">Watermelon - Small</RouterLink>
               <span class="cart-price"><span>$48.00</span> x 5kg</span>
               <div class="cr-cart-qty">
                 <div class="cart-qty-plus-minus">
@@ -109,8 +103,8 @@
           </table>
         </div>
         <div class="cart_btn">
-          <a href="cart.html" class="cr-button">View Cart</a>
-          <a href="checkout.html" class="cr-btn-secondary">Checkout</a>
+          <RouterLink to="/cart" class="cr-button">View Cart</RouterLink>
+          <RouterLink to="/checkout" class="cr-btn-secondary">Checkout</RouterLink>
         </div>
       </div>
     </div>

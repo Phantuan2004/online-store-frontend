@@ -74,7 +74,7 @@
                         <p>({{ product.rating.toFixed(1) }})</p>
                       </div>
                     </div>
-                    <router-link to="/product-details" class="title">{{ product.title }}</router-link>
+                    <RouterLink :to="`/product/${product.id}`" class="title">{{ product.title }}</RouterLink>
                     <p class="cr-price">
                       <span class="new-price">${{ product.newPrice }}</span>
                       <span class="old-price">${{ product.oldPrice }}</span>

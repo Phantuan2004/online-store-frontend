@@ -31,15 +31,15 @@
                                         <div class="cr-product-inner">
                                             <div class="cr-pro-image-outer">
                                                 <div class="cr-pro-image">
-                                                    <a href="product-left-sidebar.html" class="image">
+                                                    <RouterLink to="/product/10" class="image">
                                                         <img class="main-image" :src="productImg10"
                                                             alt="Product">
-                                                    </a>
+                                                    </RouterLink>
                                                 </div>
                                             </div>
                                             <div class="cr-pro-content cr-product-details">
-                                                <h5 class="cr-pro-title"><a href="product-left-sidebar.html">Dates Value
-                                                        Pack Pouch</a></h5>
+                                                <h5 class="cr-pro-title"><RouterLink to="/product/10">Dates Value
+                                                        Pack Pouch</RouterLink></h5>
                                                 <div class="cr-pro-rating">
                                                     <i class="ri-star-fill"></i>
                                                     <i class="ri-star-fill"></i>
@@ -56,15 +56,15 @@
                                         <div class="cr-product-inner">
                                             <div class="cr-pro-image-outer">
                                                 <div class="cr-pro-image">
-                                                    <a href="product-left-sidebar.html" class="image">
+                                                    <RouterLink to="/product/12" class="image">
                                                         <img class="main-image" :src="productImg12"
                                                             alt="Product">
-                                                    </a>
+                                                    </RouterLink>
                                                 </div>
                                             </div>
                                             <div class="cr-pro-content cr-product-details">
-                                                <h5 class="cr-pro-title"><a href="product-left-sidebar.html">Smoked
-                                                        Honey Spiced Nuts</a></h5>
+                                                <h5 class="cr-pro-title"><RouterLink to="/product/12">Smoked
+                                                        Honey Spiced Nuts</RouterLink></h5>
                                                 <div class="cr-pro-rating">
                                                     <i class="ri-star-fill"></i>
                                                     <i class="ri-star-fill"></i>
@@ -215,7 +215,7 @@
 
                                             <span class="cr-check-login-wrap cr-check-login-btn">
                                                 <button class="cr-button mr-15" type="submit">Login</button>
-                                                <a class="cr-check-login-fp" href="#">Forgot Password?</a>
+                                                <RouterLink class="cr-check-login-fp" to="/forgot-password">Forgot Password?</RouterLink>
                                             </span>
                                         </form>
                                     </div>

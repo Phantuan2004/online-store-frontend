@@ -35,13 +35,13 @@
                                     <input type="checkbox" id="html">
                                     <label for="html">Remember Me</label>
                                 </span>
-                                <a class="link" href="forgot.html">Forgot Password?</a>
+                                <RouterLink class="link" to="/forgot-password">Forgot Password?</RouterLink>
                             </div><br>
                             <div class="login-buttons">
                                 <button type="button" class="cr-button">Login</button>
-                                <a href="register.html" class="link">
+                                <RouterLink to="/register" class="link">
                                      Signup?
-                                </a>
+                                </RouterLink>
                             </div>
                         </form>
                     </div>

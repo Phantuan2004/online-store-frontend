@@ -29,10 +29,10 @@
                 USA.
               </li>
               <li class="mail-icon">
-                <a href="javascript:void(0)">example@email.com</a>
+                <a href="mailto:example@email.com">example@email.com</a>
               </li>
               <li class="phone-icon">
-                <a href="javascript:void(0)"> +91 123 4567890</a>
+                <a href="tel:+911234567890"> +91 123 4567890</a>
               </li>
             </ul>
           </div>
@@ -44,12 +44,12 @@
               <span class="cr-heading-res"></span>
             </h4>
             <ul class="cr-footer-links cr-footer-dropdown">
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="track-order.html">Delivery Information</a></li>
-              <li><a href="policy.html">Privacy Policy</a></li>
-              <li><a href="terms.html">Terms & Conditions</a></li>
-              <li><a href="contact-us.html">contact Us</a></li>
-              <li><a href="faq.html">Support Center</a></li>
+              <li><RouterLink to="/about">About Us</RouterLink></li>
+              <li><RouterLink to="/track-order">Delivery Information</RouterLink></li>
+              <li><RouterLink to="/policy">Privacy Policy</RouterLink></li>
+              <li><RouterLink to="/terms">Terms & Conditions</RouterLink></li>
+              <li><RouterLink to="/contact">contact Us</RouterLink></li>
+              <li><RouterLink to="/faq">Support Center</RouterLink></li>
             </ul>
           </div>
         </div>
@@ -60,12 +60,12 @@
               <span class="cr-heading-res"></span>
             </h4>
             <ul class="cr-footer-links cr-footer-dropdown">
-              <li><a href="shop-left-sidebar.html">Dairy & Bakery</a></li>
-              <li><a href="shop-left-sidebar.html">Fruits & Vegetable</a></li>
-              <li><a href="shop-left-sidebar.html">Snack & Spice</a></li>
-              <li><a href="shop-left-sidebar.html">Juice & Drinks</a></li>
-              <li><a href="shop-left-sidebar.html">Chicken & Meat</a></li>
-              <li><a href="shop-left-sidebar.html">Fast Food</a></li>
+              <li><RouterLink to="/shop">Dairy & Bakery</RouterLink></li>
+              <li><RouterLink to="/shop">Fruits & Vegetable</RouterLink></li>
+              <li><RouterLink to="/shop">Snack & Spice</RouterLink></li>
+              <li><RouterLink to="/shop">Juice & Drinks</RouterLink></li>
+              <li><RouterLink to="/shop">Chicken & Meat</RouterLink></li>
+              <li><RouterLink to="/shop">Fast Food</RouterLink></li>
             </ul>
           </div>
         </div>
@@ -165,7 +165,7 @@
       <div class="cr-last-footer">
         <p>
           &copy; <span id="copyright_year"></span>
-          <a href="index.html">Carrot</a>, All rights reserved.
+          <RouterLink to="/">Carrot</RouterLink>, All rights reserved.
         </p>
       </div>
     </div>

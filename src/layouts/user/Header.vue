@@ -5,14 +5,14 @@
       <div class="row">
         <div class="col-lg-12">
           <div class="top-header">
-            <a href="index.html" class="cr-logo">
+            <RouterLink to="/" class="cr-logo">
               <img :src="logoImg" alt="logo" class="logo" />
               <img
                 :src="darkLogoImg"
                 alt="logo"
                 class="dark-logo"
               />
-            </a>
+            </RouterLink>
             <form class="cr-search">
               <input
                 class="search-input"
@@ -41,21 +41,21 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li>
-                      <a class="dropdown-item" href="register.html">Register</a>
+                      <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="checkout.html">Checkout</a>
+                      <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="login.html">Login</a>
+                      <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
                     </li>
                   </ul>
                 </li>
               </ul>
-              <a href="wishlist.html" class="cr-right-bar-item">
+              <RouterLink to="/wishlist" class="cr-right-bar-item">
                 <i class="ri-heart-3-line"></i>
                 <span>Wishlist</span>
-              </a>
+              </RouterLink>
               <a
                 href="javascript:void(0)"
                 class="cr-right-bar-item Shopping-toggle"
@@ -137,9 +137,9 @@
                     >
                       Juice &amp; Drinks
                     </button>
-                    <a class="nav-link" href="shop-left-sidebar.html">
+                    <RouterLink class="nav-link" to="/shop">
                       View All
-                    </a>
+                    </RouterLink>
                   </div>
                   <div class="tab-content" id="v-pills-tabContent">
                     <div
@@ -152,18 +152,16 @@
                         <div class="col">
                           <h6 class="cr-col-title">Dairy</h6>
                           <ul class="cat-list">
-                            <li><a href="shop-left-sidebar.html">Milk</a></li>
+                            <li><RouterLink to="/shop">Milk</RouterLink></li>
                             <li>
-                              <a href="shop-left-sidebar.html">Ice cream</a>
+                              <RouterLink to="/shop">Ice cream</RouterLink>
                             </li>
-                            <li><a href="shop-left-sidebar.html">Cheese</a></li>
+                            <li><RouterLink to="/shop">Cheese</RouterLink></li>
                             <li>
-                              <a href="shop-left-sidebar.html"
-                                >Frozen custard</a
-                              >
+                              <RouterLink to="/shop">Frozen custard</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Frozen yogurt</a>
+                              <RouterLink to="/shop">Frozen yogurt</RouterLink>
                             </li>
                           </ul>
                         </div>
@@ -171,25 +169,19 @@
                           <h6 class="cr-col-title">Bakery</h6>
                           <ul class="cat-list">
                             <li>
-                              <a href="shop-left-sidebar.html"
-                                >Cake and Pastry</a
-                              >
+                              <RouterLink to="/shop">Cake and Pastry</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Rusk Toast</a>
+                              <RouterLink to="/shop">Rusk Toast</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html"
-                                >Bread &amp; Buns</a
-                              >
+                              <RouterLink to="/shop">Bread &amp; Buns</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html"
-                                >Chocolate Brownie</a
-                              >
+                              <RouterLink to="/shop">Chocolate Brownie</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Cream Roll</a>
+                              <RouterLink to="/shop">Cream Roll</RouterLink>
                             </li>
                           </ul>
                         </div>
@@ -206,36 +198,36 @@
                           <h6 class="cr-col-title">Fruits</h6>
                           <ul class="cat-list">
                             <li>
-                              <a href="shop-left-sidebar.html">Cauliflower</a>
+                              <RouterLink to="/shop">Cauliflower</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Bell Peppers</a>
+                              <RouterLink to="/shop">Bell Peppers</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Broccoli</a>
+                              <RouterLink to="/shop">Broccoli</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Cabbage</a>
+                              <RouterLink to="/shop">Cabbage</RouterLink>
                             </li>
-                            <li><a href="shop-left-sidebar.html">Tomato</a></li>
+                            <li><RouterLink to="/shop">Tomato</RouterLink></li>
                           </ul>
                         </div>
                         <div class="col">
                           <h6 class="cr-col-title">Vegetable</h6>
                           <ul class="cat-list">
                             <li>
-                              <a href="shop-left-sidebar.html">Cauliflower</a>
+                              <RouterLink to="/shop">Cauliflower</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Bell Peppers</a>
+                              <RouterLink to="/shop">Bell Peppers</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Broccoli</a>
+                              <RouterLink to="/shop">Broccoli</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Cabbage</a>
+                              <RouterLink to="/shop">Cabbage</RouterLink>
                             </li>
-                            <li><a href="shop-left-sidebar.html">Tomato</a></li>
+                            <li><RouterLink to="/shop">Tomato</RouterLink></li>
                           </ul>
                         </div>
                       </div>
@@ -251,21 +243,19 @@
                           <h6 class="cr-col-title">Snacks</h6>
                           <ul class="cat-list">
                             <li>
-                              <a href="shop-left-sidebar.html">French fries</a>
+                              <RouterLink to="/shop">French fries</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">potato chips</a>
+                              <RouterLink to="/shop">potato chips</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html"
-                                >Biscuits &amp; Cookies</a
-                              >
+                              <RouterLink to="/shop">Biscuits &amp; Cookies</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Popcorn</a>
+                              <RouterLink to="/shop">Popcorn</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Rice Cakes</a>
+                              <RouterLink to="/shop">Rice Cakes</RouterLink>
                             </li>
                           </ul>
                         </div>
@@ -273,23 +263,19 @@
                           <h6 class="cr-col-title">Spice</h6>
                           <ul class="cat-list">
                             <li>
-                              <a href="shop-left-sidebar.html"
-                                >Cinnamon Powder</a
-                              >
+                              <RouterLink to="/shop">Cinnamon Powder</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Cumin Powder</a>
+                              <RouterLink to="/shop">Cumin Powder</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html"
-                                >Fenugreek Powder</a
-                              >
+                              <RouterLink to="/shop">Fenugreek Powder</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Pepper Powder</a>
+                              <RouterLink to="/shop">Pepper Powder</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Long Pepper</a>
+                              <RouterLink to="/shop">Long Pepper</RouterLink>
                             </li>
                           </ul>
                         </div>
@@ -306,19 +292,19 @@
                           <h6 class="cr-col-title">Juice</h6>
                           <ul class="cat-list">
                             <li>
-                              <a href="shop-left-sidebar.html">Mango Juice</a>
+                              <RouterLink to="/shop">Mango Juice</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Coconut Water</a>
+                              <RouterLink to="/shop">Coconut Water</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Tetra Pack</a>
+                              <RouterLink to="/shop">Tetra Pack</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Apple Juices</a>
+                              <RouterLink to="/shop">Apple Juices</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Lychee Juice</a>
+                              <RouterLink to="/shop">Lychee Juice</RouterLink>
                             </li>
                           </ul>
                         </div>
@@ -326,19 +312,19 @@
                           <h6 class="cr-col-title">soft drink</h6>
                           <ul class="cat-list">
                             <li>
-                              <a href="shop-left-sidebar.html">Breizh Cola</a>
+                              <RouterLink to="/shop">Breizh Cola</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Green Cola</a>
+                              <RouterLink to="/shop">Green Cola</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Jolt Cola</a>
+                              <RouterLink to="/shop">Jolt Cola</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Mecca Cola</a>
+                              <RouterLink to="/shop">Mecca Cola</RouterLink>
                             </li>
                             <li>
-                              <a href="shop-left-sidebar.html">Topsia Cola</a>
+                              <RouterLink to="/shop">Topsia Cola</RouterLink>
                             </li>
                           </ul>
                         </div>
@@ -361,20 +347,20 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li>
-                      <a class="dropdown-item" href="register.html">Register</a>
+                      <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="checkout.html">Checkout</a>
+                      <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="login.html">Login</a>
+                      <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
                     </li>
                   </ul>
                 </li>
               </ul>
-              <a href="wishlist.html" class="cr-right-bar-item">
+              <RouterLink to="/wishlist" class="cr-right-bar-item">
                 <i class="ri-heart-line"></i>
-              </a>
+              </RouterLink>
               <a
                 href="javascript:void(0)"
                 class="cr-right-bar-item Shopping-toggle"
@@ -385,51 +371,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav">
                 <li class="nav-item">
-                  <a class="nav-link" href="index.html"> Home </a>
+                  <RouterLink class="nav-link" to="/">Home</RouterLink>
                 </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="javascript:void(0)">
-                    Category
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="shop-left-sidebar.html"
-                        >Shop Left sidebar</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="shop-right-sidebar.html"
-                        >Shop Right sidebar</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="shop-full-width.html"
-                        >Full Width</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="javascript:void(0)">
-                    Products
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="product-left-sidebar.html"
-                        >product Left sidebar
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="product-right-sidebar.html"
-                        >product Right sidebar
-                      </a>
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="product-full-width.html"
-                        >Product Full Width
-                      </a>
-                    </li>
-                  </ul>
+                <li class="nav-item">
+                  <RouterLink class="nav-link" to="/shop">Shop</RouterLink>
                 </li>
                 <li class="nav-item dropdown">
                   <a class="nav-link dropdown-toggle" href="javascript:void(0)">
@@ -437,112 +382,46 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li>
-                      <a class="dropdown-item" href="about.html">About Us</a>
+                      <RouterLink class="dropdown-item" to="/about">About Us</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="contact-us.html"
-                        >Contact Us</a
-                      >
+                      <RouterLink class="dropdown-item" to="/contact">Contact Us</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="cart.html">Cart</a>
+                      <RouterLink class="dropdown-item" to="/cart">Cart</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="checkout.html">Checkout</a>
+                      <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="track-order.html"
-                        >Track Order</a
-                      >
+                      <RouterLink class="dropdown-item" to="/track-order">Track Order</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="wishlist.html">Wishlist</a>
+                      <RouterLink class="dropdown-item" to="/wishlist">Wishlist</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="faq.html">Faq</a>
+                      <RouterLink class="dropdown-item" to="/faq">Faq</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="login.html">Login</a>
+                      <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="register.html">Register</a>
+                      <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
                     </li>
                     <li>
-                      <a class="dropdown-item" href="policy.html">Policy</a>
+                      <RouterLink class="dropdown-item" to="/policy">Policy</RouterLink>
                     </li>
                   </ul>
                 </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="javascript:void(0)">
-                    Blog
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="blog-left-sidebar.html"
-                        >Left Sidebar</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="blog-right-sidebar.html"
-                        >Right Sidebar</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="blog-full-width.html"
-                        >Full Width</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="blog-detail-left-sidebar.html"
-                        >Detail Left Sidebar</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="blog-detail-right-sidebar.html"
-                        >Detail Right Sidebar</a
-                      >
-                    </li>
-                    <li>
-                      <a
-                        class="dropdown-item"
-                        href="blog-detail-full-width.html"
-                        >Detail Full Width</a
-                      >
-                    </li>
-                  </ul>
-                </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="javascript:void(0)">
-                    Elements
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <a class="dropdown-item" href="elements-products.html"
-                        >Products</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="elements-typography.html"
-                        >Typography</a
-                      >
-                    </li>
-                    <li>
-                      <a class="dropdown-item" href="elements-buttons.html"
-                        >Buttons</a
-                      >
-                    </li>
-                  </ul>
+                <li class="nav-item">
+                  <RouterLink class="nav-link" to="/blog">Blog</RouterLink>
                 </li>
               </ul>
             </div>
           </nav>
           <div class="cr-calling">
             <i class="ri-phone-line"></i>
-            <a href="javascript:void(0)">+123 ( 456 ) ( 7890 )</a>
+            <a href="tel:+1234567890">+123 ( 456 ) ( 7890 )</a>
           </div>
         </div>
       </div>

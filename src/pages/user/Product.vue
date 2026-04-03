@@ -152,8 +152,7 @@ export default {
          * View product details
          */
         viewProduct(product) {
-            // Navigate to product or update current product
-            console.log("Viewing product:", product);
+            this.$router.push(`/product/${product.id}`);
         }
     }
 }

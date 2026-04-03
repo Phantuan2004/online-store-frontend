@@ -61,6 +61,26 @@ const routes = [
     path: '/wishlist',
     name: 'Wishlist',
     component: () => import('../pages/user/Wishlist.vue')
+  },
+  {
+    path: '/track-order',
+    name: 'TrackOrder',
+    component: () => import('../pages/user/TrackOrder.vue')
+  },
+  {
+    path: '/policy',
+    name: 'Policy',
+    component: () => import('../pages/user/Policy.vue')
+  },
+  {
+    path: '/terms',
+    name: 'Terms',
+    component: () => import('../pages/user/Terms.vue')
+  },
+  {
+    path: '/forgot-password',
+    name: 'ForgotPassword',
+    component: () => import('../pages/user/ForgotPassword.vue')
   }
 ]
 

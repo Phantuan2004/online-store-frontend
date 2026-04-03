@@ -10,73 +10,61 @@
       <div class="cr-menu-content">
         <ul>
           <li class="dropdown drop-list">
-            <a href="index.html">Home</a>
+            <RouterLink to="/">Home</RouterLink>
           </li>
           <li class="dropdown drop-list">
             <span class="menu-toggle"></span>
             <a href="javascript:void(0)" class="dropdown-list">Category</a>
             <ul class="sub-menu">
-              <li><a href="shop-left-sidebar.html">Shop Left sidebar</a></li>
-              <li><a href="shop-right-sidebar.html">Shop Right sidebar</a></li>
-              <li><a href="shop-full-width.html">Full Width</a></li>
+              <li><RouterLink to="/shop">Shop Left sidebar</RouterLink></li>
+              <li><RouterLink to="/shop">Shop Right sidebar</RouterLink></li>
+              <li><RouterLink to="/shop">Full Width</RouterLink></li>
             </ul>
           </li>
           <li class="dropdown drop-list">
             <span class="menu-toggle"></span>
             <a href="javascript:void(0)" class="dropdown-list">product</a>
             <ul class="sub-menu">
-              <li>
-                <a href="product-left-sidebar.html">product Left sidebar</a>
-              </li>
-              <li>
-                <a href="product-right-sidebar.html">product Right sidebar</a>
-              </li>
-              <li><a href="product-full-width.html">Product Full Width </a></li>
+              <li><RouterLink to="/product/1">product Left sidebar</RouterLink></li>
+              <li><RouterLink to="/product/1">product Right sidebar</RouterLink></li>
+              <li><RouterLink to="/product/1">Product Full Width</RouterLink></li>
             </ul>
           </li>
           <li class="dropdown drop-list">
             <span class="menu-toggle"></span>
             <a href="javascript:void(0)" class="dropdown-list">Pages</a>
             <ul class="sub-menu">
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="contact-us.html">Contact Us</a></li>
-              <li><a href="cart.html">Cart</a></li>
-              <li><a href="checkout.html">Checkout</a></li>
-              <li><a href="track-order.html">Track Order</a></li>
-              <li><a href="wishlist.html">Wishlist</a></li>
-              <li><a href="faq.html">Faq</a></li>
-              <li><a href="login.html">Login</a></li>
-              <li><a href="register.html">Register</a></li>
-              <li><a href="policy.html">Policy</a></li>
+              <li><RouterLink to="/about">About Us</RouterLink></li>
+              <li><RouterLink to="/contact">Contact Us</RouterLink></li>
+              <li><RouterLink to="/cart">Cart</RouterLink></li>
+              <li><RouterLink to="/checkout">Checkout</RouterLink></li>
+              <li><RouterLink to="/track-order">Track Order</RouterLink></li>
+              <li><RouterLink to="/wishlist">Wishlist</RouterLink></li>
+              <li><RouterLink to="/faq">Faq</RouterLink></li>
+              <li><RouterLink to="/login">Login</RouterLink></li>
+              <li><RouterLink to="/register">Register</RouterLink></li>
+              <li><RouterLink to="/policy">Policy</RouterLink></li>
             </ul>
           </li>
           <li class="dropdown drop-list">
             <span class="menu-toggle"></span>
             <a href="javascript:void(0)" class="dropdown-list">Blog</a>
             <ul class="sub-menu">
-              <li><a href="blog-left-sidebar.html">Left Sidebar</a></li>
-              <li><a href="blog-right-sidebar.html">Right Sidebar</a></li>
-              <li><a href="blog-full-width.html">Full Width</a></li>
-              <li>
-                <a href="blog-detail-left-sidebar.html">Detail Left Sidebar</a>
-              </li>
-              <li>
-                <a href="blog-detail-right-sidebar.html"
-                  >Detail Right Sidebar</a
-                >
-              </li>
-              <li>
-                <a href="blog-detail-full-width.html">Detail Full Width</a>
-              </li>
+              <li><RouterLink to="/blog">Left Sidebar</RouterLink></li>
+              <li><RouterLink to="/blog">Right Sidebar</RouterLink></li>
+              <li><RouterLink to="/blog">Full Width</RouterLink></li>
+              <li><RouterLink to="/blog">Detail Left Sidebar</RouterLink></li>
+              <li><RouterLink to="/blog">Detail Right Sidebar</RouterLink></li>
+              <li><RouterLink to="/blog">Detail Full Width</RouterLink></li>
             </ul>
           </li>
           <li class="dropdown drop-list">
             <span class="menu-toggle"></span>
             <a href="javascript:void(0)">Element</a>
             <ul class="sub-menu">
-              <li><a href="elements-products.html">Products</a></li>
-              <li><a href="elements-typography.html">Typography</a></li>
-              <li><a href="elements-buttons.html">Buttons</a></li>
+              <li><RouterLink to="/shop">Products</RouterLink></li>
+              <li><RouterLink to="/shop">Typography</RouterLink></li>
+              <li><RouterLink to="/shop">Buttons</RouterLink></li>
             </ul>
           </li>
         </ul>

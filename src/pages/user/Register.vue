@@ -95,9 +95,9 @@
                                 </div>
                                 <div class="cr-register-buttons">
                                     <button type="button" class="cr-button">Signup</button>
-                                    <a href="login.html" class="link">
+                                    <RouterLink to="/login" class="link">
                                         Have an account?
-                                    </a>
+                                    </RouterLink>
                                 </div>
                             </div>
                         </form>
