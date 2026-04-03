@@ -164,64 +164,22 @@
           <!-- Products Grid -->
           <div class="row col-100 mb-minus-24">
             <ProductCard
-              v-for="product in paginatedProducts"
+              v-for="product in sortedProducts"
               :key="product.id"
               :product="product"
               @toggle-wishlist="toggleWishlist"
               @quick-view="openQuickView"
               @add-to-cart="addToCart"
-              @filter-by-category="filterByCategory"
             />
           </div>
 
           <!-- No Products Message -->
-          <div v-if="paginatedProducts.length === 0" class="col-12 text-center">
+          <div v-if="sortedProducts.length === 0" class="col-12 text-center">
             <p class="text-muted" style="padding: 40px 0">
               No products found matching your criteria. Try adjusting your
               filters.
             </p>
           </div>
-
-          <!-- Pagination -->
-          <nav v-if="totalPages > 1" aria-label="pagination" class="cr-pagination">
-            <ul class="pagination">
-              <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                <span v-if="currentPage === 1" class="page-link">
-                  Previous
-                </span>
-                <a v-else @click.prevent="previousPage" href="#" class="page-link">
-                  Previous
-                </a>
-              </li>
-
-              <li
-                v-for="page in totalPages"
-                :key="page"
-                class="page-item"
-                :class="{ active: currentPage === page }"
-                :aria-current="currentPage === page ? 'page' : null"
-              >
-                <span v-if="currentPage === page" class="page-link">
-                  {{ page }}
-                </span>
-                <a v-else @click.prevent="goToPage(page)" href="#" class="page-link">
-                  {{ page }}
-                </a>
-              </li>
-
-              <li
-                class="page-item"
-                :class="{ disabled: currentPage === totalPages }"
-              >
-                <span v-if="currentPage === totalPages" class="page-link">
-                  Next
-                </span>
-                <a v-else @click.prevent="nextPage" href="#" class="page-link">
-                  Next
-                </a>
-              </li>
-            </ul>
-          </nav>
         </div>
       </div>
     </div>

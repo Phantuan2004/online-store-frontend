@@ -1,5 +1,5 @@
 import { nextTick } from "vue";
-import { productsData, sortOptions } from "./products";
+import { productsData, categories, sortOptions } from "./products";
 
 const getPriceBounds = (products) => {
   const prices = products
@@ -16,28 +16,6 @@ const getPriceBounds = (products) => {
   };
 };
 
-const buildCategoryOptions = (products) => {
-  const categoryMap = new Map();
-
-  products.forEach(({ category }) => {
-    const id = category.toLowerCase();
-    const existingCategory = categoryMap.get(id);
-
-    if (existingCategory) {
-      existingCategory.count += 1;
-      return;
-    }
-
-    categoryMap.set(id, {
-      id,
-      name: category,
-      count: 1
-    });
-  });
-
-  return Array.from(categoryMap.values());
-};
-
 export const shopLogic = {
   data() {
     const priceBounds = getPriceBounds(productsData);
@@ -46,14 +24,12 @@ export const shopLogic = {
     return {
       products: productsData,
       allProducts: productsData,
-      categories: buildCategoryOptions(productsData),
+      categories,
       sortOptions,
       priceBounds,
       
       // Filters
-      selectedCategories: [],
       draftSelectedCategories: [],
-      priceRange: [...defaultPriceRange],
       draftPriceRange: [...defaultPriceRange],
       selectedColors: [],
       selectedWeights: [],
@@ -61,10 +37,6 @@ export const shopLogic = {
       // Sort & View
       selectedSort: "featured",
       viewMode: "grid", // 'grid' or 'list'
-      
-      // Pagination
-      currentPage: 1,
-      itemsPerPage: 8,
       
       // UI State
       showQuickViewModal: false,
@@ -76,35 +48,10 @@ export const shopLogic = {
   
   computed: {
     /**
-     * Filter products based on selected filters
-     */
-    filteredProducts() {
-      return this.allProducts.filter(product => {
-        // Category filter
-        if (
-          this.selectedCategories.length > 0 &&
-          !this.selectedCategories.includes(product.category.toLowerCase())
-        ) {
-          return false;
-        }
-
-        // Price filter
-        if (
-          product.price < this.priceRange[0] ||
-          product.price > this.priceRange[1]
-        ) {
-          return false;
-        }
-
-        return true;
-      });
-    },
-
-    /**
-     * Sort filtered products
+     * Sort products
      */
     sortedProducts() {
-      const products = [...this.filteredProducts];
+      const products = [...this.allProducts];
 
       switch (this.selectedSort) {
         case "newest":
@@ -122,26 +69,10 @@ export const shopLogic = {
     },
 
     /**
-     * Paginate sorted products
-     */
-    paginatedProducts() {
-      const start = (this.currentPage - 1) * this.itemsPerPage;
-      const end = start + this.itemsPerPage;
-      return this.sortedProducts.slice(start, end);
-    },
-
-    /**
-     * Calculate total pages
-     */
-    totalPages() {
-      return Math.ceil(this.sortedProducts.length / this.itemsPerPage);
-    },
-
-    /**
      * Result count text
      */
     resultCount() {
-      return this.filteredProducts.length;
+      return this.allProducts.length;
     }
   },
 
@@ -156,12 +87,10 @@ export const shopLogic = {
 
   methods: {
     /**
-     * Apply filters and reset pagination
+     * Apply filters
      */
     applyFilters() {
-      this.selectedCategories = [...this.draftSelectedCategories];
-      this.priceRange = [...this.draftPriceRange];
-      this.currentPage = 1;
+      // Filtering will be wired to backend API later.
     },
 
     /**
@@ -169,21 +98,6 @@ export const shopLogic = {
      */
     onSortChange(sortValue) {
       this.selectedSort = sortValue;
-      this.currentPage = 1;
-    },
-
-    /**
-     * Handle category filter
-     */
-    toggleCategory(category) {
-      const normalizedCategory = category.toLowerCase();
-      const index = this.draftSelectedCategories.indexOf(normalizedCategory);
-
-      if (index > -1) {
-        this.draftSelectedCategories.splice(index, 1);
-      } else {
-        this.draftSelectedCategories.push(normalizedCategory);
-      }
     },
 
     /**
@@ -313,67 +227,13 @@ export const shopLogic = {
       this.showSuccessMessage(`${product.title} added to cart!`);
     },
 
-    /**
-     * Handle filter by category from product card
-     */
-    filterByCategory(category) {
-      this.draftSelectedCategories = [category.toLowerCase()];
-      this.applyFilters();
-    },
-
-    /**
-     * Go to page
-     */
-    goToPage(page) {
-      if (page >= 1 && page <= this.totalPages) {
-        this.currentPage = page;
-        this.scrollToTop();
-      }
-    },
-
-    /**
-     * Next page
-     */
-    nextPage() {
-      if (this.currentPage < this.totalPages) {
-        this.currentPage += 1;
-        this.scrollToTop();
-      }
-    },
-
-    /**
-     * Previous page
-     */
-    previousPage() {
-      if (this.currentPage > 1) {
-        this.currentPage -= 1;
-        this.scrollToTop();
-      }
-    },
-
-    /**
-     * Scroll to products section
-     */
-    scrollToTop() {
-      window.scrollTo({
-        top: document.querySelector(".section-shop")?.offsetTop || 0,
-        behavior: "smooth"
-      });
-    },
-
-    /**
-     * Clear all filters
-     */
     clearFilters() {
       const defaultPriceRange = [this.priceBounds.min, this.priceBounds.max];
 
-      this.selectedCategories = [];
       this.draftSelectedCategories = [];
-      this.priceRange = [...defaultPriceRange];
       this.draftPriceRange = [...defaultPriceRange];
       this.selectedColors = [];
       this.selectedWeights = [];
-      this.currentPage = 1;
     },
 
     /**

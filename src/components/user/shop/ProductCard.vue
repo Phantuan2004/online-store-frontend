@@ -38,7 +38,7 @@
       <!-- Product Details Section -->
       <div class="cr-product-details">
         <div class="cr-brand">
-          <a href="#" @click.prevent="filterByCategory">{{ product.category }}</a>
+          <span>{{ product.category }}</span>
           <div class="cr-star">
             <i 
               v-for="i in 5" 
@@ -113,9 +113,6 @@ export default {
     },
     addToCart() {
       this.$emit("add-to-cart", this.product);
-    },
-    filterByCategory() {
-      this.$emit("filter-by-category", this.product.category);
     },
     formatPrice(price) {
       return price.toFixed(2);
