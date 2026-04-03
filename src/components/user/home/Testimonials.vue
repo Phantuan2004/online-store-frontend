@@ -46,12 +46,15 @@ import { onMounted, ref } from 'vue';
 import Swiper from 'swiper';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import testimonialImg1 from '@/assets/user/img/testimonial/1.jpg';
+import testimonialImg2 from '@/assets/user/img/testimonial/2.jpg';
+import testimonialImg3 from '@/assets/user/img/testimonial/3.jpg';
 
 const testimonialSwiper = ref(null);
 const testimonials = [
-  { img: '/assets/img/testimonial/1.jpg', name: 'Stephen Smith', role: 'Co Founder', rating: 5, content: 'eiusmpsu dolor sit amet, conse cte tur ng elit, sed do eiusmod tem lacus vel facilisis.' },
-  { img: '/assets/img/testimonial/2.jpg', name: 'Lorem Robinson', role: 'Manager', rating: 4, content: 'eiusmpsu dolor sit amet, conse cte tur ng elit, sed do eiusmod tem lacus vel facilisis.' },
-  { img: '/assets/img/testimonial/3.jpg', name: 'Saddika Alard', role: 'Team Leader', rating: 5, content: 'eiusmpsu dolor sit amet, conse cte tur ng elit, sed do eiusmod tem lacus vel facilisis.' }
+  { img: testimonialImg1, name: 'Stephen Smith', role: 'Co Founder', rating: 5, content: 'eiusmpsu dolor sit amet, conse cte tur ng elit, sed do eiusmod tem lacus vel facilisis.' },
+  { img: testimonialImg2, name: 'Lorem Robinson', role: 'Manager', rating: 4, content: 'eiusmpsu dolor sit amet, conse cte tur ng elit, sed do eiusmod tem lacus vel facilisis.' },
+  { img: testimonialImg3, name: 'Saddika Alard', role: 'Team Leader', rating: 5, content: 'eiusmpsu dolor sit amet, conse cte tur ng elit, sed do eiusmod tem lacus vel facilisis.' }
 ];
 
 onMounted(() => {

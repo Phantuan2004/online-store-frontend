@@ -30,7 +30,7 @@
             </div>
             <div class="col-lg-12 col-sm-6 col-6 cr-product-box banner-480 mb-24">
               <div class="cr-ice-cubes">
-                <img src="/assets/img/product/product-banner.jpg" alt="product banner">
+                <img :src="productBannerImg" alt="product banner">
                 <div class="cr-ice-cubes-contain">
                   <h4 class="title">Juicy</h4>
                   <h5 class="sub-title">Fruits</h5>
@@ -94,18 +94,26 @@
 import { ref, computed, onMounted } from 'vue';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import productImg1 from '@/assets/user/img/product/1.jpg';
+import productImg2 from '@/assets/user/img/product/2.jpg';
+import productImg3 from '@/assets/user/img/product/3.jpg';
+import productImg9 from '@/assets/user/img/product/9.jpg';
+import productImg10 from '@/assets/user/img/product/10.jpg';
+import productImg11 from '@/assets/user/img/product/11.jpg';
+import productImg17 from '@/assets/user/img/product/17.jpg';
+import productBannerImg from '@/assets/user/img/product/product-banner.jpg';
 
 const currentFilter = ref('all');
 
 const products = [
-  { id: 1, category: 'Vegetables', rating: 4.5, title: 'Fresh organic villa farm lomon 500gm pack', newPrice: 120.25, oldPrice: 123.25, img: '/assets/img/product/1.jpg', type: 'vegetable' },
-  { id: 2, category: 'Snacks', rating: 5.0, title: 'Best snakes with hazel nut pack 200gm', newPrice: 145, oldPrice: 150, img: '/assets/img/product/9.jpg', type: 'snack' },
-  { id: 3, category: 'Fruits', rating: 4.5, title: 'Fresh organic apple 1kg simla marming', newPrice: 120.25, oldPrice: 123.25, img: '/assets/img/product/2.jpg', type: 'fruit' },
-  { id: 4, category: 'Bakery', rating: 5.0, title: 'Delicious white baked fresh bread and toast', newPrice: 20, oldPrice: 22.10, img: '/assets/img/product/17.jpg', type: 'bakery' },
-  { id: 5, category: 'Snacks', rating: 5.0, title: 'Sweet crunchy nut mix 250gm pack', newPrice: 120.25, oldPrice: 123.25, img: '/assets/img/product/11.jpg', type: 'snack' },
-  { id: 6, category: 'Fruits', rating: 3.2, title: 'Organic fresh venila farm watermelon 5kg', newPrice: 50.3, oldPrice: 72.6, img: '/assets/img/product/3.jpg', type: 'fruit' },
-  { id: 7, category: 'Snacks', rating: 5.0, title: 'Sweet crunchy nut mix 250gm pack', newPrice: 120.25, oldPrice: 123.25, img: '/assets/img/product/10.jpg', type: 'snack' },
-  { id: 8, category: 'Bakery', rating: 5.0, title: 'Delicious white baked fresh bread and toast', newPrice: 20, oldPrice: 22.10, img: '/assets/img/product/17.jpg', type: 'bakery' }
+  { id: 1, category: 'Vegetables', rating: 4.5, title: 'Fresh organic villa farm lomon 500gm pack', newPrice: 120.25, oldPrice: 123.25, img: productImg1, type: 'vegetable' },
+  { id: 2, category: 'Snacks', rating: 5.0, title: 'Best snakes with hazel nut pack 200gm', newPrice: 145, oldPrice: 150, img: productImg9, type: 'snack' },
+  { id: 3, category: 'Fruits', rating: 4.5, title: 'Fresh organic apple 1kg simla marming', newPrice: 120.25, oldPrice: 123.25, img: productImg2, type: 'fruit' },
+  { id: 4, category: 'Bakery', rating: 5.0, title: 'Delicious white baked fresh bread and toast', newPrice: 20, oldPrice: 22.10, img: productImg17, type: 'bakery' },
+  { id: 5, category: 'Snacks', rating: 5.0, title: 'Sweet crunchy nut mix 250gm pack', newPrice: 120.25, oldPrice: 123.25, img: productImg11, type: 'snack' },
+  { id: 6, category: 'Fruits', rating: 3.2, title: 'Organic fresh venila farm watermelon 5kg', newPrice: 50.3, oldPrice: 72.6, img: productImg3, type: 'fruit' },
+  { id: 7, category: 'Snacks', rating: 5.0, title: 'Sweet crunchy nut mix 250gm pack', newPrice: 120.25, oldPrice: 123.25, img: productImg10, type: 'snack' },
+  { id: 8, category: 'Bakery', rating: 5.0, title: 'Delicious white baked fresh bread and toast', newPrice: 20, oldPrice: 22.10, img: productImg17, type: 'bakery' }
 ];
 
 const filteredProducts = computed(() => {

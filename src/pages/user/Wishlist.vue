@@ -21,7 +21,7 @@
                         <div class="cr-product-card">
                             <div class="cr-product-image">
                                 <div class="cr-image-inner zoom-image-hover">
-                                    <img src="/src/assets/user/img/product/1.jpg" alt="product-1">
+                                    <img :src="productImg1" alt="product-1">
                                 </div>
                                 <div class="cr-side-view">
                                     <a class="cr-remove-product" href="javascript:void(0)">
@@ -62,7 +62,7 @@
                         <div class="cr-product-card">
                             <div class="cr-product-image">
                                 <div class="cr-image-inner zoom-image-hover">
-                                    <img src="/src/assets/user/img/product/9.jpg" alt="product-1">
+                                    <img :src="productImg9" alt="product-1">
                                 </div>
                                 <div class="cr-side-view">
                                     <a class="cr-remove-product" href="javascript:void(0)">
@@ -103,7 +103,7 @@
                         <div class="cr-product-card">
                             <div class="cr-product-image">
                                 <div class="cr-image-inner zoom-image-hover">
-                                    <img src="/src/assets/user/img/product/2.jpg" alt="product-1">
+                                    <img :src="productImg2" alt="product-1">
                                 </div>
                                 <div class="cr-side-view">
                                     <a class="cr-remove-product" href="javascript:void(0)">
@@ -144,7 +144,7 @@
                         <div class="cr-product-card">
                             <div class="cr-product-image">
                                 <div class="cr-image-inner zoom-image-hover">
-                                    <img src="/src/assets/user/img/product/3.jpg" alt="product-1">
+                                    <img :src="productImg3" alt="product-1">
                                 </div>
                                 <div class="cr-side-view">
                                     <a class="cr-remove-product" href="javascript:void(0)">
@@ -186,10 +186,11 @@
         </section>
 </template>
 
-<script>
-export default {
-    name: "Wishlist",
-};
+<script setup>
+import productImg1 from '@/assets/user/img/product/1.jpg';
+import productImg2 from '@/assets/user/img/product/2.jpg';
+import productImg3 from '@/assets/user/img/product/3.jpg';
+import productImg9 from '@/assets/user/img/product/9.jpg';
 </script>
 
 <style scoped>

@@ -50,17 +50,17 @@
 								<div class="cr-hover-drop-panel right">
 									<h6 class="title">Apps</h6>
 									<ul>
-										<li><a href="javascript:void(0)"><img class="app" src="/src/assets/user/img/apps/1.png"
+										<li><a href="javascript:void(0)"><img class="app" :src="app1"
 													alt="flag">English</a></li>
-										<li><a href="javascript:void(0)"><img class="app" src="/src/assets/user/img/apps/2.png"
+										<li><a href="javascript:void(0)"><img class="app" :src="app2"
 													alt="flag">Hindi</a></li>
-										<li><a href="javascript:void(0)"><img class="app" src="/src/assets/user/img/apps/3.png"
+										<li><a href="javascript:void(0)"><img class="app" :src="app3"
 													alt="flag"> Deutsch</a></li>
-										<li><a href="javascript:void(0)"><img class="app" src="/src/assets/user/img/apps/4.png"
+										<li><a href="javascript:void(0)"><img class="app" :src="app4"
 													alt="flag">Italian</a></li>
-										<li><a href="javascript:void(0)"><img class="app" src="/src/assets/user/img/apps/5.png"
+										<li><a href="javascript:void(0)"><img class="app" :src="app5"
 													alt="flag">Japanese</a></li>
-										<li><a href="javascript:void(0)"><img class="app" src="/src/assets/user/img/apps/6.png"
+										<li><a href="javascript:void(0)"><img class="app" :src="app6"
 													alt="flag">Japanese</a></li>
 									</ul>
 								</div>
@@ -85,7 +85,7 @@
 						<div class="cr-right-tool cr-user-drop">
 							<div class="cr-hover-drop">
 								<div class="cr-hover-tool">
-									<img class="user" src="/src/assets/user/img/user/1.jpg" alt="user">
+									<img class="user" :src="userImg" alt="user">
 								</div>
 								<div class="cr-hover-drop-panel right">
 									<div class="details">
@@ -111,10 +111,19 @@
 		</header>
 </template>
 
-<script>
-export default {
-    name: "Header"
-}
+<script setup>
+import flagUs from '@/assets/user/img/flag/us.png';
+import flagIn from '@/assets/user/img/flag/in.png';
+import flagDe from '@/assets/user/img/flag/de.png';
+import flagIt from '@/assets/user/img/flag/it.png';
+import flagJp from '@/assets/user/img/flag/jp.png';
+import app1 from '@/assets/user/img/apps/1.png';
+import app2 from '@/assets/user/img/apps/2.png';
+import app3 from '@/assets/user/img/apps/3.png';
+import app4 from '@/assets/user/img/apps/4.png';
+import app5 from '@/assets/user/img/apps/5.png';
+import app6 from '@/assets/user/img/apps/6.png';
+import userImg from '@/assets/user/img/user/1.jpg';
 </script>
 
 <style scoped>

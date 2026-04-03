@@ -3,8 +3,8 @@
 		<div class="cr-sidebar-overlay"></div>
 		<div class="cr-sidebar" data-mode="light">
 			<div class="cr-sb-logo">
-				<a href="index.html" class="sb-full"><img src="/src/assets/user/img/logo/full-logo.png" alt="logo"></a>
-				<a href="index.html" class="sb-collapse"><img src="/src/assets/user/img/logo/collapse-logo.png" alt="logo"></a>
+			<a href="index.html" class="sb-full"><img :src="fullLogoImg" alt="logo"></a>
+			<a href="index.html" class="sb-collapse"><img :src="collapseLogoImg" alt="logo"></a>
 			</div>
 			<div class="cr-sb-wrapper">
 				<div class="cr-sb-content">
@@ -107,10 +107,9 @@
 		</div>
 </template>
 
-<script>
-export default {
-    name: "Sidebar"
-}
+<script setup>
+import fullLogoImg from '@/assets/user/img/logo/full-logo.png';
+import collapseLogoImg from '@/assets/user/img/logo/collapse-logo.png';
 </script>
 
 <style scoped>

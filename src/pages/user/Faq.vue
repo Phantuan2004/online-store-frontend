@@ -5,7 +5,7 @@
             <div class="row">
                 <div class="col-lg-6">
                     <div class="cr-faq-img">
-                        <img src="/src/assets/user/img/about/1.jpg" alt="about">
+                        <img :src="aboutImg" alt="about">
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -198,10 +198,8 @@
     </section>
 </template>
 
-<script>
-export default {
-    name: "Faq",
-}
+<script setup>
+import aboutImg from '@/assets/user/img/about/1.jpg';
 </script>
 
 <style scoped>

@@ -11,7 +11,7 @@
         <ul class="crcart-pro-items">
           <li>
             <a href="product-left-sidebar.html" class="crside_pro_img"
-              ><img src="/src/assets/user/img/product/4.jpg" alt="product-1"
+              ><img :src="productImg4" alt="product-1"
             /></a>
             <div class="cr-pro-content">
               <a href="product-left-sidebar.html" class="cart_pro_title"
@@ -37,7 +37,7 @@
           </li>
           <li>
             <a href="product-left-sidebar.html" class="crside_pro_img"
-              ><img src="/src/assets/user/img/product/2.jpg" alt="product-2"
+              ><img :src="productImg2" alt="product-2"
             /></a>
             <div class="cr-pro-content">
               <a href="product-left-sidebar.html" class="cart_pro_title"
@@ -63,7 +63,7 @@
           </li>
           <li>
             <a href="product-left-sidebar.html" class="crside_pro_img"
-              ><img src="/src/assets/user/img/product/3.jpg" alt="product-3"
+              ><img :src="productImg3" alt="product-3"
             /></a>
             <div class="cr-pro-content">
               <a href="product-left-sidebar.html" class="cart_pro_title"
@@ -116,8 +116,8 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: "Cart",
-};
+<script setup>
+import productImg2 from '@/assets/user/img/product/2.jpg';
+import productImg3 from '@/assets/user/img/product/3.jpg';
+import productImg4 from '@/assets/user/img/product/4.jpg';
 </script>

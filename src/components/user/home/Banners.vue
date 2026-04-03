@@ -40,12 +40,15 @@ import { onMounted, ref } from 'vue';
 import Swiper from 'swiper';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import bannerImg1 from '@/assets/user/img/product-banner/1.jpg';
+import bannerImg2 from '@/assets/user/img/product-banner/2.jpg';
+import bannerImg3 from '@/assets/user/img/product-banner/3.jpg';
 
 const bannerSwiper = ref(null);
 const banners = [
-  { img: '/assets/img/product-banner/1.jpg', title: 'Healthy <br> Bakery Products', off: 30 },
-  { img: '/assets/img/product-banner/2.jpg', title: 'Fresh <br>Snacks & Sweets', off: 20 },
-  { img: '/assets/img/product-banner/3.jpg', title: 'Fresh & healthy <br> Organic Fruits', off: 35 }
+  { img: bannerImg1, title: 'Healthy <br> Bakery Products', off: 30 },
+  { img: bannerImg2, title: 'Fresh <br>Snacks & Sweets', off: 20 },
+  { img: bannerImg3, title: 'Fresh & healthy <br> Organic Fruits', off: 35 }
 ];
 
 onMounted(() => {

@@ -6,9 +6,9 @@
         <div class="col-xl-4 col-lg-6 col-sm-12 col-12 cr-footer-border">
           <div class="cr-footer-logo">
             <div class="image">
-              <img src="/src/assets/user/img/logo/logo.png" alt="logo" class="logo" />
+              <img :src="logoImg" alt="logo" class="logo" />
               <img
-                src="/src/assets/user/img/logo/dark-logo.png"
+                :src="darkLogoImg"
                 alt="logo"
                 class="dark-logo"
               />
@@ -110,49 +110,49 @@
                 <div class="swiper-wrapper">
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/1.jpg" alt="insta" />
+                      <img :src="instaImg1" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/2.jpg" alt="insta" />
+                      <img :src="instaImg2" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/3.jpg" alt="insta" />
+                      <img :src="instaImg3" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/4.jpg" alt="insta" />
+                      <img :src="instaImg4" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/5.jpg" alt="insta" />
+                      <img :src="instaImg5" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/6.jpg" alt="insta" />
+                      <img :src="instaImg6" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/7.jpg" alt="insta" />
+                      <img :src="instaImg7" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
                   <div class="swiper-slide">
                     <a href="#" class="cr-payment-image">
-                      <img src="/src/assets/user/img/insta/8.jpg" alt="insta" />
+                      <img :src="instaImg8" alt="insta" />
                       <div class="payment-overlay"></div>
                     </a>
                   </div>
@@ -171,8 +171,15 @@
     </div>
   </footer>
 </template>
-<script>
-export default {
-  name: "Footer",
-};
+<script setup>
+import logoImg from '@/assets/user/img/logo/logo.png';
+import darkLogoImg from '@/assets/user/img/logo/dark-logo.png';
+import instaImg1 from '@/assets/user/img/insta/1.jpg';
+import instaImg2 from '@/assets/user/img/insta/2.jpg';
+import instaImg3 from '@/assets/user/img/insta/3.jpg';
+import instaImg4 from '@/assets/user/img/insta/4.jpg';
+import instaImg5 from '@/assets/user/img/insta/5.jpg';
+import instaImg6 from '@/assets/user/img/insta/6.jpg';
+import instaImg7 from '@/assets/user/img/insta/7.jpg';
+import instaImg8 from '@/assets/user/img/insta/8.jpg';
 </script>

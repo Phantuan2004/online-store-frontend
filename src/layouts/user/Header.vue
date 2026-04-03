@@ -6,9 +6,9 @@
         <div class="col-lg-12">
           <div class="top-header">
             <a href="index.html" class="cr-logo">
-              <img src="/src/assets/user/img/logo/logo.png" alt="logo" class="logo" />
+              <img :src="logoImg" alt="logo" class="logo" />
               <img
-                src="/src/assets/user/img/logo/dark-logo.png"
+                :src="darkLogoImg"
                 alt="logo"
                 class="dark-logo"
               />
@@ -549,8 +549,7 @@
     </div>
   </header>
 </template>
-<script>
-export default {
-  name: "Header",
-};
+<script setup>
+import logoImg from '@/assets/user/img/logo/logo.png';
+import darkLogoImg from '@/assets/user/img/logo/dark-logo.png';
 </script>

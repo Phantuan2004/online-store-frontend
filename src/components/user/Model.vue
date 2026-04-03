@@ -19,7 +19,7 @@
             <div class="col-md-5 col-sm-12 col-xs-12">
               <div class="zoom-image-hover modal-border-image">
                 <img
-                  src="/src/assets/user/img/product/tab-1.jpg"
+                  :src="tabImg"
                   alt="product-tab-2"
                   class="product-image"
                 />
@@ -89,8 +89,6 @@
     </div>
   </div>
 </template>
-<script>
-export default {
-  name: "Model",
-};
+<script setup>
+import tabImg from '@/assets/user/img/product/tab-1.jpg';
 </script>

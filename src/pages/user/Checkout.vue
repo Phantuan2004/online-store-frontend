@@ -32,7 +32,7 @@
                                             <div class="cr-pro-image-outer">
                                                 <div class="cr-pro-image">
                                                     <a href="product-left-sidebar.html" class="image">
-                                                        <img class="main-image" src="/src/assets/user/img/product/10.jpg"
+                                                        <img class="main-image" :src="productImg10"
                                                             alt="Product">
                                                     </a>
                                                 </div>
@@ -57,7 +57,7 @@
                                             <div class="cr-pro-image-outer">
                                                 <div class="cr-pro-image">
                                                     <a href="product-left-sidebar.html" class="image">
-                                                        <img class="main-image" src="/src/assets/user/img/product/12.jpg"
+                                                        <img class="main-image" :src="productImg12"
                                                             alt="Product">
                                                     </a>
                                                 </div>
@@ -160,7 +160,7 @@
                             <div class="cr-sb-block-content">
                                 <div class="cr-check-pay-img-inner">
                                     <div class="cr-check-pay-img">
-                                        <img src="/src/assets/user/img/banner/payment.png" alt="payment">
+                                        <img :src="paymentBannerImg" alt="payment">
                                     </div>
                                 </div>
                             </div>
@@ -318,10 +318,10 @@
     <!-- Checkout section End -->
 </template>
 
-<script>
-export default {
-    name: "Checkout",
-}
+<script setup>
+import productImg10 from '@/assets/user/img/product/10.jpg';
+import productImg12 from '@/assets/user/img/product/12.jpg';
+import paymentBannerImg from '@/assets/user/img/banner/payment.png';
 </script>
 
 <style scoped>

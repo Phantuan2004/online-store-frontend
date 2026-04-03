@@ -53,7 +53,7 @@
                 </div>
                 <div class="col-lg-6">
                     <div class="cr-about-image" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="800">
-                        <img src="/src/assets/user/img/about/1.jpg" alt="side-view">
+                        <img :src="aboutImg" alt="side-view">
                     </div>
                 </div>
             </div>
@@ -121,10 +121,8 @@
     </section>
 </template>
 
-<script>
-export default {
-    name: "About",
-}
+<script setup>
+import aboutImg from '@/assets/user/img/about/1.jpg';
 </script>
 
 <style scoped>

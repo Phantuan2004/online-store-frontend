@@ -47,7 +47,7 @@
         </div>
         <div class="col-xxl-5 col-xl-6 col-lg-6 col-md-12" data-aos="fade-up" data-aos-duration="2000">
           <div class="cr-products-rightbar">
-            <img src="/assets/img/product/products-rightview.jpg" alt="products-rightview">
+            <img :src="productsRightviewImg" alt="products-rightview">
             <div class="cr-products-rightbar-content">
               <h4>Organic & Healthy <br> Vegetables</h4>
               <div class="cr-off">
@@ -69,12 +69,16 @@ import { onMounted, ref } from 'vue';
 import Swiper from 'swiper';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
+import productImg1 from '@/assets/user/img/product/1.jpg';
+import productImg9 from '@/assets/user/img/product/9.jpg';
+import productImg10 from '@/assets/user/img/product/10.jpg';
+import productsRightviewImg from '@/assets/user/img/product/products-rightview.jpg';
 
 const featuredSwiper = ref(null);
 const featuredProducts = [
-  { id: 9, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: '/assets/img/product/9.jpg' },
-  { id: 10, category: 'Snacks', rating: 5.0, title: 'Sweet snakes crunchy nut mix 250gm pack', newPrice: 100.0, oldPrice: 110.0, img: '/assets/img/product/10.jpg' },
-  { id: 1, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: '/assets/img/product/1.jpg' }
+  { id: 9, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: productImg9 },
+  { id: 10, category: 'Snacks', rating: 5.0, title: 'Sweet snakes crunchy nut mix 250gm pack', newPrice: 100.0, oldPrice: 110.0, img: productImg10 },
+  { id: 1, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: productImg1 }
 ];
 
 onMounted(() => {

@@ -33,7 +33,7 @@
                             </div>
                             <div class="cr-blog-recent-post">
                                 <div class="cr-blog-recent-image">
-                                    <img src="/src/assets/user/img/blog/1.jpg" alt="blog-1">
+                                    <img :src="blogImg1" alt="blog-1">
                                 </div>
                                 <div class="cr-blog-recent-content">
                                     <span>Sep 09, 2024</span>
@@ -49,22 +49,22 @@
                             <div class="cr-blog-instagram-image">
                                 <div class="cr-blog-instagram-image-inner">
                                     <a href="#">
-                                        <img src="/src/assets/user/img/insta/1.jpg" alt="1">
+                                        <img :src="instaImg1" alt="1">
                                     </a>
                                     <a href="#">
-                                        <img src="/src/assets/user/img/insta/2.jpg" alt="2">
+                                        <img :src="instaImg2" alt="2">
                                     </a>
                                     <a href="#">
-                                        <img src="/src/assets/user/img/insta/3.jpg" alt="3">
+                                        <img :src="instaImg3" alt="3">
                                     </a>
                                     <a href="#">
-                                        <img src="/src/assets/user/img/insta/4.jpg" alt="4">
+                                        <img :src="instaImg4" alt="4">
                                     </a>
                                     <a href="#">
-                                        <img src="/src/assets/user/img/insta/5.jpg" alt="5">
+                                        <img :src="instaImg5" alt="5">
                                     </a>
                                     <a href="#">
-                                        <img src="/src/assets/user/img/insta/6.jpg" alt="6">
+                                        <img :src="instaImg6" alt="6">
                                     </a>
                                 </div>
                             </div>
@@ -98,7 +98,7 @@
                             <a href="javascript:void(0)">read more</a>
                         </div>
                         <div class="cr-blog-image">
-                            <img src="/src/assets/user/img/blog/blog-1.jpg" alt="blog-1">
+                            <img :src="blog1" alt="blog-1">
                         </div>
                     </div>
                     <div class="cr-blog-classic" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
@@ -112,7 +112,7 @@
                             <a href="javascript:void(0)">read more</a>
                         </div>
                         <div class="cr-blog-image">
-                            <img src="/src/assets/user/img/blog/blog-2.jpg" alt="blog-2">
+                            <img :src="blog2" alt="blog-2">
                         </div>
                     </div>
                     <div class="cr-blog-classic" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
@@ -126,7 +126,7 @@
                             <a href="javascript:void(0)">read more</a>
                         </div>
                         <div class="cr-blog-image">
-                            <img src="/src/assets/user/img/blog/blog-3.jpg" alt="blog-3">
+                            <img :src="blog3" alt="blog-3">
                         </div>
                     </div>
 
@@ -152,10 +152,17 @@
 
 </template>
 
-<script>
-export default {
-    name: "Blog",
-}
+<script setup>
+import blogImg1 from '@/assets/user/img/blog/1.jpg';
+import blog1 from '@/assets/user/img/blog/blog-1.jpg';
+import blog2 from '@/assets/user/img/blog/blog-2.jpg';
+import blog3 from '@/assets/user/img/blog/blog-3.jpg';
+import instaImg1 from '@/assets/user/img/insta/1.jpg';
+import instaImg2 from '@/assets/user/img/insta/2.jpg';
+import instaImg3 from '@/assets/user/img/insta/3.jpg';
+import instaImg4 from '@/assets/user/img/insta/4.jpg';
+import instaImg5 from '@/assets/user/img/insta/5.jpg';
+import instaImg6 from '@/assets/user/img/insta/6.jpg';
 </script>
 
 <style scoped>

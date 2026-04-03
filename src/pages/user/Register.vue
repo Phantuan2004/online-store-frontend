@@ -19,7 +19,7 @@
                 <div class="col-12">
                     <div class="cr-register" data-aos="fade-up" data-aos-duration="2000" data-aos-delay="400">
                         <div class="form-logo">
-                            <img src="/src/assets/user/img/logo/logo.png" alt="logo">
+                            <img :src="logoImg" alt="logo">
                         </div>
                         <form class="cr-content-form">
                             <div class="row">
@@ -108,10 +108,8 @@
     </section>
 </template>
 
-<script>
-export default {
-    name: "Register",
-}
+<script setup>
+import logoImg from '@/assets/user/img/logo/logo.png';
 </script>
 
 <style scoped>
