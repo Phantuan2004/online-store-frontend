@@ -3,49 +3,56 @@
     <section class="section-product padding-t-100">
         <div class="container">
             <div class="row">
-                <!-- Product Images -->
-                <div class="col-lg-6 col-12 mb-30">
-                    <ProductImageSlider 
-                        :images="product.images"
-                        @image-selected="onImageSelected"
+                <!-- Filter Sidebar -->
+                <div class="col-lg-3 col-12 md-30">
+                    <FilterSidebar 
+                        @filters-changed="onFiltersChanged"
                     />
                 </div>
-                <!-- Product Details -->
-                <div class="col-lg-6 col-12 mb-30">
-                    <ProductDetails
-                        :product="product"
-                        :quantity="quantity"
-                        :selected-size="selectedSize"
-                        :in-wishlist="inWishlist"
-                        :discount-percentage="discountPercentage"
-                        :is-in-stock="isInStock"
-                        @quantity-changed="onQuantityChanged"
-                        @size-selected="onSizeSelected"
-                        @add-to-cart="addToCart"
-                        @wishlist-toggled="toggleWishlist"
-                        @quick-view="handleQuickView"
-                    />
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Product Tabs - Description, Information, Reviews -->
-    <section class="section-tabs padding-t-100 padding-b-100">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ProductReviews
-                        :active-tab="activeTab"
-                        :product-description="product.description"
-                        :specs="product.specs"
-                        :reviews="reviews"
-                        :new-review="newReview"
-                        :is-loading="false"
-                        @tab-changed="switchTab"
-                        @update:newReview="onNewReviewUpdate"
-                        @review-submitted="submitReview"
-                    />
+                
+                <!-- Product Content -->
+                <div class="col-lg-9 col-12 md-30">
+                    <!-- Product Images and Details -->
+                    <div class="row mb-minus-24">
+                        <!-- Product Images -->
+                        <div class="col-md-6 col-12 mb-24">
+                            <ProductImageSlider 
+                                :images="product.images"
+                                @image-selected="onImageSelected"
+                            />
+                        </div>
+                        <!-- Product Details -->
+                        <div class="col-md-6 col-12 mb-24">
+                            <ProductDetails
+                                :product="product"
+                                :quantity="quantity"
+                                :selected-size="selectedSize"
+                                :in-wishlist="inWishlist"
+                                :discount-percentage="discountPercentage"
+                                :is-in-stock="isInStock"
+                                @quantity-changed="onQuantityChanged"
+                                @size-selected="onSizeSelected"
+                                @add-to-cart="addToCart"
+                                @wishlist-toggled="toggleWishlist"
+                                @quick-view="handleQuickView"
+                            />
+                        </div>
+                    </div>
+                    
+                    <!-- Product Tabs -->
+                    <div class="cr-paking-delivery">
+                        <ProductReviews
+                            :active-tab="activeTab"
+                            :product-description="product.description"
+                            :specs="product.specs"
+                            :reviews="reviews"
+                            :new-review="newReview"
+                            :is-loading="false"
+                            @tab-changed="switchTab"
+                            @update:newReview="onNewReviewUpdate"
+                            @review-submitted="submitReview"
+                        />
+                    </div>
                 </div>
             </div>
         </div>
@@ -54,14 +61,6 @@
     <!-- Popular Products -->
     <section class="section-popular-products padding-t-100 padding-b-100">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-title text-center mb-30">
-                        <h2 class="cr-title">Popular Products</h2>
-                        <p>A wide range of quality brands catering to everyone</p>
-                    </div>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-lg-12">
                     <PopularProducts 
@@ -78,6 +77,7 @@
 </template>
 
 <script>
+import FilterSidebar from "@/components/user/FilterSidebar.vue";
 import ProductImageSlider from "@/components/user/product/ProductImageSlider.vue";
 import ProductDetails from "@/components/user/product/ProductDetails.vue";
 import ProductReviews from "@/components/user/product/ProductReviews.vue";
@@ -87,12 +87,24 @@ import productDetail from "@/components/user/product/productDetail.js";
 export default {
     name: "Product",
     components: {
+        FilterSidebar,
         ProductImageSlider,
         ProductDetails,
         ProductReviews,
         PopularProducts
     },
     mixins: [productDetail],
+    data() {
+        return {
+            activeFilters: {
+                categories: [],
+                colors: [],
+                weights: [],
+                tags: [],
+                priceRange: { min: 0, max: 500 }
+            }
+        };
+    },
     methods: {
         /**
          * Handler for image selection
@@ -100,6 +112,15 @@ export default {
         onImageSelected(event) {
             // Image selection is handled within ProductImageSlider
             console.log("Image selected:", event);
+        },
+
+        /**
+         * Handler for filter changes from sidebar
+         */
+        onFiltersChanged(filters) {
+            this.activeFilters = filters;
+            console.log("Filters changed:", filters);
+            // Can be enhanced to filter products based on selected filters
         },
 
         /**
