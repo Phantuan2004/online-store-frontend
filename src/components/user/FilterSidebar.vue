@@ -23,21 +23,21 @@
 
     <!-- Price Filter -->
     <div class="cr-shop-price">
-      <h4 class="cr-shop-sub-title">Price</h4>
-      <div class="price-range-slider">
-        <div class="range-bar"></div>
+        <h4 class="cr-shop-sub-title">Price</h4>
+        <div class="price-range-slider">
+        <div id="slider-range" ref="priceSlider" class="range-bar"></div>
         <p class="range-value">
-          <label>Price :</label>
-          <input type="text" :value="`$${minPrice} - $${maxPrice}`" readonly>
+            <label>Price :</label>
+            <input
+            type="text"
+            readonly
+            :value="`$${draftPriceRange[0]} - $${draftPriceRange[1]}`"
+            />
         </p>
-        <button 
-          type="button" 
-          class="cr-button"
-          @click="applyPriceFilter"
-        >
-          Filter
+        <button type="button" class="cr-button" @click="applyFilters">
+            Filter
         </button>
-      </div>
+        </div>
     </div>
 
     <!-- Colors Filter -->
@@ -105,8 +105,11 @@
 </template>
 
 <script>
+import { shopLogic } from '@/components/user/shop/shopLogic';
+
 export default {
   name: 'FilterSidebar',
+  mixins: [shopLogic],
   data() {
     return {
       selectedCategories: [],

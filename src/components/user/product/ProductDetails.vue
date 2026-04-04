@@ -1,4 +1,67 @@
 <template>
+  <!-- Model -->
+    <div class="modal fade quickview-modal" id="quickview" aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered cr-modal-dialog">
+            <div class="modal-content">
+                <button type="button" class="cr-close-model btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-5 col-sm-12 col-xs-12">
+                            <div class="zoom-image-hover modal-border-image">
+                                <img src="@/assets/user/img/product/tab-1.jpg" alt="product-tab-2" class="product-image">
+                            </div>
+                        </div>
+                        <div class="col-md-7 col-sm-12 col-xs-12">
+                            <div class="cr-size-and-weight-contain">
+                                <h2 class="heading">Peach Seeds Of Change Oraganic Quinoa, Brown fruit</h2>
+                                <p>Lorem Ipsum is simply dummy text of the printing and
+                                    typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever
+                                    since the 1900s,</p>
+                            </div>
+                            <div class="cr-size-and-weight">
+                                <div class="cr-review-star">
+                                    <div class="cr-star">
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                        <i class="ri-star-fill"></i>
+                                    </div>
+                                    <p>( 75 Review )</p>
+                                </div>
+                                <div class="cr-product-price">
+                                    <span class="new-price">$120.25</span>
+                                    <span class="old-price">$123.25</span>
+                                </div>
+                                <div class="cr-size-weight">
+                                    <h5><span>Size</span>/<span>Weight</span> :</h5>
+                                    <div class="cr-kg">
+                                        <ul>
+                                            <li class="active-color">500gm</li>
+                                            <li>1kg</li>
+                                            <li>2kg</li>
+                                            <li>5kg</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="cr-add-card">
+                                    <div class="cr-qty-main">
+                                        <input type="text" placeholder="." value="1" minlength="1" maxlength="20"
+                                            class="quantity">
+                                        <button type="button" id="add_model" class="plus">+</button>
+                                        <button type="button" id="sub_model" class="minus">-</button>
+                                    </div>
+                                    <div class="cr-add-button">
+                                        <button type="button" class="cr-button cr-shopping-bag">Add to cart</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
   <div class="cr-size-and-weight-contain">
     <!-- Title -->
     <h2 class="heading">{{ product.name }}</h2>
@@ -56,32 +119,15 @@
       <div class="cr-add-card">
         <!-- Quantity Control -->
         <div class="cr-qty-main">
-          <button
-            type="button"
-            @click="decrementQuantity"
-            class="minus"
-            :disabled="quantity <= 1"
-            title="Decrease quantity"
-          >
-            −
-          </button>
+          <button type="button" class="minus">-</button>
           <input
             :value="quantity"
             type="number"
             placeholder="1"
             min="1"
             class="quantity"
-            @input="onQuantityInput"
-            @change="sanitizeQuantity"
           />
-          <button
-            type="button"
-            @click="incrementQuantity"
-            class="plus"
-            title="Increase quantity"
-          >
-            +
-          </button>
+          <button type="button" class="plus">+</button>
         </div>
 
         <!-- Add to Cart Button -->
@@ -107,13 +153,8 @@
           >
             <i class="ri-heart-line"></i>
           </a>
-          <a
-            href="#"
-            class="model-oraganic-product"
-            @click.prevent="openQuickView"
-            title="Quick view"
-          >
-            <i class="ri-eye-line"></i>
+          <a class="model-oraganic-product" data-bs-toggle="modal" href="#quickview" role="button">
+              <i class="ri-eye-line"></i>
           </a>
         </div>
       </div>
@@ -122,6 +163,8 @@
 </template>
 
 <script>
+
+
 export default {
   name: "ProductDetails",
   props: {
@@ -159,40 +202,6 @@ export default {
     }
   },
   methods: {
-    /**
-     * Increment quantity
-     */
-    incrementQuantity() {
-      this.$emit("quantity-changed", this.quantity + 1);
-    },
-
-    /**
-     * Decrement quantity
-     */
-    decrementQuantity() {
-      if (this.quantity > 1) {
-        this.$emit("quantity-changed", this.quantity - 1);
-      }
-    },
-
-    /**
-     * Sanitize quantity input
-     */
-    sanitizeQuantity(event) {
-      let value = parseInt(event.target.value);
-      if (isNaN(value) || value < 1) {
-        value = 1;
-      }
-      this.$emit("quantity-changed", value);
-    },
-
-    /**
-     * Sync quantity input without mutating the prop directly
-     */
-    onQuantityInput(event) {
-      const value = parseInt(event.target.value);
-      this.$emit("quantity-changed", isNaN(value) ? 1 : value);
-    },
 
     /**
      * Select size
@@ -219,7 +228,7 @@ export default {
     },
 
     /**
-     * Open quick view
+     * Open quick view 
      */
     openQuickView() {
       this.$emit("quick-view");
