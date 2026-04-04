@@ -150,3 +150,7 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+/* Using existing CSS classes from assets/user/css/style.css */
+</style>
