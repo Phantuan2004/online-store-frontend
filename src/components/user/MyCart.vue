@@ -45,13 +45,14 @@
                 </div>
 
               <!-- Remove Button -->
-              <button
+              <a  
+                href="javascript:void(0)"
                 @click="removeItem(item.id)"
                 class="remove"
                 :aria-label="`Remove ${item.name} from cart`"
               >
                 ×
-              </button>
+              </a>
             </div>
           </li>
         </ul>
