@@ -36,36 +36,13 @@
 
               <!-- Quantity Controls -->
               <div class="cr-cart-qty">
-                <div class="cart-qty-plus-minus">
-                  <button 
-                    type="button" 
-                    class="plus"
-                    @click="increaseQuantity(item.id)"
-                    :disabled="item.quantity >= item.maxQuantity"
-                    :aria-label="`Increase quantity for ${item.name}`"
-                  >
-                    +
-                  </button>
-                  <input 
-                    type="number" 
-                    :value="item.quantity"
-                    @input="updateQuantity(item.id, $event.target.value)"
-                    :min="1"
-                    :max="item.maxQuantity"
-                    class="quantity"
-                    :aria-label="`Quantity for ${item.name}`"
-                  >
-                  <button 
-                    type="button" 
-                    class="minus"
-                    @click="decreaseQuantity(item.id)"
-                    :disabled="item.quantity <= 1"
-                    :aria-label="`Decrease quantity for ${item.name}`"
-                  >
-                    -
-                  </button>
+                    <div class="cart-qty-plus-minus">
+                        <button type="button" class="plus">+</button>
+                        <input type="text" placeholder="." value="1" minlength="1" maxlength="20"
+                            class="quantity">
+                        <button type="button" class="minus">-</button>
+                    </div>
                 </div>
-              </div>
 
               <!-- Remove Button -->
               <button
@@ -121,6 +98,10 @@
 </template>
 
 <script>
+import img4 from '@/assets/user/img/product/4.jpg';
+import img2 from '@/assets/user/img/product/2.jpg';
+import img3 from '@/assets/user/img/product/3.jpg';
+
 export default {
   name: 'MyCart',
   props: {
@@ -141,7 +122,7 @@ export default {
           name: 'Fresh Pomegranate',
           price: 56.00,
           unit: '1kg',
-          image: '/img/product/4.jpg',
+          image: img4,
           quantity: 1,
           maxQuantity: 10
         },
@@ -150,7 +131,7 @@ export default {
           name: 'Green Apples',
           price: 75.00,
           unit: '1kg',
-          image: '/img/product/2.jpg',
+          image: img2,
           quantity: 1,
           maxQuantity: 15
         },
@@ -159,35 +140,36 @@ export default {
           name: 'Watermelon - Small',
           price: 48.00,
           unit: '5kg',
-          image: '/img/product/3.jpg',
+          image: img3,
           quantity: 1,
           maxQuantity: 8
         }
-      ]
+      ],
+      subTotalStatic: 179.00,
+      taxAmountStatic: 35.80,
+      totalStatic: 214.80
     };
   },
   computed: {
     /**
-     * Calculate subtotal of all items
+     * Return static subtotal value
      */
     subTotal() {
-      return this.cartItems.reduce((sum, item) => {
-        return sum + (item.price * item.quantity);
-      }, 0);
+      return this.subTotalStatic;
     },
 
     /**
-     * Calculate tax amount based on tax rate
+     * Return static tax amount
      */
     taxAmount() {
-      return (this.subTotal * this.taxRate) / 100;
+      return this.taxAmountStatic;
     },
 
     /**
-     * Calculate total amount (subtotal + tax)
+     * Return static total amount
      */
     total() {
-      return this.subTotal + this.taxAmount;
+      return this.totalStatic;
     }
   },
   methods: {
