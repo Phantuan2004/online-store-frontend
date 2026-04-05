@@ -21,7 +21,6 @@
           :key="index"
           class="thumbnail-image"
           @click="selectImage(index)"
-          :class="{ active: selectedIndex === index }"
         >
           <div class="thumbImg">
             <img :src="image" :alt="`thumbnail-${index + 1}`" />
