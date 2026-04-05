@@ -21,13 +21,13 @@
         <ul class="crcart-pro-items" v-if="cartItems.length > 0">
           <li v-for="item in cartItems" :key="item.id" class="cart-item">
             <!-- Product Image -->
-            <router-link :to="`/product/${item.id}`" class="crside_pro_img">
+            <router-link :to="`/product/${item.id}`" class="crside_pro_img" @click="closeCart">
               <img :src="item.image" :alt="item.name">
             </router-link>
 
             <!-- Product Content -->
             <div class="cr-pro-content">
-              <router-link :to="`/product/${item.id}`" class="cart_pro_title">
+              <router-link :to="`/product/${item.id}`" class="cart_pro_title" @click="closeCart">
                 {{ item.name }}
               </router-link>
               <span class="cart-price">
@@ -238,6 +238,14 @@ export default {
      * Close the cart modal
      */
     closeCart() {
+      const cartView = document.querySelector(".cr-cart-view");
+      const cartOverlay = document.querySelector(".cr-cart-overlay");
+      if (cartView) {
+          cartView.classList.remove("cr-cart-view-active");
+      }
+      if (cartOverlay) {
+          cartOverlay.style.display = "none";
+      }
       this.$emit('close-cart');
     },
 
