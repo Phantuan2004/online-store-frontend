@@ -37,7 +37,7 @@
     <!-- Tab Content -->
     <div class="tab-content" id="productTabContent">
       <!-- Description Tab -->
-      <div v-show="activeTab === 'description'" class="tab-pane fade show active">
+      <div v-show="activeTab === 'description'" class="tab-pane fade" :class="{ 'show active': activeTab === 'description' }">
         <div class="cr-tab-content">
           <div class="cr-description">
             <p>{{ productDescription }}</p>
@@ -55,7 +55,7 @@
       </div>
 
       <!-- Information Tab -->
-      <div v-show="activeTab === 'information'" class="tab-pane fade">
+      <div v-show="activeTab === 'information'" class="tab-pane fade" :class="{ 'show active': activeTab === 'information' }">
         <div class="cr-tab-content">
           <div class="cr-description">
             <p>
@@ -75,7 +75,7 @@
       </div>
 
       <!-- Reviews Tab -->
-      <div v-show="activeTab === 'reviews'" class="tab-pane fade">
+      <div v-show="activeTab === 'reviews'" class="tab-pane fade" :class="{ 'show active': activeTab === 'reviews' }">
         <div class="cr-tab-content-from">
           <!-- Existing Reviews -->
           <div v-if="reviews.length > 0" class="post">
