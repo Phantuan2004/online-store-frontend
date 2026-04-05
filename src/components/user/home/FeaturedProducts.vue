@@ -5,9 +5,8 @@
       <div class="row">
         <div class="col-xxl-7 col-xl-6 col-lg-6 col-md-12" data-aos="fade-up" data-aos-duration="2000">
           <div class="cr-twocolumns-product-wrapper">
-            <div class="cr-twocolumns-product swiper-container" ref="featuredSwiper">
-              <div class="swiper-wrapper">
-                <div v-for="product in featuredProducts" :key="product.id" class="swiper-slide">
+            <div class="cr-twocolumns-product" ref="featuredSlider">
+                <div v-for="product in featuredProducts" :key="product.id" class="slick-slide">
                   <div class="cr-product-card">
                     <div class="cr-product-image">
                       <div class="cr-image-inner zoom-image-hover">
@@ -41,7 +40,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
             </div>
           </div>
         </div>
@@ -65,38 +63,72 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
-import Swiper from 'swiper';
-import { Autoplay } from 'swiper/modules';
-import 'swiper/css';
+import { onMounted, onUnmounted, ref, nextTick } from 'vue';
 import productImg1 from '@/assets/user/img/product/1.jpg';
+import productImg2 from '@/assets/user/img/product/2.jpg';
+import productImg3 from '@/assets/user/img/product/3.jpg';
 import productImg9 from '@/assets/user/img/product/9.jpg';
 import productImg10 from '@/assets/user/img/product/10.jpg';
 import productsRightviewImg from '@/assets/user/img/product/products-rightview.jpg';
 
-const featuredSwiper = ref(null);
+const featuredSlider = ref(null);
 const featuredProducts = [
   { id: 9, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: productImg9 },
   { id: 10, category: 'Snacks', rating: 5.0, title: 'Sweet snakes crunchy nut mix 250gm pack', newPrice: 100.0, oldPrice: 110.0, img: productImg10 },
-  { id: 1, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: productImg1 }
+  { id: 1, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: productImg1 },
+  { id: 2, category: 'Snacks', rating: 5.0, title: 'Sweet snakes crunchy nut mix 250gm pack', newPrice: 100.0, oldPrice: 110.0, img: productImg2 },
+  { id: 3, category: 'Snacks', rating: 4.5, title: 'Best snakes with hazel nut mix pack 200gm', newPrice: 120.25, oldPrice: 123.25, img: productImg3 }
 ];
 
-onMounted(() => {
-  new Swiper(featuredSwiper.value, {
-    modules: [Autoplay],
-    loop: true,
-    speed: 1000,
-    slidesPerView: 1,
-    spaceBetween: 24,
-    autoplay: {
-      delay: 3500,
-      disableOnInteraction: false,
-    },
-    breakpoints: {
-      768: { slidesPerView: 2 },
-      992: { slidesPerView: 1 },
-      1200: { slidesPerView: 2 }
+const initSlick = () => {
+  if (typeof window.$ !== 'undefined') {
+    const $slider = window.$(featuredSlider.value);
+    if ($slider.length && !$slider.hasClass('slick-initialized')) {
+      $slider.slick({
+        infinite: true,
+        dots: false,
+        arrows: false,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        autoplay: true,
+        autoplaySpeed: 3000,
+        responsive: [
+          {
+            breakpoint: 1400,
+            settings: {
+              slidesToShow: 2,
+            }
+          },
+          {
+            breakpoint: 481,
+            settings: {
+              slidesToShow: 1,
+            }
+          }
+        ]
+      });
     }
+  }
+};
+
+const destroySlick = () => {
+  if (typeof window.$ !== 'undefined') {
+    const $slider = window.$(featuredSlider.value);
+    if ($slider && $slider.hasClass('slick-initialized')) {
+      $slider.slick('unslick');
+    }
+  }
+};
+
+onMounted(() => {
+  nextTick(() => {
+    setTimeout(() => {
+      initSlick();
+    }, 100);
   });
+});
+
+onUnmounted(() => {
+  destroySlick();
 });
 </script>
