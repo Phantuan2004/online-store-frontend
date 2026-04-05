@@ -2,59 +2,57 @@
     <!-- Product Detail Section -->
     <section class="section-product padding-t-100">
         <div class="container">
-            <div class="row">
-                <!-- Filter Sidebar -->
-                <div class="col-lg-3 col-12 md-30">
-                    <FilterSidebar 
-                        @filters-changed="onFiltersChanged"
-                    />
-                </div>
-                
-                <!-- Product Content -->
-                <div class="col-lg-9 col-12 md-30">
-                    <!-- Product Images and Details -->
-                    <div class="row mb-minus-24">
-                        <!-- Product Images -->
-                        <div class="col-md-6 col-12 mb-24">
-                            <ProductImageSlider 
-                                :images="product.images"
-                                @image-selected="onImageSelected"
-                            />
-                        </div>
-                        <!-- Product Details -->
-                        <div class="col-md-6 col-12 mb-24">
-                            <ProductDetails
-                                :product="product"
-                                :quantity="quantity"
-                                :selected-size="selectedSize"
-                                :in-wishlist="inWishlist"
-                                :discount-percentage="discountPercentage"
-                                :is-in-stock="isInStock"
-                                @quantity-changed="onQuantityChanged"
-                                @size-selected="onSizeSelected"
-                                @add-to-cart="addToCart"
-                                @wishlist-toggled="toggleWishlist"
-                                @quick-view="handleQuickView"
-                            />
-                        </div>
+        <div class="row">
+            <div class="col-lg-12 col-12 md-30">
+                <div class="row mb-minus-24">
+                    <!-- Column 1: Product Images -->
+                    <div class="col-lg-4 col-md-5 col-12 mb-24">
+                        <ProductImageSlider 
+                            :images="product.images"
+                            @image-selected="onImageSelected"
+                        />
                     </div>
                     
-                    <!-- Product Tabs -->
-                    <div class="cr-paking-delivery">
-                        <ProductReviews
-                            :active-tab="activeTab"
-                            :product-description="product.description"
-                            :specs="product.specs"
-                            :reviews="reviews"
-                            :new-review="newReview"
-                            :is-loading="false"
-                            @tab-changed="switchTab"
-                            @update:newReview="onNewReviewUpdate"
-                            @review-submitted="submitReview"
+                    <!-- Column 2: Product Info -->
+                    <div class="col-lg-5 col-md-7 col-12 mb-24">
+                        <ProductInfo
+                            :product="product"
+                            :selected-size="selectedSize"
+                            @size-selected="onSizeSelected"
+                        />
+                    </div>
+                    
+                    <!-- Column 3: Action Box -->
+                    <div class="col-lg-3 col-md-12 col-12 mb-24">
+                        <ProductActionBox
+                            :product="product"
+                            :quantity="quantity"
+                            :in-wishlist="inWishlist"
+                            :discount-percentage="discountPercentage"
+                            :is-in-stock="isInStock"
+                            @quantity-changed="onQuantityChanged"
+                            @add-to-cart="addToCart"
+                            @wishlist-toggled="toggleWishlist"
                         />
                     </div>
                 </div>
+                
+                <!-- Product Tabs -->
+                <div class="cr-paking-delivery mt-4">
+                    <ProductReviews
+                        :active-tab="activeTab"
+                        :product-description="product.description"
+                        :specs="product.specs"
+                        :reviews="reviews"
+                        :new-review="newReview"
+                        :is-loading="false"
+                        @tab-changed="switchTab"
+                        @update:newReview="onNewReviewUpdate"
+                        @review-submitted="submitReview"
+                    />
+                </div>
             </div>
+        </div>
         </div>
     </section>
 
@@ -77,9 +75,9 @@
 </template>
 
 <script>
-import FilterSidebar from "@/components/user/FilterSidebar.vue";
 import ProductImageSlider from "@/components/user/product/ProductImageSlider.vue";
-import ProductDetails from "@/components/user/product/ProductDetails.vue";
+import ProductInfo from "@/components/user/product/ProductInfo.vue";
+import ProductActionBox from "@/components/user/product/ProductActionBox.vue";
 import ProductReviews from "@/components/user/product/ProductReviews.vue";
 import PopularProducts from "@/components/user/product/PopularProducts.vue";
 import productDetail from "@/components/user/product/productDetail.js";
@@ -87,9 +85,9 @@ import productDetail from "@/components/user/product/productDetail.js";
 export default {
     name: "Product",
     components: {
-        FilterSidebar,
         ProductImageSlider,
-        ProductDetails,
+        ProductInfo,
+        ProductActionBox,
         ProductReviews,
         PopularProducts
     },
