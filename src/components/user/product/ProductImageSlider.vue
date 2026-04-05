@@ -2,7 +2,7 @@
   <div class="vehicle-detail-banner banner-content clearfix">
     <div class="banner-slider">
       <!-- Main Slider -->
-      <div class="slider slider-for">
+      <div class="slider slider-for" ref="sliderFor">
         <div
           v-for="(image, index) in images"
           :key="index"
@@ -15,7 +15,7 @@
       </div>
 
       <!-- Thumbnail Slider -->
-      <div class="slider slider-nav thumb-image">
+      <div class="slider slider-nav thumb-image" ref="sliderNav">
         <div
           v-for="(image, index) in images"
           :key="index"
@@ -46,17 +46,93 @@ export default {
   },
   data() {
     return {
-      selectedIndex: 0,
-      sliderSettings: {
-        slidesToShow: 1,
-        slidesToScroll: 1,
-        arrows: true,
-        fade: true,
-        asNavFor: ".slider-nav"
-      }
+      selectedIndex: 0
     };
   },
+  mounted() {
+    // We need a slight delay to ensure DOM is fully rendered with v-for items
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.initSlick();
+      }, 100);
+    });
+  },
+  unmounted() {
+    this.destroySlick();
+  },
+  watch: {
+    images: {
+      handler() {
+        this.destroySlick();
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.initSlick();
+          }, 100);
+        });
+      },
+      deep: true
+    }
+  },
   methods: {
+    initSlick() {
+      if (typeof window.$ !== 'undefined') {
+        const $sliderFor = window.$(this.$refs.sliderFor);
+        const $sliderNav = window.$(this.$refs.sliderNav);
+
+        if ($sliderFor.length && !$sliderFor.hasClass('slick-initialized')) {
+          $sliderFor.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: false,
+            fade: true,
+            asNavFor: $sliderNav
+          });
+        }
+
+        if ($sliderNav.length && !$sliderNav.hasClass('slick-initialized')) {
+          $sliderNav.slick({
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            arrows: false,
+            asNavFor: $sliderFor,
+            focusOnSelect: true,
+            responsive: [
+              {
+                breakpoint: 1200,
+                settings: {
+                  slidesToShow: 4,
+                }
+              },
+              {
+                breakpoint: 768,
+                settings: {
+                  slidesToShow: 5,
+                }
+              },
+              {
+                breakpoint: 420,
+                settings: {
+                  slidesToShow: 4,
+                }
+              }
+            ]
+          });
+        }
+      }
+    },
+    destroySlick() {
+      if (typeof window.$ !== 'undefined') {
+        const $sliderFor = window.$(this.$refs.sliderFor);
+        const $sliderNav = window.$(this.$refs.sliderNav);
+        
+        if ($sliderFor && $sliderFor.hasClass('slick-initialized')) {
+          $sliderFor.slick('unslick');
+        }
+        if ($sliderNav && $sliderNav.hasClass('slick-initialized')) {
+          $sliderNav.slick('unslick');
+        }
+      }
+    },
     /**
      * Select image by index
      */
