@@ -19,7 +19,7 @@
       </div>
       <div class="row">
         <div class="col-lg-12">
-          <div class="cr-popular-product">
+          <div class="cr-popular-product" ref="popularSlider">
             <div
               v-for="product in products"
               :key="product.id"
@@ -112,7 +112,84 @@ export default {
       }
     }
   },
+  mounted() {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        this.initSlick();
+      }, 100);
+    });
+  },
+  unmounted() {
+    this.destroySlick();
+  },
+  watch: {
+    products: {
+      handler() {
+        this.destroySlick();
+        this.$nextTick(() => {
+          setTimeout(() => {
+            this.initSlick();
+          }, 100);
+        });
+      },
+      deep: true
+    }
+  },
   methods: {
+    initSlick() {
+      if (typeof window.$ !== 'undefined') {
+        const $slider = window.$(this.$refs.popularSlider);
+
+        if ($slider.length && !$slider.hasClass('slick-initialized')) {
+          $slider.slick({
+            infinite: true,
+            dots: false,
+            arrows: false,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            autoplay: true,
+            autoplaySpeed: 3000,
+            responsive: [
+              {
+                breakpoint: 1400,
+                settings: {
+                  slidesToShow: 4,
+                  infinite: true,
+                }
+              },
+              {
+                breakpoint: 1200,
+                settings: {
+                  slidesToShow: 3,
+                  infinite: true,
+                }
+              },
+              {
+                breakpoint: 992,
+                settings: {
+                  slidesToShow: 2,
+                  infinite: true,
+                }
+              },
+              {
+                breakpoint: 481,
+                settings: {
+                  slidesToShow: 1,
+                }
+              }
+            ]
+          });
+        }
+      }
+    },
+    destroySlick() {
+      if (typeof window.$ !== 'undefined') {
+        const $slider = window.$(this.$refs.popularSlider);
+        if ($slider && $slider.hasClass('slick-initialized')) {
+          $slider.slick('unslick');
+        }
+      }
+    },
     /**
      * View product details
      */
