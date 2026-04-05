@@ -88,13 +88,24 @@ const router = createRouter({
   history: createWebHistory(),
   routes,
   scrollBehavior(to, from, savedPosition) {
-    // always scroll to top
     if (savedPosition) {
       return savedPosition;
     } else {
       return { top: 0 };
     }
   }
-})
+});
+
+router.afterEach(() => {
+  // Delay to allow components to mount and render DOM
+  setTimeout(() => {
+    if (typeof window.$ !== 'undefined') {
+      const $images = window.$('.zoom-image-hover');
+      if ($images.length) {
+        $images.zoom();
+      }
+    }
+  }, 500);
+});
 
 export default router
