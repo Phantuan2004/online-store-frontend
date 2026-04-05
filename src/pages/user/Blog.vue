@@ -130,18 +130,22 @@
                         </div>
                     </div>
 
-                    <nav aria-label="..." class="cr-pagination">
+                    <nav aria-label="Blog pagination" class="cr-pagination cr-pagination-custom">
                         <ul class="pagination">
-                            <li class="page-item disabled">
-                                <span class="page-link">Previous</span>
+                            <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                                <a class="page-link" href="#" @click.prevent="goToPage(currentPage - 1)">Previous</a>
                             </li>
-                            <li class="page-item active" aria-current="page">
-                                <span class="page-link">1</span>
+                            <li
+                                v-for="page in totalPages"
+                                :key="page"
+                                class="page-item"
+                                :class="{ active: currentPage === page }"
+                                :aria-current="currentPage === page ? 'page' : undefined"
+                            >
+                                <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
+                            <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                                <a class="page-link" href="#" @click.prevent="goToPage(currentPage + 1)">Next</a>
                             </li>
                         </ul>
                     </nav>
@@ -152,7 +156,7 @@
 
 </template>
 
-<script setup>
+<script>
 import blogImg1 from '@/assets/user/img/blog/1.jpg';
 import blog1 from '@/assets/user/img/blog/blog-1.jpg';
 import blog2 from '@/assets/user/img/blog/blog-2.jpg';
@@ -163,8 +167,66 @@ import instaImg3 from '@/assets/user/img/insta/3.jpg';
 import instaImg4 from '@/assets/user/img/insta/4.jpg';
 import instaImg5 from '@/assets/user/img/insta/5.jpg';
 import instaImg6 from '@/assets/user/img/insta/6.jpg';
+
+export default {
+    name: 'Blog',
+    data() {
+        return {
+            blogImg1, blog1, blog2, blog3,
+            instaImg1, instaImg2, instaImg3, instaImg4, instaImg5, instaImg6,
+            currentPage: 1,
+            // Tổng số bài blog — sẽ lấy từ API sau, hiện để mock = 3 trang
+            totalItems: 9,
+            pageSize: 3,
+        };
+    },
+    computed: {
+        totalPages() {
+            return Math.ceil(this.totalItems / this.pageSize);
+        }
+    },
+    methods: {
+        goToPage(page) {
+            if (page < 1 || page > this.totalPages) return;
+            this.currentPage = page;
+            // Khi kết nối API: gọi fetchBlogs(this.currentPage) tại đây
+        }
+    }
+};
 </script>
 
 <style scoped>
+/* ===== PAGINATION ===== */
+.cr-pagination-custom .pagination {
+    gap: 4px;
+    justify-content: center;
+    margin: 0;
+}
 
+.cr-pagination-custom .page-link {
+    font-size: 13px;
+    padding: 5px 11px;
+    border-radius: 6px !important;
+    border-color: #eee;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.cr-pagination-custom .page-link:hover {
+    background-color: #f5f5f5;
+    border-color: #ddd;
+    color: #333;
+}
+
+.cr-pagination-custom .page-item.active .page-link {
+    background-color: #64b496;
+    border-color: #64b496;
+    color: #fff;
+}
+
+.cr-pagination-custom .page-item.disabled .page-link {
+    color: #ccc;
+    border-color: #eee;
+    background-color: #fafafa;
+}
 </style>

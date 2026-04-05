@@ -37,6 +37,10 @@ export const shopLogic = {
       // Sort & View
       selectedSort: "featured",
       viewMode: "grid", // 'grid' or 'list'
+
+      // Pagination
+      currentPage: 1,
+      pageSize: 9,
       
       // UI State
       showQuickViewModal: false,
@@ -66,6 +70,10 @@ export const shopLogic = {
         default:
           return products;
       }
+    },
+
+    totalPages() {
+      return Math.ceil(this.allProducts.length / this.pageSize) || 1;
     },
 
     /**
@@ -98,6 +106,17 @@ export const shopLogic = {
      */
     onSortChange(sortValue) {
       this.selectedSort = sortValue;
+      this.currentPage = 1; // Reset về trang 1 khi đổi sort
+    },
+
+    /**
+     * Handle pagination
+     */
+    goToPage(page) {
+      if (page < 1 || page > this.totalPages) return;
+      this.currentPage = page;
+      // Khi kết nối API thật: gọi fetchProducts(page) tại đây
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
     /**
