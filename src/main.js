@@ -14,8 +14,13 @@ import './assets/user/css/vendor/jquery.slick.css'
 import './assets/user/css/vendor/slick-theme.css'
 import './assets/user/css/style.css'
 
+import { createPinia } from 'pinia'
+
 const app = createApp(App)
+const pinia = createPinia()
+
 app.use(router)
+app.use(pinia)
 
 const syncAos = () => {
   nextTick(() => {
