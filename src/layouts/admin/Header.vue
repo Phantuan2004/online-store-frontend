@@ -24,19 +24,19 @@
 						<div class="cr-right-tool cr-flag-drop language">
 							<div class="cr-hover-drop">
 								<div class="cr-hover-tool">
-									<img class="flag" src="/src/assets/user/img/flag/us.png" alt="flag">
+									<img class="flag" src="/src/assets/admin/img/flag/us.png" alt="flag">
 								</div>
 								<div class="cr-hover-drop-panel right">
 									<ul>
-										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/user/img/flag/us.png"
+										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/admin/img/flag/us.png"
 													alt="flag">English</a></li>
-										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/user/img/flag/in.png"
+										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/admin/img/flag/in.png"
 													alt="flag">Hindi</a></li>
-										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/user/img/flag/de.png"
+										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/admin/img/flag/de.png"
 													alt="flag"> Deutsch</a></li>
-										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/user/img/flag/it.png"
+										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/admin/img/flag/it.png"
 													alt="flag">Italian</a></li>
-										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/user/img/flag/jp.png"
+										<li><a href="javascript:void(0)"><img class="flag" src="/src/assets/admin/img/flag/jp.png"
 													alt="flag">Japanese</a></li>
 									</ul>
 								</div>
@@ -112,18 +112,18 @@
 </template>
 
 <script setup>
-import flagUs from '@/assets/user/img/flag/us.png';
-import flagIn from '@/assets/user/img/flag/in.png';
-import flagDe from '@/assets/user/img/flag/de.png';
-import flagIt from '@/assets/user/img/flag/it.png';
-import flagJp from '@/assets/user/img/flag/jp.png';
-import app1 from '@/assets/user/img/apps/1.png';
-import app2 from '@/assets/user/img/apps/2.png';
-import app3 from '@/assets/user/img/apps/3.png';
-import app4 from '@/assets/user/img/apps/4.png';
-import app5 from '@/assets/user/img/apps/5.png';
-import app6 from '@/assets/user/img/apps/6.png';
-import userImg from '@/assets/user/img/user/1.jpg';
+import flagUs from '@/assets/admin/img/flag/us.png';
+import flagIn from '@/assets/admin/img/flag/in.png';
+import flagDe from '@/assets/admin/img/flag/de.png';
+import flagIt from '@/assets/admin/img/flag/it.png';
+import flagJp from '@/assets/admin/img/flag/jp.png';
+import app1 from '@/assets/admin/img/apps/1.png';
+import app2 from '@/assets/admin/img/apps/2.png';
+import app3 from '@/assets/admin/img/apps/3.png';
+import app4 from '@/assets/admin/img/apps/4.png';
+import app5 from '@/assets/admin/img/apps/5.png';
+import app6 from '@/assets/admin/img/apps/6.png';
+import userImg from '@/assets/admin/img/user/1.jpg';
 </script>
 
 <style scoped>

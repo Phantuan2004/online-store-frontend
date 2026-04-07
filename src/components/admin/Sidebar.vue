@@ -14,31 +14,31 @@
 								<i class="ri-dashboard-3-line"></i><span class="condense">Dashboard<i
 										class="drop-arrow ri-arrow-down-s-line"></i></span></a>
 							<ul class="cr-sb-drop condense">
-								<li><a href="index.html" class="cr-page-link drop"><i
-									class="ri-checkbox-blank-circle-line"></i>ecommerce</a></li>
-								<li><a href="product-list.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Product list</a></li>
-								<li><a href="add-product.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Add Product</a></li>
-								<li><a href="add-category.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Add Category</a></li>
-								<li><a href="add-sub-category.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Add Sub Category</a></li>
-								<li><a href="order-list.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Order List</a></li>
+								<li><router-link to="/admin" class="cr-page-link drop"><i
+									class="ri-checkbox-blank-circle-line"></i>ecommerce</router-link></li>
+								<li><router-link to="/admin/products" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Product list</router-link></li>
+								<li><router-link to="/admin/add-product" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Add Product</router-link></li>
+								<li><router-link to="/admin/add-category" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Add Category</router-link></li>
+								<li><router-link to="/admin/add-sub-category" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Add Sub Category</router-link></li>
+								<li><router-link to="/admin/orders" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Order List</router-link></li>
 								<li class="cr-sb-item sb-subdrop-item">
 									<a href="javascript:void(0)" class="cr-sub-drop-toggle">
 										<i class="ri-shield-user-line"></i><span class="condense">Vendor<i
 												class="drop-arrow ri-arrow-down-s-line"></i></span></a>
 									<ul class="cr-sb-subdrop condense">
-										<li><a href="vendor-profile.html" class="cr-page-link subdrop"><i
-													class="ri-checkbox-blank-circle-line"></i>Profile</a></li>
-										<li><a href="vendor-update.html" class="cr-page-link subdrop"><i
-													class="ri-checkbox-blank-circle-line"></i>Vendor Update</a></li>
-										<li><a href="vendor-list.html" class="cr-page-link subdrop"><i
-													class="ri-checkbox-blank-circle-line"></i>Vendor List</a></li>
-										<li><a href="invoice.html" class="cr-page-link subdrop"><i
-													class="ri-checkbox-blank-circle-line"></i>Invoice</a></li>
+										<li><router-link to="/admin/vendor-profile" class="cr-page-link subdrop"><i
+													class="ri-checkbox-blank-circle-line"></i>Profile</router-link></li>
+										<li><router-link to="/admin/vendor-update" class="cr-page-link subdrop"><i
+													class="ri-checkbox-blank-circle-line"></i>Vendor Update</router-link></li>
+										<li><router-link to="/admin/vendor-list" class="cr-page-link subdrop"><i
+													class="ri-checkbox-blank-circle-line"></i>Vendor List</router-link></li>
+										<li><router-link to="/admin/invoice" class="cr-page-link subdrop"><i
+													class="ri-checkbox-blank-circle-line"></i>Invoice</router-link></li>
 									</ul>
 								</li>
 							</ul>
@@ -108,8 +108,8 @@
 </template>
 
 <script setup>
-import fullLogoImg from '@/assets/user/img/logo/full-logo.png';
-import collapseLogoImg from '@/assets/user/img/logo/collapse-logo.png';
+import fullLogoImg from '@/assets/user/img/logo/logo.png';
+import collapseLogoImg from '@/assets/user/img/logo/favicon.png';
 </script>
 
 <style scoped>

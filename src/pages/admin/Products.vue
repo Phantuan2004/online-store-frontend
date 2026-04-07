@@ -8,7 +8,7 @@
 					<div class="cr-breadcrumb">
 						<h5>Product List</h5>
 						<ul>
-							<li><a href="index.html">Carrot</a></li>
+							<li><router-link to="/admin">Carrot</router-link></li>
 							<li>Product List</li>
 						</ul>
 					</div>
