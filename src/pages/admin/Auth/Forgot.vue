@@ -11,7 +11,7 @@
 										<!-- Forgot form -->
 										<form class="forgot-form" method="post">
 											<div class="imgcontainer">
-												<a href="index.html"><img src="/src/assets/user/img/logo/full-logo.png" alt="logo" class="logo"></a>
+												<router-link to="/admin"><img src="@/assets/user/img/logo/logo.png" alt="logo" class="logo"></router-link>
 											</div>
 											<div class="input-control">
 												<p>Enter your email, we will send a link to reset your password.</p>
@@ -20,7 +20,8 @@
 													<button type="submit">Reset</button>
 												</div>
 												<div class="login-with-btns">
-													<span class="already-acc">Return to<a href="signin.html" class="login-btn">Login</a></span>
+													<span class="already-acc">Return to <router-link
+															to="/admin/auth/login" class="login-btn">Login</router-link></span>
 												</div>
 											</div>
 										</form>

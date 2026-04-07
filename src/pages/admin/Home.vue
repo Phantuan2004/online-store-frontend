@@ -103,8 +103,8 @@
 							<div class="cr-card-header header-575">
 								<h4 class="cr-card-title">Revenue Overview</h4>
 								<div class="header-tools">
-									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></a>
+									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></router-link>
 									<div class="cr-date-range date">
 										<span></span>
 									</div>
@@ -181,8 +181,8 @@
 							<div class="cr-card-header">
 								<h4 class="cr-card-title">Best Seller</h4>
 								<div class="header-tools">
-									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></a>
+									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></router-link>
 									<div class="cr-date-range dots">
 										<span></span>
 									</div>
@@ -202,84 +202,84 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/1.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/clients/1.jpg"
 															alt="clients Image"><span class="name">DS Fashion</span>
 													</td>
 													<td>
 														<span class="cat">
-															<a href="product-list.html">Watches</a>
-															<a href="product-list.html">Clothes</a>
-															<a href="product-list.html">Phones</a>
+															<router-link to="/admin/products">Watches</router-link>
+															<router-link to="/admin/products">Clothes</router-link>
+															<router-link to="/admin/products">Phones</router-link>
 														</span>
 													</td>
 													<td>685</td>
 													<td>$1254</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/2.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/clients/2.jpg"
 															alt="clients Image"><span class="name">Loka Creation</span>
 													</td>
 													<td>
 														<span class="cat">
-															<a href="product-list.html">Phone</a>
-															<a href="product-list.html">Camera</a>
-															<a href="product-list.html">Clothes</a>
-															<a href="product-list.html">Phones</a>
+															<router-link to="/admin/products">Phone</router-link>
+															<router-link to="/admin/products">Camera</router-link>
+															<router-link to="/admin/products">Clothes</router-link>
+															<router-link to="/admin/products">Phones</router-link>
 														</span>
 													</td>
 													<td>874</td>
 													<td>$1768</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/3.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/clients/3.jpg"
 															alt="clients Image"><span class="name">Vorna Arts</span>
 													</td>
 													<td>
 														<span class="cat">
-															<a href="product-list.html">Laptop</a>
-															<a href="product-list.html">Furniture</a>
-															<a href="product-list.html">Phones</a>
+															<router-link to="/admin/products">Laptop</router-link>
+															<router-link to="/admin/products">Furniture</router-link>
+															<router-link to="/admin/products">Phones</router-link>
 														</span>
 													</td>
 													<td>95</td>
 													<td>$2296</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/4.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/clients/4.jpg"
 															alt="clients Image"><span class="name">Lestie Shop</span>
 													</td>
 													<td>
 														<span class="cat">
-															<a href="product-list.html">Clothes</a>
-															<a href="product-list.html">Phones</a>
+															<router-link to="/admin/products">Clothes</router-link>
+															<router-link to="/admin/products">Phones</router-link>
 														</span>
 													</td>
 													<td>354</td>
 													<td>$2754</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/5.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/clients/5.jpg"
 															alt="clients Image"><span class="name">Moris Gallery</span>
 													</td>
 													<td>
 														<span class="cat">
-															<a href="product-list.html">Tools</a>
-															<a href="product-list.html">Clothes</a>
-															<a href="product-list.html">Bags</a>
+															<router-link to="/admin/products">Tools</router-link>
+															<router-link to="/admin/products">Clothes</router-link>
+															<router-link to="/admin/products">Bags</router-link>
 														</span>
 													</td>
 													<td>675</td>
 													<td>$3105</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/6.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/clients/6.jpg"
 															alt="clients Image"><span class="name">Jens Fashion.</span>
 													</td>
 													<td>
 														<span class="cat">
-															<a href="product-list.html">Shoes</a>
-															<a href="product-list.html">Clothes</a>
-															<a href="product-list.html">Jewellery</a>
+															<router-link to="/admin/products">Shoes</router-link>
+															<router-link to="/admin/products">Clothes</router-link>
+															<router-link to="/admin/products">Jewellery</router-link>
 														</span>
 													</td>
 													<td>854</td>
@@ -297,8 +297,8 @@
 							<div class="cr-card-header">
 								<h4 class="cr-card-title">Top Product</h4>
 								<div class="header-tools">
-									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></a>
+									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></router-link>
 									<div class="cr-date-range dots">
 										<span></span>
 									</div>
@@ -319,7 +319,7 @@
 											</thead>
 											<tbody>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/1.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/1.jpg"
 															alt="clients Image"><span class="name">Mens t-shirt</span>
 													</td>
 													<td>$16</td>
@@ -328,7 +328,7 @@
 													<td>$3524</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/2.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/2.jpg"
 															alt="clients Image"><span class="name">Sofa chair</span>
 													</td>
 													<td>$52</td>
@@ -337,7 +337,7 @@
 													<td>$8654</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/3.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/3.jpg"
 															alt="clients Image"><span class="name">Night Lamp</span>
 													</td>
 													<td>$70</td>
@@ -346,7 +346,7 @@
 													<td>$1152</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/4.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/4.jpg"
 															alt="clients Image"><span class="name">Mens hoodie</span>
 													</td>
 													<td>$16</td>
@@ -355,7 +355,7 @@
 													<td>$5645</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/5.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/5.jpg"
 															alt="clients Image"><span class="name">Digital Watch</span>
 													</td>
 													<td>$559</td>
@@ -364,7 +364,7 @@
 													<td>$20546</td>
 												</tr>
 												<tr>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/6.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/6.jpg"
 															alt="clients Image"><span class="name">DSLR Camera.</span>
 													</td>
 													<td>$1546</td>
@@ -386,8 +386,8 @@
 							<div class="cr-card-header">
 								<h4 class="cr-card-title">Recent Orders</h4>
 								<div class="header-tools">
-									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></a>
+									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></router-link>
 									<div class="cr-date-range dots">
 										<span></span>
 									</div>
@@ -410,7 +410,7 @@
 											<tbody>
 												<tr>
 													<td class="token">#fx2650</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/1.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/1.jpg"
 															alt="clients Image"><span class="name">Mens t-shirt</span>
 													</td>
 													<td>Avira Venusio</td>
@@ -420,7 +420,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2650</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/2.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/2.jpg"
 															alt="clients Image"><span class="name">Sofa chair</span>
 													</td>
 													<td>Zara nails</td>
@@ -430,7 +430,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2365</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/3.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/3.jpg"
 															alt="clients Image"><span class="name">Night Lamp</span>
 													</td>
 													<td>Olive Yew</td>
@@ -440,7 +440,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2205</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/4.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/4.jpg"
 															alt="clients Image"><span class="name">Mens hoodie</span>
 													</td>
 													<td>Allie Grater</td>
@@ -450,7 +450,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2187</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/5.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/product/5.jpg"
 															alt="clients Image"><span class="name">Digital Watch</span>
 													</td>
 													<td>Stanley Knife</td>
@@ -460,7 +460,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2050</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/6.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/6.jpg"
 															alt="clients Image"><span class="name">DSLR Camera.</span>
 													</td>
 													<td>Nick Carlet</td>
@@ -470,7 +470,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1995</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/7.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/7.jpg"
 															alt="clients Image"><span class="name">Head phone</span>
 													</td>
 													<td>Moris Nency</td>
@@ -480,7 +480,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1985</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/8.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/8.jpg"
 															alt="clients Image"><span class="name">Camera Dron</span>
 													</td>
 													<td>Wiley Waites</td>
@@ -490,7 +490,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1945</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/9.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/9.jpg"
 															alt="clients Image"><span class="name">Drill machine</span>
 													</td>
 													<td>Sarah Moanees</td>
@@ -500,7 +500,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1865</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/product/10.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/10.jpg"
 															alt="clients Image"><span class="name">Camera Dron</span>
 													</td>
 													<td>Anne Ortha</td>
@@ -533,8 +533,7 @@
 									<div class="cr-map-detail">
 										<div class="title">
 											<h5>Revenue</h5>
-											<a href="#" class="visit" title="View all data">view <i
-													class="ri-arrow-right-line"></i></a>
+											<router-link to="#" class="visit" title="View all data">view <i class="ri-arrow-right-line"></i></router-link>
 										</div>
 										<div class="cr-detail-list">
 											<div class="cr-label">

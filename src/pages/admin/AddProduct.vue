@@ -29,7 +29,7 @@
 													<div class="avatar-preview cr-preview">
 														<div class="imagePreview cr-div-preview">
 															<img class="cr-image-preview"
-																src="/src/assets/user/img/product/preview.jpg"
+																src="@/assets/user/img/product/preview.jpg"
 																alt="edit">
 														</div>
 													</div>
@@ -45,7 +45,7 @@
 														<div class="thumb-preview cr-preview">
 															<div class="image-thumb-preview">
 																<img class="image-thumb-preview cr-image-preview"
-																	src="/src/assets/user/img/product/preview-2.jpg"
+																	src="@/assets/user/img/product/preview-2.jpg"
 																	alt="edit">
 															</div>
 														</div>
@@ -60,7 +60,7 @@
 														<div class="thumb-preview cr-preview">
 															<div class="image-thumb-preview">
 																<img class="image-thumb-preview cr-image-preview"
-																	src="/src/assets/user/img/product/preview-2.jpg"
+																	src="@/assets/user/img/product/preview-2.jpg"
 																	alt="edit">
 															</div>
 														</div>
@@ -75,7 +75,7 @@
 														<div class="thumb-preview cr-preview">
 															<div class="image-thumb-preview">
 																<img class="image-thumb-preview cr-image-preview"
-																	src="/src/assets/user/img/product/preview-2.jpg"
+																	src="@/assets/user/img/product/preview-2.jpg"
 																	alt="edit">
 															</div>
 														</div>
@@ -90,7 +90,7 @@
 														<div class="thumb-preview cr-preview">
 															<div class="image-thumb-preview">
 																<img class="image-thumb-preview cr-image-preview"
-																	src="/src/assets/user/img/product/preview-2.jpg"
+																	src="@/assets/user/img/product/preview-2.jpg"
 																	alt="edit">
 															</div>
 														</div>
@@ -105,7 +105,7 @@
 														<div class="thumb-preview cr-preview">
 															<div class="image-thumb-preview">
 																<img class="image-thumb-preview cr-image-preview"
-																	src="/src/assets/user/img/product/preview-2.jpg"
+																	src="@/assets/user/img/product/preview-2.jpg"
 																	alt="edit">
 															</div>
 														</div>
@@ -120,7 +120,7 @@
 														<div class="thumb-preview cr-preview">
 															<div class="image-thumb-preview">
 																<img class="image-thumb-preview cr-image-preview"
-																	src="/src/assets/user/img/product/preview-2.jpg"
+																	src="@/assets/user/img/product/preview-2.jpg"
 																	alt="edit">
 															</div>
 														</div>

@@ -3,8 +3,8 @@
 		<div class="cr-sidebar-overlay"></div>
 		<div class="cr-sidebar" data-mode="light">
 			<div class="cr-sb-logo">
-			<a href="index.html" class="sb-full"><img :src="fullLogoImg" alt="logo"></a>
-			<a href="index.html" class="sb-collapse"><img :src="collapseLogoImg" alt="logo"></a>
+			<router-link to="/admin" class="sb-full"><img :src="fullLogoImg" alt="logo"></router-link>
+			<router-link to="/admin" class="sb-collapse"><img :src="collapseLogoImg" alt="logo"></router-link>
 			</div>
 			<div class="cr-sb-wrapper">
 				<div class="cr-sb-content">
@@ -50,18 +50,18 @@
 								<i class="ri-pages-line"></i><span class="condense">Authentication<i
 										class="drop-arrow ri-arrow-down-s-line"></i></span></a>
 							<ul class="cr-sb-drop condense">
-								<li><a href="signin.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Login</a></li>
-								<li><a href="signup.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Signup</a></li>
-								<li><a href="forgot.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Forgot password</a></li>
-								<li><a href="two-factor.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>two factor</a></li>
-								<li><a href="reset-password.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Reset password</a></li>
-								<li><a href="remember.html" class="cr-page-link drop"><i
-											class="ri-checkbox-blank-circle-line"></i>Remember</a></li>
+								<li><router-link to="/admin/auth/login" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Login</router-link></li>
+								<li><router-link to="/admin/auth/register" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Signup</router-link></li>
+								<li><router-link to="/admin/auth/forgot-password" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Forgot password</router-link></li>
+								<li><router-link to="/admin/auth/two-factor" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>two factor</router-link></li>
+								<li><router-link to="/admin/auth/reset-password" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Reset password</router-link></li>
+								<li><router-link to="/admin/auth/remember" class="cr-page-link drop"><i
+											class="ri-checkbox-blank-circle-line"></i>Remember</router-link></li>
 							</ul>
 						</li>
 						<li class="cr-sb-item-separator"></li>

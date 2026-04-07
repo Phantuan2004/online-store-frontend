@@ -11,7 +11,7 @@
 										<!-- Login form -->
 										<form class="login-form" method="post">
 											<div class="imgcontainer">
-												<a href="index.html"><img src="/src/assets/user/img/logo/full-logo.png" alt="logo" class="logo"></a>
+												<router-link to="/admin"><img src="@/assets/user/img/logo/logo.png" alt="logo" class="logo"></router-link>
 											</div>
 											<div class="input-control">
 												<input type="text" placeholder="Enter Password" name="uname"

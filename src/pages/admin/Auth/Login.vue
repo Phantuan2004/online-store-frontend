@@ -11,7 +11,7 @@
 										<!-- Login form -->
 										<form class="login-form" method="post">
 											<div class="imgcontainer">
-												<a href="index.html"><img src="/src/assets/user/img/logo/full-logo.png" alt="logo" class="logo"></a>
+												<router-link to="/admin"><img src="@/assets/user/img/logo/logo.png" alt="logo" class="logo"></router-link>
 											</div>
 											<div class="input-control">
 												<input type="text" placeholder="Enter Username" name="uname"
@@ -26,8 +26,8 @@
 													<input type="checkbox">
 													<span class="checkmark"></span>
 												</label>
-												<span class="psw"><a href="forgot.html" class="forgot-btn">Forgot
-														password?</a></span>
+												<span class="psw"><router-link to="/admin/auth/forgot-password" class="forgot-btn">Forgot
+														password?</router-link></span>
 												<div class="login-btns">
 													<button type="submit">Login</button>
 												</div>
@@ -47,8 +47,8 @@
 													<button type="button" class="linkedin">
 														<i class="ri-linkedin-fill"></i>
 													</button>
-													<span class="already-acc">Not a member? <a href="signup.html"
-															class="signup-btn">Sign up</a></span>
+													<span class="already-acc">Not a member? <router-link to="/admin/auth/register"
+															class="signup-btn">Sign up</router-link></span>
 												</div>
 											</div>
 										</form>

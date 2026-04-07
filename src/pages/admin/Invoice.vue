@@ -18,7 +18,7 @@
 
 									<div class="row">
 										<div class="col-md-6 col-lg-3 col-sm-6">
-											<img src="/src/assets/user/img/logo/full-logo.png" alt="logo">
+											<img src="@/assets/user/img/logo/full-logo.png" alt="logo">
 
 											<address>
 												<br> 321, Porigo alto, new st george church, Nr. Jogas garden, USA.
@@ -97,7 +97,7 @@
 												<tbody>
 													<tr>
 														<td>1</td>
-														<td><img class="invoice-item-img" src="/src/assets/user/img/product/1.jpg"
+														<td><img class="invoice-item-img" src="@/assets/user/img/product/1.jpg"
 																alt="product-image"></td>
 														<td>Man T-Shirt with Cap Style </td>
 														<td>Half Sleeve men T-shirt with cap in Dark Blue Color.</td>
@@ -108,7 +108,7 @@
 
 													<tr>
 														<td>2</td>
-														<td><img class="invoice-item-img" src="/src/assets/user/img/product/2.jpg"
+														<td><img class="invoice-item-img" src="@/assets/user/img/product/2.jpg"
 																alt="product-image"></td>
 														<td>Sofa seat</td>
 														<td>Pure Leather sofa seat for office furniture.</td>
@@ -119,7 +119,7 @@
 
 													<tr>
 														<td>3</td>
-														<td><img class="invoice-item-img" src="/src/assets/user/img/product/3.jpg"
+														<td><img class="invoice-item-img" src="@/assets/user/img/product/3.jpg"
 																alt="product-image"></td>
 														<td>Night lamp</td>
 														<td>Best night lamp for bedroom frniture.</td>
@@ -130,7 +130,7 @@
 
 													<tr>
 														<td>4</td>
-														<td><img class="invoice-item-img" src="/src/assets/user/img/product/4.jpg"
+														<td><img class="invoice-item-img" src="@/assets/user/img/product/4.jpg"
 																alt="product-image"></td>
 														<td>Men black hoodie</td>
 														<td>Cotton fabric best hoodie for mens and womens.</td>

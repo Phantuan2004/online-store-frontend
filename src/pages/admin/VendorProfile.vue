@@ -7,7 +7,7 @@
 					<div class="cr-breadcrumb">
 						<h5>Vendor Profile</h5>
 						<ul>
-							<li><a href="index.html">Carrot</a></li>
+							<li><router-link to="/admin">Carrot</router-link></li>
 							<li>Vendor Profile</li>
 						</ul>
 					</div>
@@ -21,7 +21,7 @@
 										<div class="cr-vendor-block-img">
 											<div class="cr-vendor-block-detail">
 												<div class="profile-img">
-													<img class="v-img" src="/src/assets/user/img/clients/3.jpg"
+													<img class="v-img" src="@/assets/user/img/clients/3.jpg"
 														alt="vendor image">
 													<span class="tag-label online"></span>
 												</div>

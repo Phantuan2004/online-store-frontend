@@ -7,7 +7,7 @@
 					<div class="cr-breadcrumb">
 						<h5>Sub Category</h5>
 						<ul>
-							<li><a href="index.html">Carrot</a></li>
+							<li><router-link to="/admin">Carrot</router-link></li>
 							<li>Sub Category</li>
 						</ul>
 					</div>

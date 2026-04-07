@@ -7,7 +7,7 @@
 					<div class="cr-breadcrumb">
 						<h5>Update Vendor</h5>
 						<ul>
-							<li><a href="index.html">Carrot</a></li>
+							<li><router-link to="/admin">Carrot</router-link></li>
 							<li>Update Vendor</li>
 						</ul>
 					</div>
@@ -24,7 +24,7 @@
 													<div class="profile-img">
 														<div class="avatar-preview">
 															<div class="v-img" id="imagePreview"
-																style="background-image: url(assets/img/clients/3.jpg); background-position: center;">
+																style="background-image: url(@/assets/img/clients/3.jpg); background-position: center;">
 															</div>
 														</div>
 														<span class="tag-label online"></span>

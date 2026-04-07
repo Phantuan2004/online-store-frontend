@@ -12,7 +12,7 @@
 										<form class="forgot-form" method="post">
 											<div class="input-control">
 												<div class="imgcontainer user">
-													<a href="index.html"><img src="/src/assets/user/img/user/1.jpg" alt="user" class="user"></a>
+													<router-link to="/admin"><img src="@/assets/admin/img/user/1.jpg" alt="user" class="user"></router-link>
 												</div>
 												<h6>John wilson</h6>
 												<p>Enter your password to login.</p>
@@ -21,8 +21,8 @@
 													<button type="submit">Login</button>
 												</div>
 												<div class="login-with-btns">
-													<span class="already-acc">Not a member? <a href="signup.html"
-														class="signup-btn">Sign up</a></span>
+													<span class="already-acc">Not a member? <router-link to="/admin/auth/register"
+														class="signup-btn">Sign up</router-link></span>
 												</div>
 											</div>
 										</form>

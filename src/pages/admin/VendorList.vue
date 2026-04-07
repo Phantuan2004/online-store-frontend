@@ -7,7 +7,7 @@
 					<div class="cr-breadcrumb">
 						<h5>Vendor List</h5>
 						<ul>
-							<li><a href="index.html">Carrot</a></li>
+							<li><router-link to="/admin">Carrot</router-link></li>
 							<li>Vendor List</li>
 						</ul>
 					</div>
@@ -44,7 +44,7 @@
 											<tbody>
 												<tr>
 													<td class="token">2650</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/1.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/1.jpg"
 															alt="clients Image"><span class="name">Jemst tech.</span>
 													</td>
 													<td>652</td>
@@ -70,7 +70,7 @@
 												</tr>
 												<tr>
 													<td class="token">2650</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/5.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/5.jpg"
 															alt="clients Image"><span class="name">Monsy Pvt.</span>
 													</td>
 													<td>578</td>
@@ -96,7 +96,7 @@
 												</tr>
 												<tr>
 													<td class="token">2650</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/2.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/2.jpg"
 															alt="clients Image"><span class="name">Capital Mines
 															Pvt.</span>
 													</td>
@@ -123,7 +123,7 @@
 												</tr>
 												<tr>
 													<td class="token">2365</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/3.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/3.jpg"
 															alt="clients Image"><span class="name">Myras
 															infitech.</span>
 													</td>
@@ -150,7 +150,7 @@
 												</tr>
 												<tr>
 													<td class="token">2205</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/4.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/4.jpg"
 															alt="clients Image"><span class="name">Gujarat agro
 															LLP.</span></td>
 													<td>254</td>
@@ -176,7 +176,7 @@
 												</tr>
 												<tr>
 													<td class="token">2187</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/5.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/5.jpg"
 															alt="clients Image"><span class="name">KK Food LLC.</span>
 													</td>
 													<td>652</td>
@@ -202,7 +202,7 @@
 												</tr>
 												<tr>
 													<td class="token">2050</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/6.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/6.jpg"
 															alt="clients Image"><span class="name">Maruti agro.</span>
 													</td>
 													<td>65</td>
@@ -228,7 +228,7 @@
 												</tr>
 												<tr>
 													<td class="token">1995</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/7.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/7.jpg"
 															alt="clients Image"><span class="name">Monsy pvt.</span>
 													</td>
 													<td>120</td>
@@ -254,7 +254,7 @@
 												</tr>
 												<tr>
 													<td class="token">1985</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/8.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/8.jpg"
 															alt="clients Image"><span class="name">Trinity info.</span>
 													</td>
 													<td>987</td>
@@ -280,7 +280,7 @@
 												</tr>
 												<tr>
 													<td class="token">1945</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/9.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/9.jpg"
 															alt="clients Image"><span class="name">Miletone Gems.</span>
 													</td>
 													<td>2</td>
@@ -306,7 +306,7 @@
 												</tr>
 												<tr>
 													<td class="token">1865</td>
-													<td><img class="cat-thumb" src="/src/assets/user/img/clients/10.jpg"
+													<td><img class="cat-thumb" src="@/assets/user/img/clients/10.jpg"
 															alt="clients Image"><span class="name">Lightbeam Pvt.</span>
 													</td>
 													<td>258</td>

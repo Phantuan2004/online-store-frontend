@@ -35,7 +35,7 @@
 
 										<tbody>
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/1.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/1.jpg"
 														alt="Product Image"></td>
 												<td>Mens t-shirt</td>
 												<td>$20</td>
@@ -62,7 +62,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/2.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/2.jpg"
 														alt="Product Image"></td>
 												<td>Sofa seat furniture</td>
 												<td>$400</td>
@@ -89,7 +89,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/3.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/3.jpg"
 														alt="Product Image"></td>
 												<td>Night lamp bedroom</td>
 												<td>$59</td>
@@ -116,7 +116,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/4.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/4.jpg"
 														alt="Product Image"></td>
 												<td>Round Cap hoodies</td>
 												<td>$10</td>
@@ -143,7 +143,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/5.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/5.jpg"
 														alt="Product Image"></td>
 												<td>Digital watch black</td>
 												<td>$582</td>
@@ -170,7 +170,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/6.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/6.jpg"
 														alt="Product Image"></td>
 												<td>Digital camera dslr</td>
 												<td>$1254</td>
@@ -197,7 +197,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/7.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/7.jpg"
 														alt="Product Image"></td>
 												<td>Headphone beater m3</td>
 												<td>$68</td>
@@ -224,7 +224,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/8.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/8.jpg"
 														alt="Product Image"></td>
 												<td>Camera dron fly b2</td>
 												<td>$120</td>
@@ -251,7 +251,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/9.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/9.jpg"
 														alt="Product Image"></td>
 												<td>Drill machine dregon g1</td>
 												<td>$20</td>
@@ -278,7 +278,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/10.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/10.jpg"
 														alt="Product Image"></td>
 												<td>Fly cry dron camera</td>
 												<td>$548</td>
@@ -305,7 +305,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/5.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/5.jpg"
 														alt="Product Image"></td>
 												<td>Black watches s20</td>
 												<td>$254</td>
@@ -332,7 +332,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/6.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/6.jpg"
 														alt="Product Image"></td>
 												<td>Dslr digital camera</td>
 												<td>$325</td>
@@ -359,7 +359,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/7.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/7.jpg"
 														alt="Product Image"></td>
 												<td>Headphone drag g9</td>
 												<td>$65</td>
@@ -386,7 +386,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/8.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/8.jpg"
 														alt="Product Image"></td>
 												<td>Orbite dron ss2</td>
 												<td>$754</td>
@@ -413,7 +413,7 @@
 											</tr>
 
 											<tr>
-												<td><img class="tbl-thumb" src="/src/assets/user/img/product/9.jpg"
+												<td><img class="tbl-thumb" src="@/assets/user/img/product/9.jpg"
 														alt="Product Image"></td>
 												<td>Drill machine br6</td>
 												<td>$548</td>
