@@ -146,6 +146,42 @@ const routes = [
         component: () => import('../pages/admin/Invoice.vue')
       }
     ]
+  },
+  // Nhóm các trang Admin Auth
+  {
+    path: '/admin/auth',
+    children: [
+      {
+        path: 'login',
+        name: 'AdminLogin',
+        component: () => import('../pages/admin/Auth/Login.vue')
+      },
+      {
+        path: 'register',
+        name: 'AdminRegister',
+        component: () => import('../pages/admin/Auth/Register.vue')
+      },
+      {
+        path: 'forgot-password',
+        name: 'AdminForgot',
+        component: () => import('../pages/admin/Auth/Forgot.vue')
+      },
+      {
+        path: 'reset-password',
+        name: 'AdminResetPass',
+        component: () => import('../pages/admin/Auth/ResetPass.vue')
+      },
+      {
+        path: 'two-factor',
+        name: 'AdminTwoFactor',
+        component: () => import('../pages/admin/Auth/TwoFactor.vue')
+      },
+      {
+        path: 'remember',
+        name: 'AdminRemember',
+        component: () => import('../pages/admin/Auth/Remember.vue')
+      }
+    ]
   }
 ]
 
