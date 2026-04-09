@@ -64,43 +64,6 @@
 											class="ri-checkbox-blank-circle-line"></i>Remember</router-link></li>
 							</ul>
 						</li>
-						<li class="cr-sb-item-separator"></li>
-						<li class="cr-sb-title condense">Elements</li>
-						<li class="cr-sb-item">
-							<a href="remix-icons.html" class="cr-page-link">
-								<i class="ri-remixicon-line"></i><span class="condense"><span class="hover-title">remix
-										icons</span></span></a>
-						</li>
-						<li class="cr-sb-item">
-							<a href="material-icons.html" class="cr-page-link">
-								<i class="mdi mdi-material-ui"></i><span class="condense"><span
-										class="hover-title">Material icons</span></span></a>
-						</li>
-						<li class="cr-sb-item">
-							<a href="apexchart.html" class="cr-page-link">
-								<i class="ri-bar-chart-grouped-line"></i><span class="condense"><span
-										class="hover-title">Apexcharts</span></span></a>
-						</li>
-						<li class="cr-sb-item">
-							<a href="buttons.html" class="cr-page-link">
-								<i class="ri-radio-button-line"></i><span class="condense"><span
-										class="hover-title">Buttons</span></span></a>
-						</li>
-						<li class="cr-sb-item">
-							<a href="accordions.html" class="cr-page-link">
-								<i class="ri-play-list-add-line"></i><span class="condense"><span
-										class="hover-title">Accordions</span></span></a>
-						</li>
-						<li class="cr-sb-item">
-							<a href="typography.html" class="cr-page-link">
-								<i class="ri-file-text-line"></i><span class="condense"><span
-										class="hover-title">Typography</span></span></a>
-						</li>
-						<li class="cr-sb-item">
-							<a href="alert-popup.html" class="cr-page-link">
-								<i class="ri-file-warning-line"></i><span class="condense"><span
-										class="hover-title">Alert Popup</span></span></a>
-						</li>
 					</ul>
 				</div>
 			</div>
