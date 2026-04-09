@@ -88,6 +88,8 @@
         }
 
         function sidebarActiveTabs(type = '') {
+            // Disabled as this is now handled by Vue in Sidebar.vue
+            /*
             screenSize = winSizeWidth();
             $(".cr-sb-drop").hide();
             $(".cr-sb-subdrop.condense").hide();
@@ -121,8 +123,12 @@
                 var dropEl = $(currentSubActiveEle).parents('.cr-sb-drop');
                 hideShowSidebar(dropEl, activeEl, 'load-active', type);
             }
+            */
         }
 
+
+        // Removed jQuery sidebar initialization logic as it is now handled by Sidebar.vue
+        /*
         var newURL = window.location.pathname;
         var newURL = newURL.replace('https://maraviyainfotech.com/', '');
         $(".cr-sb-drop").hide();
@@ -156,7 +162,10 @@
 
             localStorage.setItem('URL', newURL);
         }
+        */
 
+
+        /*
         $(".cr-drop-toggle").on("click", function (e) {
             var senderElement = e.target;
 
@@ -184,7 +193,10 @@
                 localStorage.setItem('currentSubLink', '');
             }
         });
+        */
 
+
+        /*
         $(".cr-sub-drop-toggle").on("click", function (e) {
             var senderElement = e.target;
 
@@ -205,6 +217,8 @@
                 localStorage.setItem('currentActiveSubTab', currentActiveSubTab);
             }
         });
+        */
+
 
         function setfxPagelink(_this) {
             $('.active-link').removeClass('active-link');
@@ -237,9 +251,12 @@
             }
         }
 
+        /*
         $(".cr-page-link").on("click", function (e) {
             setfxPagelink($(this));
         });
+        */
+
 
         $(window).resize(function (e) {
             screenSize = winSizeWidth();
