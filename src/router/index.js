@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import UserLayout from '../layouts/user/UserLayout.vue'
 import AdminLayout from '../layouts/admin/AdminLayout.vue'
+import AuthLayout from '../layouts/admin/AuthLayout.vue'
 
 const routes = [
   // Nhóm các trang User sử dụng UserLayout
@@ -150,6 +151,7 @@ const routes = [
   // Nhóm các trang Admin Auth
   {
     path: '/admin/auth',
+    component: AuthLayout,
     children: [
       {
         path: 'login',
