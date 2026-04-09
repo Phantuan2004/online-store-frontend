@@ -416,6 +416,9 @@
                 <li class="nav-item">
                   <RouterLink class="nav-link" to="/blog">Blog</RouterLink>
                 </li>
+                <li class="nav-item">
+                  <RouterLink class="nav-link" to="/admin">Admin</RouterLink>
+                </li>
               </ul>
             </div>
           </nav>
