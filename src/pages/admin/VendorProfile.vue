@@ -21,7 +21,7 @@
 										<div class="cr-vendor-block-img">
 											<div class="cr-vendor-block-detail">
 												<div class="profile-img">
-													<img class="v-img" src="@/assets/user/img/clients/3.jpg"
+													<img class="v-img" src="@/assets/admin/img/clients/3.jpg"
 														alt="vendor image">
 													<span class="tag-label online"></span>
 												</div>

@@ -44,7 +44,7 @@
 											<tbody>
 												<tr>
 													<td class="token">#fx2650</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/1.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/1.jpg"
 															alt="clients Image"><span class="name">Mens t-shirt</span>
 													</td>
 													<td>Avira Venusio</td>
@@ -56,7 +56,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2650</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/2.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/2.jpg"
 															alt="clients Image"><span class="name">Sofa chair</span>
 													</td>
 													<td>Zara nails</td>
@@ -68,7 +68,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2365</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/3.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/3.jpg"
 															alt="clients Image"><span class="name">Night Lamp</span>
 													</td>
 													<td>Olive Yew</td>
@@ -80,7 +80,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2205</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/4.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/4.jpg"
 															alt="clients Image"><span class="name">Mens hoodie</span>
 													</td>
 													<td>Allie Grater</td>
@@ -92,7 +92,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2187</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/5.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/5.jpg"
 															alt="clients Image"><span class="name">Digital Watch</span>
 													</td>
 													<td>Stanley Knife</td>
@@ -104,7 +104,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx2050</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/6.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/6.jpg"
 															alt="clients Image"><span class="name">DSLR Camera.</span>
 													</td>
 													<td>Nick Carlet</td>
@@ -116,7 +116,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1995</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/7.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/7.jpg"
 															alt="clients Image"><span class="name">Head phone</span>
 													</td>
 													<td>Moris Nency</td>
@@ -128,7 +128,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1985</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/8.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/8.jpg"
 															alt="clients Image"><span class="name">Camera Dron</span>
 													</td>
 													<td>Wiley Waites</td>
@@ -140,7 +140,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1945</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/9.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/9.jpg"
 															alt="clients Image"><span class="name">Drill machine</span>
 													</td>
 													<td>Sarah Moanees</td>
@@ -152,7 +152,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1865</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/10.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/10.jpg"
 															alt="clients Image"><span class="name">Camera Dron</span>
 													</td>
 													<td>Anne Ortha</td>
@@ -164,7 +164,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1945</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/5.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/5.jpg"
 															alt="clients Image"><span class="name">Drill machine</span>
 													</td>
 													<td>John dolittle</td>
@@ -176,7 +176,7 @@
 												</tr>
 												<tr>
 													<td class="token">#fx1865</td>
-													<td><img class="cat-thumb" src="@/assets/user/img/product/6.jpg"
+													<td><img class="cat-thumb" src="@/assets/admin/img/product/6.jpg"
 															alt="clients Image"><span class="name">Camera Dron</span>
 													</td>
 													<td>Marsel Wilson</td>

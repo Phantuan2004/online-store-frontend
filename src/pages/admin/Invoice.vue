@@ -18,7 +18,7 @@
 
 									<div class="row">
 										<div class="col-md-6 col-lg-3 col-sm-6">
-											<img src="@/assets/user/img/logo/full-logo.png" alt="logo">
+											<img src="@/assets/user/img/logo/logo.png" alt="logo">
 
 											<address>
 												<br> 321, Porigo alto, new st george church, Nr. Jogas garden, USA.
