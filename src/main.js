@@ -3,17 +3,6 @@ import './style.css'
 import App from './App.vue'
 import router from './router'
 
-import './assets/user/css/vendor/materialdesignicons.min.css'
-import './assets/user/css/vendor/remixicon.css'
-import './assets/user/css/vendor/animate.css'
-import './assets/user/css/vendor/bootstrap.min.css'
-import './assets/user/css/vendor/aos.min.css'
-import './assets/user/css/vendor/range-slider.css'
-import './assets/user/css/vendor/swiper-bundle.min.css'
-import './assets/user/css/vendor/jquery.slick.css'
-import './assets/user/css/vendor/slick-theme.css'
-import './assets/user/css/style.css'
-
 import { createPinia } from 'pinia'
 
 const app = createApp(App)
