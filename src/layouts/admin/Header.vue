@@ -73,7 +73,7 @@
 									class="ri-fullscreen-exit-line"></i></a>
 						</div>
 						<div class="cr-right-tool">
-							<a class="cr-notify" href="javascript:void(0)">
+							<a class="cr-notify" href="javascript:void(0)" @click.prevent="showNotify = !showNotify">
 								<i class="ri-notification-2-line"></i>
 								<span class="label"></span>
 							</a>
@@ -109,9 +109,13 @@
 				</div>
 			</div>
 		</header>
+
+	<!-- Notify sidebar panel -->
+	<Notify v-if="showNotify" @close="showNotify = false" />
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import flagUs from '@/assets/admin/img/flag/us.png';
 import flagIn from '@/assets/admin/img/flag/in.png';
 import flagDe from '@/assets/admin/img/flag/de.png';
@@ -124,6 +128,9 @@ import app4 from '@/assets/admin/img/apps/4.png';
 import app5 from '@/assets/admin/img/apps/5.png';
 import app6 from '@/assets/admin/img/apps/6.png';
 import userImg from '@/assets/admin/img/user/1.jpg';
+import Notify from '@/components/admin/Notify.vue';
+
+const showNotify = ref(false);
 </script>
 
 <style scoped>

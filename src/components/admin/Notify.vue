@@ -1,10 +1,10 @@
 <template>
     <!-- Notify sidebar -->
-		<div class="cr-notify-bar-overlay"></div>
+		<div class="cr-notify-bar-overlay" @click="$emit('close')"></div>
 		<div class="cr-notify-bar">
 			<div class="cr-bar-title">
 				<h6>Notifications<span class="label">12</span></h6>
-				<a href="javascript:void(0)" class="close-notify"><i class="ri-close-line"></i></a>
+				<a href="javascript:void(0)" class="close-notify" @click.prevent="$emit('close')"><i class="ri-close-line"></i></a>
 			</div>
 			<div class="cr-bar-content">
 				<ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -98,7 +98,7 @@
 								<li>
 									<a href="chatapp.html" class="reply">Reply</a>
 									<div class="user">
-										<img src="/src/assets/user/img/user/9.jpg" alt="user">
+										<img src="/src/assets/admin/img/user/9.jpg" alt="user">
 										<span class="label online"></span>
 									</div>
 									<div class="detail">
@@ -108,11 +108,11 @@
 											page. And make sure this all files are comppress.</p>
 										<span class="download-files">
 											<span class="download">
-												<img src="/src/assets/user/img/other/1.jpg" alt="image">
+												<img src="/src/assets/admin/img/other/1.jpg" alt="image">
 												<a href="javascript:void(0)"><i class="ri-download-2-line"></i></a>
 											</span>
 											<span class="download">
-												<img src="/src/assets/user/img/other/2.jpg" alt="image">
+												<img src="/src/assets/admin/img/other/2.jpg" alt="image">
 												<a href="javascript:void(0)"><i class="ri-download-2-line"></i></a>
 											</span>
 											<span class="download">
@@ -127,7 +127,7 @@
 								<li>
 									<a href="chatapp.html" class="reply">Reply</a>
 									<div class="user">
-										<img src="/src/assets/user/img/user/8.jpg" alt="user">
+										<img src="/src/assets/admin/img/user/8.jpg" alt="user">
 										<span class="label offline"></span>
 									</div>
 									<div class="detail">
@@ -140,7 +140,7 @@
 								<li>
 									<a href="chatapp.html" class="reply">Reply</a>
 									<div class="user">
-										<img src="/src/assets/user/img/user/7.jpg" alt="user">
+										<img src="/src/assets/admin/img/user/7.jpg" alt="user">
 										<span class="label busy"></span>
 									</div>
 									<div class="detail">
@@ -173,7 +173,7 @@
 								<li>
 									<a href="chatapp.html" class="reply">Reply</a>
 									<div class="user">
-										<img src="/src/assets/user/img/user/6.jpg" alt="user">
+										<img src="/src/assets/admin/img/user/6.jpg" alt="user">
 										<span class="label busy"></span>
 									</div>
 									<div class="detail">
@@ -186,7 +186,7 @@
 								<li>
 									<a href="chatapp.html" class="reply">Reply</a>
 									<div class="user">
-										<img src="/src/assets/user/img/user/5.jpg" alt="user">
+										<img src="/src/assets/admin/img/user/5.jpg" alt="user">
 										<span class="label busy"></span>
 									</div>
 									<div class="detail">
@@ -210,11 +210,11 @@
 										lorem is typesetting industry.</p>
 									<span class="download-files">
 										<span class="download">
-											<img src="/src/assets/user/img/other/1.jpg" alt="image">
+											<img src="/src/assets/admin/img/other/1.jpg" alt="image">
 											<a href="javascript:void(0)"><i class="ri-download-2-line"></i></a>
 										</span>
 										<span class="download">
-											<img src="/src/assets/user/img/other/2.jpg" alt="image">
+											<img src="/src/assets/admin/img/other/2.jpg" alt="image">
 											<a href="javascript:void(0)"><i class="ri-download-2-line"></i></a>
 										</span>
 										<span class="download">
@@ -244,7 +244,7 @@
 											<a href="javascript:void(0)"><i class="ri-download-2-line"></i></a>
 										</span>
 										<span class="download">
-											<img src="/src/assets/user/img/other/3.jpg" alt="image">
+											<img src="/src/assets/admin/img/other/3.jpg" alt="image">
 											<a href="javascript:void(0)"><i class="ri-download-2-line"></i></a>
 										</span>
 									</span>
@@ -295,6 +295,7 @@
 <script>
 export default {
     name: "Notify",
+    emits: ['close'],
 }
 </script>
 
