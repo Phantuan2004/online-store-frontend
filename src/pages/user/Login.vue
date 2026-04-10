@@ -88,9 +88,6 @@ const handleLogin = async () => {
         const data = await response.json();
 
         if (response.ok) {
-            if (data.token) {
-                localStorage.setItem('token', data.token);
-            }
             if (data.user) {
                 localStorage.setItem('user', JSON.stringify(data.user));
             }

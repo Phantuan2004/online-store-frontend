@@ -37,18 +37,26 @@
                     href="javascript:void(0)"
                   >
                     <i class="ri-user-3-line"></i>
-                    <span>Account</span>
+                    <span v-if="isLoggedIn">Xin chào {{ userName }}</span>
+                    <span v-else>Account</span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li>
-                      <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
-                    </li>
+                    <template v-if="isLoggedIn">
+                      <li>
+                        <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
+                      </li>
+                    </template>
+                    <template v-else>
+                      <li>
+                        <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
+                      </li>
+                      <li>
+                        <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
+                      </li>
+                      <li>
+                        <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
+                      </li>
+                    </template>
                   </ul>
                 </li>
               </ul>
@@ -342,19 +350,27 @@
             <div class="cr-header-buttons">
               <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                  <a class="nav-link" href="javascript:void(0)">
+                  <a class="nav-link" href="javascript:void(0)" data-bs-toggle="dropdown">
                     <i class="ri-user-3-line"></i>
+                    <span v-if="isLoggedIn" class="ms-1" style="font-size: 14px;">Xin chào {{ userName }}</span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li>
-                      <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
-                    </li>
+                    <template v-if="isLoggedIn">
+                      <li>
+                        <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
+                      </li>
+                    </template>
+                    <template v-else>
+                      <li>
+                        <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
+                      </li>
+                      <li>
+                        <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
+                      </li>
+                      <li>
+                        <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
+                      </li>
+                    </template>
                   </ul>
                 </li>
               </ul>
@@ -432,6 +448,62 @@
   </header>
 </template>
 <script setup>
+import { ref, onMounted, watch } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
 import logoImg from '@/assets/user/img/logo/logo.png';
 import darkLogoImg from '@/assets/user/img/logo/dark-logo.png';
+
+const isLoggedIn = ref(false);
+const userName = ref('');
+const router = useRouter();
+const route = useRoute();
+
+const checkAuth = () => {
+    const user = localStorage.getItem('user');
+    if (user) {
+        isLoggedIn.value = true;
+        try {
+            const userData = JSON.parse(user);
+            userName.value = userData.name;
+        } catch (e) {
+            console.error(e);
+        }
+    } else {
+        isLoggedIn.value = false;
+        userName.value = '';
+    }
+};
+
+onMounted(() => {
+    checkAuth();
+});
+
+watch(route, () => {
+    checkAuth();
+});
+
+const handleLogout = async () => {
+    try {
+        await fetch('http://127.0.0.1:8000/api/logout', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json'
+            },
+            // Include credentials to automatically send HttpOnly cookie
+            credentials: 'include'
+        });
+    } catch (error) {
+        console.error('Logout failed:', error);
+    }
+    
+    // Clear state
+    localStorage.removeItem('user');
+    // Also clear token just in case there are remnants
+    localStorage.removeItem('token');
+    isLoggedIn.value = false;
+    userName.value = '';
+    
+    // Redirect to login
+    router.push('/login');
+};
 </script>
