@@ -32,24 +32,20 @@
                                         <h3 class="cr-checkout-title">Account Information</h3>
                                         <div class="cr-bl-block-content">
                                             <div class="cr-check-bill-form">
-                                                <form action="#" method="post">
+                                                <form action="#" method="post" @submit.prevent>
                                                     <span class="cr-bill-wrap cr-bill-half">
-                                                        <label>First Name*</label>
-                                                        <input type="text" name="firstname" value="John" required>
-                                                    </span>
-                                                    <span class="cr-bill-wrap cr-bill-half">
-                                                        <label>Last Name*</label>
-                                                        <input type="text" name="lastname" value="Doe" required>
+                                                        <label>Full Name*</label>
+                                                        <input type="text" name="name" v-model="accountInfo.name" required>
                                                     </span>
                                                     <span class="cr-bill-wrap cr-bill-half">
                                                         <label>Email Address*</label>
-                                                        <input type="email" name="email" value="john.doe@example.com" required>
+                                                        <input type="email" name="email" v-model="accountInfo.email" required readonly style="background-color: #f8f9fa;">
                                                     </span>
                                                     <span class="cr-bill-wrap cr-bill-half">
                                                         <label>Phone Number</label>
-                                                        <input type="text" name="phone" value="+1234567890">
+                                                        <input type="text" name="phone" v-model="accountInfo.phone" placeholder="Enter your phone">
                                                     </span>
-                                                    <span class="cr-check-order-btn mt-10" style="margin-left: 14px;">
+                                                    <span class="col-12 mb-3 d-flex gap-3" style="margin-left: 14px;">
                                                         <button class="cr-button" type="button">Save Changes</button>
                                                     </span>
                                                 </form>
@@ -179,7 +175,27 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref, reactive, onMounted } from 'vue';
+
+const accountInfo = reactive({
+    name: '',
+    email: '',
+    phone: ''
+});
+
+onMounted(() => {
+    const userStr = localStorage.getItem('user');
+    if (userStr) {
+        try {
+            const user = JSON.parse(userStr);
+            accountInfo.name = user.name || '';
+            accountInfo.email = user.email || '';
+            accountInfo.phone = user.phone || '';
+        } catch(e) {
+            console.error('Error parsing user data:', e);
+        }
+    }
+});
 
 const addresses = ref([
     {
