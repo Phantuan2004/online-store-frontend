@@ -61,24 +61,27 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import logoImg from '@/assets/user/img/logo/logo.png';
+import { useAuthStore } from '@/stores/auth';
 
 const email = ref('');
 const password = ref('');
 const isLoading = ref(false);
 const errorMessage = ref('');
 const router = useRouter();
+const authStore = useAuthStore();
 
 const handleLogin = async () => {
     isLoading.value = true;
     errorMessage.value = '';
     
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/login', {
+        const response = await fetch('http://localhost:8000/api/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'Accept': 'application/json'
             },
+            credentials: 'include',
             body: JSON.stringify({
                 email: email.value,
                 password: password.value
@@ -88,8 +91,11 @@ const handleLogin = async () => {
         const data = await response.json();
 
         if (response.ok) {
+            if (data.access_token) {
+                authStore.setToken(data.access_token);
+            }
             if (data.user) {
-                localStorage.setItem('user', JSON.stringify(data.user));
+                authStore.setUser(data.user);
             }
             // Redirect to homepage or user dashboard
             router.push('/');

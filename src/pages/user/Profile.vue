@@ -175,7 +175,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, watch, onMounted } from 'vue';
+import { useAuthStore } from '@/stores/auth';
+
+const authStore = useAuthStore();
 
 const accountInfo = reactive({
     name: '',
@@ -183,19 +186,21 @@ const accountInfo = reactive({
     phone: ''
 });
 
-onMounted(() => {
-    const userStr = localStorage.getItem('user');
-    if (userStr) {
-        try {
-            const user = JSON.parse(userStr);
-            accountInfo.name = user.name || '';
-            accountInfo.email = user.email || '';
-            accountInfo.phone = user.phone || '';
-        } catch(e) {
-            console.error('Error parsing user data:', e);
-        }
+const populateUserData = () => {
+    if (authStore.user) {
+        accountInfo.name = authStore.user.name || '';
+        accountInfo.email = authStore.user.email || '';
+        accountInfo.phone = authStore.user.phone || '';
     }
+};
+
+onMounted(() => {
+    populateUserData();
 });
+
+watch(() => authStore.user, () => {
+    populateUserData();
+}, { deep: true });
 
 const addresses = ref([
     {

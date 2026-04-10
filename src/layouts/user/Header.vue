@@ -37,11 +37,11 @@
                     href="javascript:void(0)"
                   >
                     <i class="ri-user-3-line"></i>
-                    <span v-if="isLoggedIn">Xin chào {{ userName }}</span>
+                    <span v-if="authStore.user">Xin chào {{ authStore.user.name }}</span>
                     <span v-else>Account</span>
                   </a>
                   <ul class="dropdown-menu">
-                    <template v-if="isLoggedIn">
+                    <template v-if="authStore.user">
                       <li>
                         <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
                       </li>
@@ -355,10 +355,10 @@
                 <li class="nav-item dropdown">
                   <a class="nav-link" href="javascript:void(0)" data-bs-toggle="dropdown">
                     <i class="ri-user-3-line"></i>
-                    <span v-if="isLoggedIn" class="ms-1" style="font-size: 14px;">Xin chào {{ userName }}</span>
+                    <span v-if="authStore.user" class="ms-1" style="font-size: 14px;">Xin chào {{ authStore.user.name }}</span>
                   </a>
                   <ul class="dropdown-menu">
-                    <template v-if="isLoggedIn">
+                    <template v-if="authStore.user">
                       <li>
                         <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
                       </li>
@@ -454,43 +454,17 @@
   </header>
 </template>
 <script setup>
-import { ref, onMounted, watch } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter } from 'vue-router';
 import logoImg from '@/assets/user/img/logo/logo.png';
 import darkLogoImg from '@/assets/user/img/logo/dark-logo.png';
+import { useAuthStore } from '@/stores/auth';
 
-const isLoggedIn = ref(false);
-const userName = ref('');
 const router = useRouter();
-const route = useRoute();
-
-const checkAuth = () => {
-    const user = localStorage.getItem('user');
-    if (user) {
-        isLoggedIn.value = true;
-        try {
-            const userData = JSON.parse(user);
-            userName.value = userData.name;
-        } catch (e) {
-            console.error(e);
-        }
-    } else {
-        isLoggedIn.value = false;
-        userName.value = '';
-    }
-};
-
-onMounted(() => {
-    checkAuth();
-});
-
-watch(route, () => {
-    checkAuth();
-});
+const authStore = useAuthStore();
 
 const handleLogout = async () => {
     try {
-        await fetch('http://127.0.0.1:8000/api/logout', {
+        await fetch('http://localhost:8000/api/logout', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json'
@@ -503,11 +477,8 @@ const handleLogout = async () => {
     }
     
     // Clear state
-    localStorage.removeItem('user');
-    // Also clear token just in case there are remnants
-    localStorage.removeItem('token');
-    isLoggedIn.value = false;
-    userName.value = '';
+    authStore.clearUser();
+    authStore.clearToken();
     
     // Redirect to login
     router.push('/login');
