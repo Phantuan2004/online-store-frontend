@@ -21,80 +21,34 @@
                         <div class="form-logo">
                             <img :src="logoImg" alt="logo">
                         </div>
-                        <form class="cr-content-form">
+                        <form class="cr-content-form" @submit.prevent="handleRegister">
+                            <div v-if="errorMessage" class="error-message" style="color: red; margin-bottom: 15px;">
+                                {{ errorMessage }}
+                            </div>
                             <div class="row">
-                                <div class="col-12 col-sm-6">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label>Firast Name*</label>
-                                        <input type="text" placeholder="Enter Your First Name" class="cr-form-control">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Last Name*</label>
-                                        <input type="text" placeholder="Enter Your Last Name" class="cr-form-control">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Email*</label>
-                                        <input type="email" placeholder="Enter Your email" class="cr-form-control">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Phone Number*</label>
-                                        <input type="text" placeholder="Enter Your phone number"
-                                            class="cr-form-control">
+                                        <label>Full Name*</label>
+                                        <input type="text" placeholder="Enter Your Full Name" class="cr-form-control" v-model="name" required>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-group">
-                                        <label>Address*</label>
-                                        <input type="text" placeholder="Address" class="cr-form-control">
+                                        <label>Email*</label>
+                                        <input type="email" placeholder="Enter Your email" class="cr-form-control" v-model="email" required>
                                     </div>
                                 </div>
-                                <div class="col-12 col-sm-6">
+                                <div class="col-12">
                                     <div class="form-group">
-                                        <label>City*</label>
-                                        <select class="cr-form-control" aria-label="Default select example">
-                                            <option selected>City</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Post Code</label>
-                                        <input type="email" placeholder="Post Code" class="cr-form-control">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Country*</label>
-                                        <select class="cr-form-control" aria-label="Default select example">
-                                            <option selected>Country</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-sm-6">
-                                    <div class="form-group">
-                                        <label>Region State*</label>
-                                        <select class="cr-form-control" aria-label="Default select example">
-                                            <option selected>Region/State</option>
-                                            <option value="1">One</option>
-                                            <option value="2">Two</option>
-                                            <option value="3">Three</option>
-                                        </select>
+                                        <label>Password*</label>
+                                        <input type="password" placeholder="Enter Your password" class="cr-form-control" v-model="password" required>
                                     </div>
                                 </div>
                                 <div class="cr-register-buttons">
-                                    <button type="button" class="cr-button">Signup</button>
+                                    <button type="submit" class="cr-button" :disabled="isLoading">
+                                        <span v-if="isLoading">Signing up...</span>
+                                        <span v-else>Signup</span>
+                                    </button>
                                     <RouterLink to="/login" class="link">
                                         Have an account?
                                     </RouterLink>
@@ -109,7 +63,50 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import logoImg from '@/assets/user/img/logo/logo.png';
+
+const name = ref('');
+const email = ref('');
+const password = ref('');
+const isLoading = ref(false);
+const errorMessage = ref('');
+const router = useRouter();
+
+const handleRegister = async () => {
+    isLoading.value = true;
+    errorMessage.value = '';
+    
+    try {
+        const response = await fetch('http://127.0.0.1:8000/api/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                name: name.value,
+                email: email.value,
+                password: password.value,
+                password_confirmation: password.value
+            })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+            router.push('/login');
+        } else {
+            errorMessage.value = data.message || 'Registration failed. Please check your inputs.';
+        }
+    } catch (error) {
+        console.error('Registration error:', error);
+        errorMessage.value = 'An error occurred. Please try again later.';
+    } finally {
+        isLoading.value = false;
+    }
+};
 </script>
 
 <style scoped>
