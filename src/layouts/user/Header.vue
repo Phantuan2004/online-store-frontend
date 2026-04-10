@@ -43,6 +43,9 @@
                   <ul class="dropdown-menu">
                     <template v-if="isLoggedIn">
                       <li>
+                        <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
+                      </li>
+                      <li>
                         <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
                       </li>
                     </template>
@@ -356,6 +359,9 @@
                   </a>
                   <ul class="dropdown-menu">
                     <template v-if="isLoggedIn">
+                      <li>
+                        <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
+                      </li>
                       <li>
                         <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
                       </li>
