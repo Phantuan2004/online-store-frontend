@@ -6,9 +6,6 @@
         <!-- Sidebar Filters -->
         <div
           class="col-lg-3 col-12 md-30"
-          data-aos="fade-up"
-          data-aos-duration="2000"
-          data-aos-delay="400"
         >
           <div class="cr-shop-sideview">
             <!-- Categories Filter -->
@@ -106,9 +103,6 @@
         </div>
         <div
           class="col-lg-9 col-12 md-30"
-          data-aos="fade-up"
-          data-aos-duration="2000"
-          data-aos-delay="600"
         >
           <div class="row">
             <div class="col-12">
@@ -161,8 +155,15 @@
             </div>
           </div>
 
+          <!-- Loading State -->
+          <div v-if="isLoading" class="row col-100 mb-minus-24 justify-content-center" style="padding: 100px 0;">
+            <div class="spinner-border text-success" role="status">
+              <span class="visually-hidden">Loading...</span>
+            </div>
+          </div>
+
           <!-- Products Grid -->
-          <div class="row col-100 mb-minus-24">
+          <div v-else-if="sortedProducts.length > 0" class="row col-100 mb-minus-24">
             <ProductCard
               v-for="product in sortedProducts"
               :key="product.id"
@@ -173,8 +174,15 @@
             />
           </div>
 
+          <!-- Error Message -->
+          <div v-else-if="error" class="col-12 text-center">
+            <p class="text-danger" style="padding: 40px 0">
+              {{ error }}
+            </p>
+          </div>
+
           <!-- No Products Message -->
-          <div v-if="sortedProducts.length === 0" class="col-12 text-center">
+          <div v-else class="col-12 text-center">
             <p class="text-muted" style="padding: 40px 0">
               No products found matching your criteria. Try adjusting your
               filters.

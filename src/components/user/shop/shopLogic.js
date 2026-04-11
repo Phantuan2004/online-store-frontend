@@ -1,5 +1,6 @@
 import { nextTick } from "vue";
-import { productsData, categories, sortOptions } from "./products";
+import { sortOptions } from "./products";
+import productService from "@/services/productService";
 
 const getPriceBounds = (products) => {
   const prices = products
@@ -18,19 +19,16 @@ const getPriceBounds = (products) => {
 
 export const shopLogic = {
   data() {
-    const priceBounds = getPriceBounds(productsData);
-    const defaultPriceRange = [priceBounds.min, priceBounds.max];
-
     return {
-      products: productsData,
-      allProducts: productsData,
-      categories,
+      products: [],
+      allProducts: [],
+      categories: [],
       sortOptions,
-      priceBounds,
+      priceBounds: { min: 0, max: 0 },
       
       // Filters
       draftSelectedCategories: [],
-      draftPriceRange: [...defaultPriceRange],
+      draftPriceRange: [0, 0],
       selectedColors: [],
       selectedWeights: [],
       
@@ -40,9 +38,13 @@ export const shopLogic = {
 
       // Pagination
       currentPage: 1,
-      pageSize: 9,
+      pageSize: 12,
+      totalPages: 1,
+      totalItems: 0,
       
       // UI State
+      isLoading: false,
+      error: null,
       showQuickViewModal: false,
       selectedProduct: null,
       wishlist: [],
@@ -52,10 +54,10 @@ export const shopLogic = {
   
   computed: {
     /**
-     * Sort products
+     * Sort products (Currently handling client-side for available items)
      */
     sortedProducts() {
-      const products = [...this.allProducts];
+      const products = [...this.products];
 
       switch (this.selectedSort) {
         case "newest":
@@ -72,15 +74,11 @@ export const shopLogic = {
       }
     },
 
-    totalPages() {
-      return Math.ceil(this.allProducts.length / this.pageSize) || 1;
-    },
-
     /**
      * Result count text
      */
     resultCount() {
-      return this.allProducts.length;
+      return this.totalItems;
     }
   },
 
@@ -95,10 +93,77 @@ export const shopLogic = {
 
   methods: {
     /**
+     * Fetch products from API
+     */
+    async fetchProducts(page = 1) {
+      this.isLoading = true;
+      this.error = null;
+      try {
+        const response = await productService.getProducts(page);
+        const { data, meta } = response;
+
+        // Map API data to component structure
+        this.products = data.map(product => ({
+          id: product.id,
+          title: product.name,
+          description: product.description,
+          price: parseFloat(product.price),
+          oldPrice: product.price * 1.1, // Fake old price as API doesn't have it yet
+          category: product.category?.name || "Uncategorized",
+          image: product.primary_image || "",
+          rating: 5.0, // Default rating
+          specs: product.attributes ? product.attributes.reduce((acc, curr) => {
+            acc[curr.name] = curr.values.join(", ");
+            return acc;
+          }, {}) : {}
+        }));
+
+        // Pagination metadata
+        this.currentPage = meta.current_page;
+        this.totalPages = meta.last_page;
+        this.totalItems = meta.total;
+        this.pageSize = meta.per_page;
+
+        // Recalculate price bounds if it's the first load
+        if (this.priceBounds.max === 0 && this.products.length > 0) {
+          const bounds = getPriceBounds(this.products);
+          this.priceBounds = bounds;
+          this.draftPriceRange = [bounds.min, bounds.max];
+          nextTick(() => this.initPriceSlider());
+        }
+
+      } catch (err) {
+        console.error("shopLogic: Fetch error:", err);
+        this.error = "Failed to load products. Please try again later.";
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    /**
+     * Fetch categories from API
+     */
+    async fetchCategories() {
+      try {
+        const response = await productService.getCategories();
+        if (response.success) {
+          this.categories = response.data.map(cat => ({
+            id: cat.id,
+            name: cat.name,
+            count: cat.products_count || 0
+          }));
+        }
+      } catch (err) {
+        console.error("shopLogic: Categories fetch error:", err);
+      }
+    },
+
+    /**
      * Apply filters
      */
     applyFilters() {
       // Filtering will be wired to backend API later.
+      this.fetchProducts(1);
     },
 
     /**
@@ -114,8 +179,7 @@ export const shopLogic = {
      */
     goToPage(page) {
       if (page < 1 || page > this.totalPages) return;
-      this.currentPage = page;
-      // Khi kết nối API thật: gọi fetchProducts(page) tại đây
+      this.fetchProducts(page);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     },
 
@@ -292,9 +356,8 @@ export const shopLogic = {
   mounted() {
     this.loadWishlist();
     this.loadCart();
-    nextTick(() => {
-      this.initPriceSlider();
-    });
+    this.fetchProducts();
+    this.fetchCategories();
   },
 
   beforeUnmount() {
