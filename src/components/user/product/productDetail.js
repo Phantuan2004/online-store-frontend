@@ -1,4 +1,6 @@
 import productService from "@/services/productService";
+import { useCartStore } from "@/stores/cart";
+import { useAuthStore } from "@/stores/auth";
 
 export const productDetail = {
   data() {
@@ -52,6 +54,14 @@ export const productDetail = {
   },
 
   computed: {
+    cartStore() {
+        return useCartStore();
+    },
+    
+    authStore() {
+        return useAuthStore();
+    },
+
     /**
      * Calculate discount percentage
      */
@@ -188,29 +198,43 @@ export const productDetail = {
     },
 
     /**
-     * Add to cart
+     * Add to cart using Central Store
      */
-    addToCart() {
-      const cartItem = {
-        id: this.product.id,
-        name: this.product.name,
-        price: this.product.price,
-        quantity: this.quantity,
-        size: this.selectedSize,
-        image: this.product.images[0]
-      };
-
-      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      const existingItem = cart.find(item => item.id === cartItem.id && item.size === cartItem.size);
-      
-      if (existingItem) {
-        existingItem.quantity += cartItem.quantity;
-      } else {
-        cart.push(cartItem);
+    async addToCart() {
+      if (!this.authStore.accessToken) {
+        alert("Vui lòng đăng nhập để thêm sản phẩm vào giỏ hàng!");
+        return;
       }
-      
-      localStorage.setItem("cart", JSON.stringify(cart));
-      this.showSuccessMessage("Added to cart successfully!");
+
+      try {
+        // Find variant ID from selected size or default to first variant
+        let variantId = null;
+        const response = await productService.getProductById(this.product.id);
+        const fullProduct = response.data;
+
+        if (fullProduct.variants && fullProduct.variants.length > 0) {
+          // If user selected a size, find matching variant
+          if (this.selectedSize) {
+             const variant = fullProduct.variants.find(v => 
+                v.attributes && Object.values(v.attributes).includes(this.selectedSize)
+             );
+             variantId = variant ? variant.id : fullProduct.variants[0].id;
+          } else {
+             variantId = fullProduct.variants[0].id;
+          }
+        }
+
+        if (!variantId) {
+            alert("Sản phẩm này hiện đang hết hàng hoặc không có phiên bản phù hợp.");
+            return;
+        }
+
+        // Use cart store - this handles API, local update, notification AND opening sidebar
+        await this.cartStore.addToCart(variantId, this.quantity, this.product.name);
+      } catch (error) {
+        console.error("Failed to add to cart:", error);
+        alert(error.response?.data?.message || "Có lỗi xảy ra khi thêm vào giỏ hàng.");
+      }
     },
 
     /**

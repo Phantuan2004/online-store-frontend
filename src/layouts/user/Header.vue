@@ -70,8 +70,12 @@
               <a
                 href="javascript:void(0)"
                 class="cr-right-bar-item Shopping-toggle"
+                @click.stop.prevent="handleCartClick"
               >
-                <i class="ri-shopping-cart-line"></i>
+                <div class="position-relative">
+                    <i class="ri-shopping-cart-line"></i>
+                    <span v-if="cartStore.cartItemCount > 0" class="cr-cart-count">{{ cartStore.cartItemCount }}</span>
+                </div>
                 <span>Cart</span>
               </a>
             </div>
@@ -386,8 +390,12 @@
               <a
                 href="javascript:void(0)"
                 class="cr-right-bar-item Shopping-toggle"
+                @click.stop.prevent="handleCartClick"
               >
-                <i class="ri-shopping-cart-line"></i>
+                <div class="position-relative">
+                    <i class="ri-shopping-cart-line"></i>
+                    <span v-if="cartStore.cartItemCount > 0" class="cr-cart-count">{{ cartStore.cartItemCount }}</span>
+                </div>
               </a>
             </div>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -458,9 +466,11 @@ import { useRouter } from 'vue-router';
 import logoImg from '@/assets/user/img/logo/logo.png';
 import darkLogoImg from '@/assets/user/img/logo/dark-logo.png';
 import { useAuthStore } from '@/stores/auth';
+import { useCartStore } from '@/stores/cart';
 
 const router = useRouter();
 const authStore = useAuthStore();
+const cartStore = useCartStore();
 
 const handleLogout = async () => {
     try {
@@ -479,8 +489,38 @@ const handleLogout = async () => {
     // Clear state
     authStore.clearUser();
     authStore.clearToken();
+    cartStore.items = [];
+    cartStore.closeCart();
     
     // Redirect to login
     router.push('/login');
 };
+
+const handleCartClick = () => {
+    if (!authStore.user) {
+        alert("Vui lòng đăng nhập để sử dụng tính năng giỏ hàng!");
+        return;
+    }
+    
+    cartStore.openCart();
+};
 </script>
+
+<style scoped>
+.cr-cart-count {
+    position: absolute;
+    top: -8px;
+    right: -10px;
+    background: #ff4d4d;
+    color: white;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+</style>

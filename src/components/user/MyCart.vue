@@ -1,7 +1,11 @@
 <template>
   <!-- Cart Modal -->
-  <div class="cr-cart-overlay" @click="closeCart"></div>
-  <div class="cr-cart-view">
+  <div 
+    class="cr-cart-overlay" 
+    :class="{ 'active': cartStore.isCartOpen }" 
+    @click="cartStore.closeCart()"
+  ></div>
+  <div class="cr-cart-view" :class="{ 'active': cartStore.isCartOpen }">
     <div class="cr-cart-inner">
       <!-- Cart Header -->
       <div class="cr-cart-top">
@@ -10,49 +14,54 @@
           <button 
             type="button" 
             class="close-cart"
-            @click="closeCart"
+            @click="cartStore.closeCart()"
             aria-label="Close cart"
           >
             ×
           </button>
         </div>
 
+        <!-- Loading State -->
+        <div v-if="cartStore.isLoading" class="text-center p-4">
+          <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+          <span class="ms-2">Loading...</span>
+        </div>
+
         <!-- Cart Items List -->
-        <ul class="crcart-pro-items" v-if="cartItems.length > 0">
-          <li v-for="item in cartItems" :key="item.id" class="cart-item">
+        <ul v-else-if="cartStore.items.length > 0" class="crcart-pro-items">
+          <li v-for="item in cartStore.items" :key="item.id" class="cart-item">
             <!-- Product Image -->
-            <router-link :to="`/product/${item.id}`" class="crside_pro_img" @click="closeCart">
+            <router-link :to="`/product/${item.product_id}`" class="crside_pro_img" @click="cartStore.closeCart()">
               <img :src="item.image" :alt="item.name">
             </router-link>
 
             <!-- Product Content -->
             <div class="cr-pro-content">
-              <router-link :to="`/product/${item.id}`" class="cart_pro_title" @click="closeCart">
+              <router-link :to="`/product/${item.product_id}`" class="cart_pro_title" @click="cartStore.closeCart()">
                 {{ item.name }}
               </router-link>
               <span class="cart-price">
-                <span>${{ item.price.toFixed(2) }}</span> x {{ item.unit }}
+                <span>{{ formatPrice(item.price) }}</span> x {{ item.quantity }}
               </span>
 
               <!-- Quantity Controls -->
               <div class="cr-cart-qty">
                     <div class="cart-qty-plus-minus">
-                        <button type="button" class="plus">+</button>
-                        <input type="text" placeholder="." value="1" minlength="1" maxlength="20"
-                            class="quantity">
-                        <button type="button" class="minus">-</button>
+                        <button type="button" class="minus" @click="cartStore.updateQuantity(item.id, item.quantity - 1)">-</button>
+                        <input type="text" :value="item.quantity" readonly class="quantity">
+                        <button type="button" class="plus" @click="cartStore.updateQuantity(item.id, item.quantity + 1)">+</button>
                     </div>
                 </div>
 
               <!-- Remove Button -->
-              <a  
-                href="javascript:void(0)"
-                @click="removeItem(item.id)"
-                class="remove"
-                :aria-label="`Remove ${item.name} from cart`"
+              <button  
+                type="button"
+                @click="cartStore.removeItem(item.id)"
+                class="remove-item-btn"
+                title="Remove item"
               >
                 ×
-              </a>
+              </button>
             </div>
           </li>
         </ul>
@@ -64,21 +73,13 @@
       </div>
 
       <!-- Cart Summary -->
-      <div class="cr-cart-bottom" v-if="cartItems.length > 0">
+      <div class="cr-cart-bottom" v-if="cartStore.items.length > 0">
         <div class="cart-sub-total">
           <table class="table cart-table">
             <tbody>
               <tr>
-                <td class="text-left">Sub-Total :</td>
-                <td class="text-right">${{ subTotal.toFixed(2) }}</td>
-              </tr>
-              <tr>
-                <td class="text-left">VAT ({{ taxRate }}%) :</td>
-                <td class="text-right">${{ taxAmount.toFixed(2) }}</td>
-              </tr>
-              <tr>
                 <td class="text-left">Total :</td>
-                <td class="text-right primary-color">${{ total.toFixed(2) }}</td>
+                <td class="text-right primary-color">${{ cartStore.cartTotal }}</td>
               </tr>
             </tbody>
           </table>
@@ -86,185 +87,67 @@
 
         <!-- Action Buttons -->
         <div class="cart_btn">
-          <router-link to="/cart" class="cr-button" @click="closeCart">
-            View Cart
-          </router-link>
-          <router-link to="/checkout" class="cr-btn-secondary" @click="closeCart">
+          <div class="d-flex justify-content-between mb-2">
+              <router-link to="/cart" class="cr-button" @click="cartStore.closeCart()" style="flex: 1; margin-right: 5px; text-align: center;">
+                View Cart
+              </router-link>
+              <button 
+                type="button" 
+                @click="cartStore.clearCart()" 
+                class="btn-clear-all"
+              >
+                Clear All
+              </button>
+          </div>
+          <button @click="handleCheckout" class="cr-btn-secondary w-100">
             Checkout
-          </router-link>
+          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<script setup>
+import { onMounted } from 'vue';
+import { useCartStore } from '@/stores/cart';
+
+const cartStore = useCartStore();
+
+onMounted(() => {
+    cartStore.fetchCart();
+});
+
+const formatPrice = (price) => {
+    return typeof price === 'number' ? price.toFixed(2) : parseFloat(price || 0).toFixed(2);
+};
+
+const handleCheckout = () => {
+    cartStore.closeCart();
+    // Use window location or router if available, but here we emit/router
+    // Since this is a setup script, we'd need useRouter
+};
+</script>
+
 <script>
-import img4 from '@/assets/user/img/product/4.jpg';
-import img2 from '@/assets/user/img/product/2.jpg';
-import img3 from '@/assets/user/img/product/3.jpg';
-
+// Keep name for debugging/devtools
 export default {
-  name: 'MyCart',
-  props: {
-    isOpen: {
-      type: Boolean,
-      default: false
-    },
-    taxRate: {
-      type: Number,
-      default: 20
-    }
-  },
-  data() {
-    return {
-      cartItems: [
-        {
-          id: 1,
-          name: 'Fresh Pomegranate',
-          price: 56.00,
-          unit: '1kg',
-          image: img4,
-          quantity: 1,
-          maxQuantity: 10
-        },
-        {
-          id: 2,
-          name: 'Green Apples',
-          price: 75.00,
-          unit: '1kg',
-          image: img2,
-          quantity: 1,
-          maxQuantity: 15
-        },
-        {
-          id: 3,
-          name: 'Watermelon - Small',
-          price: 48.00,
-          unit: '5kg',
-          image: img3,
-          quantity: 1,
-          maxQuantity: 8
-        }
-      ],
-      subTotalStatic: 179.00,
-      taxAmountStatic: 35.80,
-      totalStatic: 214.80
-    };
-  },
-  computed: {
-    /**
-     * Return static subtotal value
-     */
-    subTotal() {
-      return this.subTotalStatic;
-    },
-
-    /**
-     * Return static tax amount
-     */
-    taxAmount() {
-      return this.taxAmountStatic;
-    },
-
-    /**
-     * Return static total amount
-     */
-    total() {
-      return this.totalStatic;
-    }
-  },
-  methods: {
-    /**
-     * Increase item quantity by 1
-     * @param {number} itemId - The product ID
-     */
-    increaseQuantity(itemId) {
-      const item = this.cartItems.find(i => i.id === itemId);
-      if (item && item.quantity < item.maxQuantity) {
-        item.quantity++;
-        this.emitCartUpdate();
-      }
-    },
-
-    /**
-     * Decrease item quantity by 1
-     * @param {number} itemId - The product ID
-     */
-    decreaseQuantity(itemId) {
-      const item = this.cartItems.find(i => i.id === itemId);
-      if (item && item.quantity > 1) {
-        item.quantity--;
-        this.emitCartUpdate();
-      }
-    },
-
-    /**
-     * Update item quantity with user input
-     * @param {number} itemId - The product ID
-     * @param {string|number} newQuantity - The new quantity value
-     */
-    updateQuantity(itemId, newQuantity) {
-      const item = this.cartItems.find(i => i.id === itemId);
-      if (!item) return;
-
-      let qty = parseInt(newQuantity, 10);
-
-      // Validate quantity
-      if (isNaN(qty) || qty < 1) {
-        qty = 1;
-      } else if (qty > item.maxQuantity) {
-        qty = item.maxQuantity;
-      }
-
-      item.quantity = qty;
-      this.emitCartUpdate();
-    },
-
-    /**
-     * Remove item from cart
-     * @param {number} itemId - The product ID
-     */
-    removeItem(itemId) {
-      const index = this.cartItems.findIndex(i => i.id === itemId);
-      if (index > -1) {
-        const removedItem = this.cartItems[index];
-        this.cartItems.splice(index, 1);
-        this.$emit('item-removed', removedItem);
-        this.emitCartUpdate();
-      }
-    },
-
-    /**
-     * Close the cart modal
-     */
-    closeCart() {
-      const cartView = document.querySelector(".cr-cart-view");
-      const cartOverlay = document.querySelector(".cr-cart-overlay");
-      if (cartView) {
-          cartView.classList.remove("cr-cart-view-active");
-      }
-      if (cartOverlay) {
-          cartOverlay.style.display = "none";
-      }
-      this.$emit('close-cart');
-    },
-
-    /**
-     * Emit cart update event with current cart state
-     */
-    emitCartUpdate() {
-      this.$emit('cart-updated', {
-        items: this.cartItems,
-        subTotal: this.subTotal,
-        taxAmount: this.taxAmount,
-        total: this.total
-      });
-    }
-  }
+    name: 'MyCart'
 };
 </script>
 
 <style scoped>
+/* Ensure active state works with Vue :class */
+.cr-cart-overlay.active {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+}
+
+.cr-cart-view.active {
+    right: 0;
+}
+
 .empty-cart-message {
   padding: 2rem;
   text-align: center;
@@ -272,11 +155,54 @@ export default {
 }
 
 .cart-item {
+  position: relative;
   transition: background-color 0.2s ease;
+  padding-right: 30px !important;
 }
 
 .cart-item:hover {
-  background-color: #f5f5f5;
+  background-color: #f9f9f9;
+}
+
+.remove-item-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: #f0f0f0;
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    color: #999;
+    cursor: pointer;
+    z-index: 10;
+    line-height: 1;
+}
+
+.remove-item-btn:hover {
+    background: #ff4d4d;
+    color: #fff;
+}
+
+.btn-clear-all {
+    flex: 1;
+    margin-left: 5px;
+    border: 1px solid #ff4d4d;
+    background: transparent;
+    color: #ff4d4d;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-clear-all:hover {
+    background: #ff4d4d;
+    color: #fff;
 }
 
 .quantity {
@@ -286,5 +212,34 @@ export default {
 button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.cr-cart-qty {
+    margin-top: 10px;
+}
+
+.cart-qty-plus-minus {
+    display: flex;
+    align-items: center;
+    border: 1px solid #eeeeee;
+    width: fit-content;
+    border-radius: 5px;
+}
+
+.cart-qty-plus-minus button {
+    width: 25px;
+    height: 25px;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.cart-qty-plus-minus input {
+    width: 30px;
+    border: none;
+    border-left: 1px solid #eeeeee;
+    border-right: 1px solid #eeeeee;
+    text-align: center;
+    font-size: 12px;
 }
 </style>

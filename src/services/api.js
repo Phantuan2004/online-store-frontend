@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+import { useAuthStore } from '@/stores/auth'
+
 const api = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   headers: {
@@ -8,10 +10,12 @@ const api = axios.create({
   },
 })
 
-// Request Interceptor: Thêm Token vào Header
+// Request Interceptor: Thêm Token vào Header từ Pinia Store
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('access_token')
+    const authStore = useAuthStore()
+    const token = authStore.accessToken
+    
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }
@@ -32,9 +36,13 @@ api.interceptors.response.use(
 
     if (status === 401) {
       // Hết hạn token hoặc chưa đăng nhập
+      const authStore = useAuthStore()
+      authStore.clearToken()
+      authStore.clearUser()
+      
+      // Clear localStorage just in case any old logic still uses it
       localStorage.removeItem('access_token')
       localStorage.removeItem('user')
-      // redirect to login if needed
     }
 
     return Promise.reject(error)

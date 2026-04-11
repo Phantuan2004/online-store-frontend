@@ -1,206 +1,136 @@
 /**
  * Cart Logic Mixin
- * Handles cart management and localStorage persistence
+ * Refactored to use Pinia Cart Store
  */
 
-import { cartItemsData, popularProductsData } from './cartData';
+import { popularProductsData } from './cartData';
+import { useCartStore } from '@/stores/cart';
+import { useAuthStore } from '@/stores/auth';
+import productService from '@/services/productService';
 
 export default {
-    data() {
-        return {
-            cartItems: [],
-            popularProducts: popularProductsData,
-            showNotification: false,
-            notificationMessage: ''
-        };
-    },
-
     computed: {
-        /**
-         * Count total items in cart
-         */
-        cartItemCount() {
-            return this.cartItems.reduce((count, item) => count + item.quantity, 0);
+        cartStore() {
+            return useCartStore();
+        },
+        
+        authStore() {
+            return useAuthStore();
         },
 
-        /**
-         * Check if cart is empty
-         */
+        isLoggedIn() {
+            return !!this.authStore.accessToken;
+        },
+
+        cartItems() {
+            return this.cartStore.items;
+        },
+
+        cartItemCount() {
+            return this.cartStore.cartItemCount;
+        },
+
         isCartEmpty() {
-            return this.cartItems.length === 0;
+            return this.cartStore.items.length === 0;
+        },
+
+        cartTotal() {
+            return this.cartStore.cartTotal;
+        },
+
+        isLoadingCart() {
+            return this.cartStore.isLoading;
+        },
+
+        showNotification() {
+            return this.cartStore.notification.show;
+        },
+
+        notificationMessage() {
+            return this.cartStore.notification.message;
+        },
+
+        notificationIsError() {
+            return this.cartStore.notification.isError;
         }
     },
 
     methods: {
-        normalizeCartItems(items) {
-            return items.map((item) => ({
-                ...item,
-                total: typeof item.total === 'number' ? item.total : item.price
-            }));
+        async loadCart() {
+            await this.cartStore.fetchCart();
         },
 
-        /**
-         * Initialize cart from localStorage
-         */
-        loadCart() {
-            const savedCart = localStorage.getItem('cart');
-            if (savedCart) {
-                try {
-                    this.cartItems = this.normalizeCartItems(JSON.parse(savedCart));
-                } catch (error) {
-                    console.error('Error loading cart:', error);
-                    this.cartItems = this.normalizeCartItems(cartItemsData);
-                }
-            } else {
-                this.cartItems = this.normalizeCartItems(cartItemsData);
-            }
+        async updateQuantity(itemId, newQuantity) {
+            await this.cartStore.updateQuantity(itemId, newQuantity);
         },
 
-        /**
-         * Save cart to localStorage
-         */
-        saveCart() {
-            localStorage.setItem('cart', JSON.stringify(this.cartItems));
-        },
-
-        /**
-         * Update item quantity
-         */
-        updateQuantity(itemId, newQuantity) {
-            const quantity = parseInt(newQuantity) || 0;
-            
-            if (quantity < 1) {
-                console.warn('Quantity must be at least 1');
-                return;
-            }
-
-            const item = this.cartItems.find(item => item.id === itemId);
+        async incrementQuantity(itemId) {
+            const item = this.cartItems.find(i => i.id === itemId);
             if (item) {
-                item.quantity = quantity;
-                this.saveCart();
-                this.showMessage(`Updated ${item.name} quantity to ${quantity}`);
+                await this.cartStore.updateQuantity(itemId, item.quantity + 1);
             }
         },
 
-        /**
-         * Increment item quantity
-         */
-        incrementQuantity(itemId) {
-            const item = this.cartItems.find(item => item.id === itemId);
-            if (item) {
-                item.quantity += 1;
-                this.saveCart();
-            }
-        },
-
-        /**
-         * Decrement item quantity
-         */
-        decrementQuantity(itemId) {
-            const item = this.cartItems.find(item => item.id === itemId);
+        async decrementQuantity(itemId) {
+            const item = this.cartItems.find(i => i.id === itemId);
             if (item && item.quantity > 1) {
-                item.quantity -= 1;
-                this.saveCart();
+                await this.cartStore.updateQuantity(itemId, item.quantity - 1);
             }
         },
 
-        /**
-         * Remove item from cart
-         */
-        removeFromCart(itemId) {
-            const item = this.cartItems.find(item => item.id === itemId);
-            if (item) {
-                this.cartItems = this.cartItems.filter(item => item.id !== itemId);
-                this.saveCart();
-                this.showMessage(`${item.name} removed from cart`);
-            }
+        async removeFromCart(itemId) {
+            await this.cartStore.removeItem(itemId);
         },
 
-        /**
-         * Add item to cart
-         */
-        addToCart(product) {
-            const existingItem = this.cartItems.find(item => item.id === product.id);
+        async addToCart(product, quantity = 1) {
+            // Find variant ID if not present
+            let variantId = product.variant_id;
+            if (!variantId && product.id) {
+                const response = await productService.getProductById(product.id);
+                if (response.data.variants && response.data.variants.length > 0) {
+                    variantId = response.data.variants[0].id;
+                }
+            }
             
-            if (existingItem) {
-                existingItem.quantity += 1;
-                this.showMessage(`${product.name} quantity updated`);
+            if (variantId) {
+                await this.cartStore.addToCart(variantId, quantity, product.name || product.title);
             } else {
-                this.cartItems.push({
-                    id: product.id,
-                    name: product.name,
-                    image: product.image,
-                    price: product.price,
-                    total: product.total ?? product.price,
-                    quantity: 1,
-                    category: product.category
-                });
-                this.showMessage(`${product.name} added to cart`);
-            }
-            
-            this.saveCart();
-        },
-
-        /**
-         * Clear entire cart
-         */
-        clearCart() {
-            if (confirm('Are you sure you want to clear your cart?')) {
-                this.cartItems = [];
-                this.saveCart();
-                this.showMessage('Cart cleared');
+                alert('Không tìm thấy phiên bản sản phẩm phù hợp.');
             }
         },
 
-        /**
-         * Proceed to checkout
-         */
+        async clearCart() {
+            await this.cartStore.clearCart();
+        },
+
         proceedToCheckout() {
             if (this.isCartEmpty) {
-                this.showMessage('Your cart is empty');
+                this.cartStore.openCart(); // Open sidebar to show empty message
                 return;
             }
 
-            // Store checkout data
-            const checkoutData = {
-                items: this.cartItems,
-                itemCount: this.cartItemCount,
-                timestamp: new Date().toISOString()
-            };
+            if (!this.isLoggedIn) {
+                alert('Vui lòng đăng nhập để tiếp tục thanh toán');
+                this.$router.push('/login');
+                return;
+            }
 
-            localStorage.setItem('checkout', JSON.stringify(checkoutData));
             this.$router.push('/checkout');
         },
 
-        /**
-         * Continue shopping
-         */
         continueShopping() {
             this.$router.push('/shop');
         },
 
-        /**
-         * Show notification message
-         */
-        showMessage(message) {
-            this.notificationMessage = message;
-            this.showNotification = true;
-
-            // Auto hide after 3 seconds
-            setTimeout(() => {
-                this.showNotification = false;
-            }, 3000);
-        },
-
-        /**
-         * Format price
-         */
         formatPrice(price) {
-            return parseFloat(price).toFixed(2);
+            return typeof price === 'number' ? price.toFixed(2) : parseFloat(price || 0).toFixed(2);
         }
     },
 
     mounted() {
-        this.loadCart();
+        // Only fetch if data is empty to avoid redundant calls
+        if (this.cartItems.length === 0) {
+            this.loadCart();
+        }
     }
 };

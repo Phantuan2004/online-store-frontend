@@ -61,14 +61,14 @@
 
           <!-- Remove Button -->
           <td class="cr-cart-remove">
-            <a
-              href="#"
-              @click.prevent="removeItem(item.id)"
-              class="btn-remove"
+            <button
+              type="button"
+              @click="removeItem(item.id)"
+              class="btn-remove border-0 bg-transparent"
               title="Remove item"
             >
               <i class="ri-delete-bin-line"></i>
-            </a>
+            </button>
           </td>
         </tr>
       </tbody>
@@ -78,9 +78,14 @@
     <div v-if="items.length > 0" class="row mt-30">
       <div class="col-lg-12">
         <div class="cr-cart-update-bottom">
-          <a href="javascript:void(0)" @click="continueShopping" class="cr-links">
-            Continue Shopping
-          </a>
+          <div class="d-flex align-items-center">
+            <a href="javascript:void(0)" @click="continueShopping" class="cr-links me-4">
+              Continue Shopping
+            </a>
+            <button type="button" @click="$emit('clear-cart')" class="btn text-danger p-0 border-0 bg-transparent">
+              <i class="ri-delete-bin-line me-1"></i> Clear Cart
+            </button>
+          </div>
           <a href="javascript:void(0)" @click="checkout" class="cr-button">
             Check Out
           </a>
@@ -96,16 +101,7 @@ export default {
   props: {
     items: {
       type: Array,
-      required: true,
-      validator(items) {
-        return items.every(item => 
-          item.id && 
-          item.name && 
-          item.price && 
-          item.quantity && 
-          item.image
-        );
-      }
+      required: true
     }
   },
 
@@ -177,3 +173,12 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+.btn-remove:hover {
+  color: #ff4d4d;
+}
+.hover-opacity:hover {
+  opacity: 0.8;
+}
+</style>
