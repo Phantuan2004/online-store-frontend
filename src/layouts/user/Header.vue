@@ -76,7 +76,7 @@
                     <i class="ri-shopping-cart-line"></i>
                     <span v-if="cartStore.cartItemCount > 0" class="cr-cart-count">{{ cartStore.cartItemCount }}</span>
                 </div>
-                <span>Cart</span>
+                <span>My Cart</span>
               </a>
             </div>
           </div>
@@ -418,9 +418,6 @@
                       <RouterLink class="dropdown-item" to="/contact">Contact Us</RouterLink>
                     </li>
                     <li>
-                      <RouterLink class="dropdown-item" to="/cart">Cart</RouterLink>
-                    </li>
-                    <li>
                       <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
                     </li>
                     <li>
@@ -442,6 +439,9 @@
                       <RouterLink class="dropdown-item" to="/policy">Policy</RouterLink>
                     </li>
                   </ul>
+                </li>
+                <li class="nav-item">
+                  <RouterLink class="nav-link" to="/cart">Cart</RouterLink>
                 </li>
                 <li class="nav-item">
                   <RouterLink class="nav-link" to="/blog">Blog</RouterLink>
