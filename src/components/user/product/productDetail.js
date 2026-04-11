@@ -1,78 +1,39 @@
-const productImages = import.meta.glob('../../../assets/user/img/product/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default'
-});
-
-const reviewImages = import.meta.glob('../../../assets/user/img/review/*.{jpg,jpeg,png,webp}', {
-  eager: true,
-  import: 'default'
-});
-
-const getProductImage = (filename) => {
-  return productImages[`../../../assets/user/img/product/${filename}`] || '';
-};
-
-const getReviewImage = (filename) => {
-  return reviewImages[`../../../assets/user/img/review/${filename}`] || reviewImages['../../../assets/user/img/review/1.jpg'] || '';
-};
+import productService from "@/services/productService";
 
 export const productDetail = {
   data() {
     return {
       product: {
-        id: 1,
-        name: "Seeds Of Change Oraganic Quinoa, Brown",
-        description: "Lorem ipsum dolor sit amet consectetur adipisicing elit. In, iure minus error doloribus saepe natus?",
-        price: 120.25,
-        oldPrice: 123.25,
+        id: null,
+        name: "",
+        description: "",
+        price: 0,
+        oldPrice: 0,
         rating: 5.0,
-        reviews: 75,
-        images: [
-          getProductImage("9.jpg"),
-          getProductImage("10.jpg"),
-          getProductImage("11.jpg"),
-          getProductImage("12.jpg"),
-          getProductImage("13.jpg"),
-          getProductImage("14.jpg"),
-          getProductImage("15.jpg"),
-          getProductImage("16.jpg")
-        ],
-        specs: {
-          Brand: "ESTA BETTERU CO",
-          Flavour: "Super Saver Pack",
-          "Diet Type": "Vegetarian",
-          Weight: "200 Grams",
-          Speciality: "Gluten Free, Sugar Free",
-          Info: "Egg Free, Allergen-Free",
-          Items: "1"
-        },
-        sizes: ["50kg", "80kg", "120kg", "200kg"]
+        reviews: 0,
+        images: [],
+        specs: {},
+        sizes: []
       },
 
       // UI State
+      isLoading: true,
+      error: null,
       quantity: 1,
-      selectedSize: "50kg",
+      selectedSize: null,
       activeTab: "description",
       inWishlist: false,
       showReviewForm: false,
       isLoadingReview: false,
 
-      // Reviews
+      // Reviews (Static for now as requested)
       reviews: [
         {
           id: 1,
           author: "Oreo Noman",
           date: "Jan 08, 2024",
           rating: 5,
-          image: getReviewImage("1.jpg"),
-          comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero sapiente doloribus debitis corporis, eaque dicta, repellat amet, illum adipisci vel perferendis dolor! quae vero in perferendis provident quis."
-        },
-        {
-          id: 2,
-          author: "Lina Wilson",
-          date: "Mar 22, 2024",
-          rating: 4,
-          image: getReviewImage("2.jpg"),
+          image: "/src/assets/user/img/review/1.jpg",
           comment: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Error in vero sapiente doloribus debitis corporis, eaque dicta, repellat amet, illum adipisci vel perferendis dolor! quae vero in perferendis provident quis."
         }
       ],
@@ -85,54 +46,8 @@ export const productDetail = {
         rating: 5
       },
 
-      // Popular Products
-      popularProducts: [
-        {
-          id: 1,
-          title: "Best snakes with hazel nut mix pack 200gm",
-          category: "Snacks",
-          price: 120.25,
-          oldPrice: 123.25,
-          rating: 4.5,
-          image: getProductImage("9.jpg")
-        },
-        {
-          id: 2,
-          title: "Sweet snakes crunchy nut mix 250gm pack",
-          category: "Snacks",
-          price: 100.00,
-          oldPrice: 110.00,
-          rating: 5.0,
-          image: getProductImage("10.jpg")
-        },
-        {
-          id: 3,
-          title: "Best snakes with hazel nut mix pack 200gm",
-          category: "Snacks",
-          price: 120.25,
-          oldPrice: 123.25,
-          rating: 4.5,
-          image: getProductImage("1.jpg")
-        },
-        {
-          id: 4,
-          title: "Sweet snakes crunchy nut mix 250gm pack",
-          category: "Snacks",
-          price: 100.00,
-          oldPrice: 110.00,
-          rating: 5.0,
-          image: getProductImage("2.jpg")
-        },
-        {
-          id: 5,
-          title: "Sweet snakes crunchy nut mix 250gm pack",
-          category: "Snacks",
-          price: 100.00,
-          oldPrice: 110.00,
-          rating: 5.0,
-          image: getProductImage("3.jpg")
-        }
-      ]
+      // Popular Products (Static placeholders for now)
+      popularProducts: []
     };
   },
 
@@ -141,7 +56,7 @@ export const productDetail = {
      * Calculate discount percentage
      */
     discountPercentage() {
-      if (!this.product.oldPrice) return 0;
+      if (!this.product.oldPrice || this.product.oldPrice <= this.product.price) return 0;
       return Math.round(
         ((this.product.oldPrice - this.product.price) /
           this.product.oldPrice) *
@@ -164,7 +79,88 @@ export const productDetail = {
     }
   },
 
+  watch: {
+    /**
+     * Watch for route changes to update product detail 
+     * when navigating between related products
+     */
+    '$route.params.id': {
+      handler(newId) {
+        if (newId) {
+          this.fetchProductDetail(newId);
+          // Scroll to top for better UX
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }
+    }
+  },
+
   methods: {
+    async fetchProductDetail(id) {
+      this.isLoading = true;
+      this.error = null;
+      try {
+        const response = await productService.getProductById(id);
+        const { data } = response;
+
+        // Map API data to component structure
+        this.product = {
+          id: data.id,
+          name: data.name,
+          description: data.description,
+          price: parseFloat(data.price),
+          oldPrice: parseFloat(data.price) * 1.1, // Fake old price
+          rating: 4.8,
+          reviews: 120,
+          images: data.images && data.images.length > 0 ? data.images : [data.primary_image],
+          specs: data.attributes ? data.attributes.reduce((acc, curr) => {
+            acc[curr.name] = curr.values.join(", ");
+            return acc;
+          }, {}) : {},
+          sizes: data.variants ? Array.from(new Set(data.variants.flatMap(v => 
+            v.attributes ? Object.values(v.attributes) : []
+          ))) : []
+        };
+
+        if (this.product.sizes.length > 0) {
+          this.selectedSize = this.product.sizes[0];
+        }
+
+        this.loadWishlistStatus();
+        
+        // After loading product, we could fetch related products
+        this.fetchRelatedProducts(data.category_id);
+
+      } catch (err) {
+        console.error("Failed to fetch product:", err);
+        this.error = "Product not found or an error occurred.";
+      } finally {
+        this.isLoading = false;
+      }
+    },
+
+    async fetchRelatedProducts(categoryId) {
+       try {
+         // Simply fetch first page of products as "popular/related" for now
+         const response = await productService.getProducts(1);
+         const { data } = response;
+         this.popularProducts = data
+            .filter(p => p.id !== this.product.id)
+            .slice(0, 5)
+            .map(p => ({
+                id: p.id,
+                title: p.name,
+                category: p.category?.name || "General",
+                price: parseFloat(p.price),
+                oldPrice: parseFloat(p.price) * 1.1,
+                rating: 5.0,
+                image: p.primary_image
+            }));
+       } catch (err) {
+         console.error("Failed to fetch related products:", err);
+       }
+    },
+
     /**
      * Increment quantity
      */
@@ -204,9 +200,8 @@ export const productDetail = {
         image: this.product.images[0]
       };
 
-      // Save to localStorage
       let cart = JSON.parse(localStorage.getItem("cart") || "[]");
-      const existingItem = cart.find(item => item.id === cartItem.id);
+      const existingItem = cart.find(item => item.id === cartItem.id && item.size === cartItem.size);
       
       if (existingItem) {
         existingItem.quantity += cartItem.quantity;
@@ -223,11 +218,15 @@ export const productDetail = {
      */
     toggleWishlist() {
       this.inWishlist = !this.inWishlist;
-      
       let wishlist = JSON.parse(localStorage.getItem("wishlist") || "[]");
       
       if (this.inWishlist) {
-        wishlist.push(this.product);
+        wishlist.push({
+            id: this.product.id,
+            title: this.product.name,
+            price: this.product.price,
+            image: this.product.images[0]
+        });
         this.showSuccessMessage("Added to wishlist!");
       } else {
         wishlist = wishlist.filter(item => item.id !== this.product.id);
@@ -248,46 +247,24 @@ export const productDetail = {
      * Submit review
      */
     async submitReview() {
-      // Validate form
-      if (!this.newReview.name.trim()) {
-        this.showErrorMessage("Please enter your name");
-        return;
-      }
-
-      if (!this.newReview.email.trim()) {
-        this.showErrorMessage("Please enter your email");
-        return;
-      }
-
-      if (!this.newReview.comment.trim()) {
-        this.showErrorMessage("Please enter a comment");
+      if (!this.newReview.name.trim() || !this.newReview.email.trim() || !this.newReview.comment.trim()) {
+        this.showErrorMessage("Please fill all required fields");
         return;
       }
 
       this.isLoadingReview = true;
-
       try {
-        // Simulate API call
         await new Promise(resolve => setTimeout(resolve, 1000));
-
-        // Add review to list
         const review = {
           id: this.reviews.length + 1,
           author: this.newReview.name,
           email: this.newReview.email,
-          date: new Date().toLocaleDateString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric"
-          }),
+          date: new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" }),
           rating: this.newReview.rating,
-          image: getReviewImage("1.jpg"),
+          image: "/src/assets/user/img/review/1.jpg",
           comment: this.newReview.comment
         };
-
         this.reviews.push(review);
-
-        // Reset form
         this.newReview = { name: "", email: "", comment: "", rating: 5 };
         this.showSuccessMessage("Review submitted successfully!");
       } catch (error) {
@@ -308,7 +285,7 @@ export const productDetail = {
      * Format price
      */
     formatPrice(price) {
-      return price.toFixed(2);
+      return typeof price === 'number' ? price.toFixed(2) : '0.00';
     },
 
     /**
@@ -316,7 +293,6 @@ export const productDetail = {
      */
     showSuccessMessage(message) {
       console.log("✅ Success:", message);
-      // Can integrate with toast notification component
     },
 
     /**
@@ -324,7 +300,6 @@ export const productDetail = {
      */
     showErrorMessage(message) {
       console.log("❌ Error:", message);
-      // Can integrate with toast notification component
     },
 
     /**
@@ -337,7 +312,10 @@ export const productDetail = {
   },
 
   mounted() {
-    this.loadWishlistStatus();
+    const productId = this.$route.params.id;
+    if (productId) {
+      this.fetchProductDetail(productId);
+    }
   }
 };
 
