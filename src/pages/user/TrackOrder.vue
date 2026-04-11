@@ -9,12 +9,16 @@
                     <div class="order-list-sidebar">
                         <div class="order-list-header">
                             <h5 class="mb-0"><i class="ri-file-list-3-line me-2"></i>My Orders</h5>
-                            <span class="order-count-badge">{{ orders.length }}</span>
+                            <span v-if="orders.length" class="order-count-badge">{{ orders.length }}</span>
                         </div>
 
-                        <ul class="order-list">
+                        <div v-if="isLoadingList" class="text-center py-4">
+                            <div class="spinner-border text-success spinner-border-sm" role="status"></div>
+                        </div>
+
+                        <ul v-else class="order-list">
                             <li
-                                v-for="order in pagedOrders"
+                                v-for="order in orders"
                                 :key="order.id"
                                 class="order-list-item"
                                 :class="{ 'active': selectedOrder && selectedOrder.id === order.id }"
@@ -23,18 +27,18 @@
                                 <div class="order-item-top">
                                     <span class="order-item-id">#{{ order.id }}</span>
                                     <span class="order-status-badge" :class="getStatusClass(order.status)">
-                                        {{ order.status }}
+                                        {{ getStatusLabel(order.status) }}
                                     </span>
                                 </div>
                                 <div class="order-item-bottom">
                                     <span class="order-item-date">
-                                        <i class="ri-calendar-line me-1"></i>{{ order.date }}
+                                        <i class="ri-calendar-line me-1"></i>{{ formatDate(order.created_at) }}
                                     </span>
-                                    <span class="order-item-total">${{ order.total }}</span>
+                                    <span class="order-item-total">${{ order.total_price }}</span>
                                 </div>
-                                <div class="order-item-shipper text-muted small mt-1">
-                                    <i class="ri-truck-line me-1"></i>{{ order.shipper }}
-                                </div>
+                            </li>
+                            <li v-if="orders.length === 0" class="p-4 text-center text-muted small">
+                                No orders found
                             </li>
                         </ul>
 
@@ -49,7 +53,6 @@
                                     :key="page"
                                     class="page-item"
                                     :class="{ active: currentPage === page }"
-                                    :aria-current="currentPage === page ? 'page' : undefined"
                                 >
                                     <a class="page-link" href="#" @click.prevent="goToPage(page)">{{ page }}</a>
                                 </li>
@@ -63,8 +66,14 @@
 
                 <!-- RIGHT: Order Detail Card -->
                 <div class="col-lg-8 col-12">
+                    <!-- Loading Detail -->
+                    <div v-if="isLoading" class="order-empty-state">
+                        <div class="spinner-border text-success" role="status"></div>
+                        <p class="mt-3">Loading order details...</p>
+                    </div>
+
                     <!-- No Order Selected -->
-                    <div v-if="!selectedOrder" class="order-empty-state">
+                    <div v-else-if="!selectedOrder" class="order-empty-state">
                         <i class="ri-inbox-2-line"></i>
                         <p>Select an order from the list to view details</p>
                     </div>
@@ -75,10 +84,10 @@
                         <div class="order-detail-header">
                             <div>
                                 <h5 class="mb-1">Order <strong>#{{ selectedOrder.id }}</strong></h5>
-                                <small class="text-muted">Placed on {{ selectedOrder.date }}</small>
+                                <small class="text-muted">Placed on {{ formatDate(selectedOrder.created_at) }}</small>
                             </div>
                             <span class="order-status-badge lg" :class="getStatusClass(selectedOrder.status)">
-                                {{ selectedOrder.status }}
+                                {{ getStatusLabel(selectedOrder.status) }}
                             </span>
                         </div>
 
@@ -92,20 +101,22 @@
                             </div>
                             <div class="col-sm-4 col-6">
                                 <div class="cr-track-card">
-                                    <span class="cr-track-title">Shipper</span>
-                                    <span>{{ selectedOrder.shipper }}</span>
+                                    <span class="cr-track-title">Payment</span>
+                                    <span class="text-uppercase">{{ selectedOrder.payment?.method || 'N/A' }}</span>
                                 </div>
                             </div>
                             <div class="col-sm-4 col-12">
                                 <div class="cr-track-card">
-                                    <span class="cr-track-title">Expected Date</span>
-                                    <span>{{ selectedOrder.expectedDate }}</span>
+                                    <span class="cr-track-title">Shipping Address</span>
+                                    <span class="small text-truncate d-block" :title="selectedOrder.address?.address_line">
+                                        {{ selectedOrder.address?.address_line || 'No address' }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Progress Steps -->
-                        <div class="cr-steps">
+                        <!-- Progress Steps (Only for valid status) -->
+                        <div v-if="selectedOrder.status !== 'cancelled'" class="cr-steps">
                             <div class="cr-steps-body">
                                 <div
                                     v-for="(step, index) in trackingSteps"
@@ -130,31 +141,43 @@
                             </div>
                         </div>
 
+                        <!-- Cancelled Message -->
+                        <div v-else class="alert alert-danger text-center">
+                            <i class="ri-error-warning-line me-2"></i>
+                            Đơn hàng này đã bị hủy.
+                        </div>
+
                         <!-- Order Items Table -->
                         <div class="order-items-table mt-4" v-if="selectedOrder.items && selectedOrder.items.length">
                             <h6 class="order-section-title">Items Ordered</h6>
-                            <table class="table table-sm align-middle">
-                                <thead>
-                                    <tr>
-                                        <th>Product</th>
-                                        <th class="text-center">Qty</th>
-                                        <th class="text-end">Price</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in selectedOrder.items" :key="item.name">
-                                        <td>{{ item.name }}</td>
-                                        <td class="text-center">{{ item.qty }}</td>
-                                        <td class="text-end">${{ item.price }}</td>
-                                    </tr>
-                                </tbody>
-                                <tfoot>
-                                    <tr>
-                                        <td colspan="2" class="fw-bold">Total</td>
-                                        <td class="text-end fw-bold text-primary">${{ selectedOrder.total }}</td>
-                                    </tr>
-                                </tfoot>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-sm align-middle">
+                                    <thead>
+                                        <tr>
+                                            <th>Ảnh</th>
+                                            <th>Product</th>
+                                            <th class="text-center">Qty</th>
+                                            <th class="text-end">Price</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr v-for="item in selectedOrder.items" :key="item.id">
+                                            <td>
+                                                <img :src="item.product_image || '/assets/img/product/1.jpg'" :alt="item.product_name" style="width: 50px; height: 50px; object-fit: cover; border-radius: 8px; border: 1px solid #eee;">
+                                            </td>
+                                            <td>{{ item.product_name }}</td>
+                                            <td class="text-center">{{ item.quantity }}</td>
+                                            <td class="text-end">${{ item.price }}</td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2" class="fw-bold">Total</td>
+                                            <td class="text-end fw-bold text-primary">${{ selectedOrder.total_price }}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -165,154 +188,127 @@
     <!-- Track Order section End -->
 </template>
 
-<script>
-export default {
-    name: "TrackOrder",
+<script setup>
+import { ref, onMounted, computed, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import orderService from '@/services/orderService';
 
-    data() {
-        return {
-            selectedOrder: null,
-            currentPage: 1,
-            pageSize: 6,
+const route = useRoute();
+const router = useRouter();
 
-            trackingSteps: [
-                { key: 'confirmed', icon: 'ri-shield-check-line', label1: 'Order', label2: 'confirmed' },
-                { key: 'processing', icon: 'ri-settings-4-line', label1: 'Processing', label2: 'order' },
-                { key: 'quality', icon: 'ri-gift-line', label1: 'Quality', label2: 'check' },
-                { key: 'dispatched', icon: 'ri-truck-line', label1: 'Product', label2: 'dispatched' },
-                { key: 'delivered', icon: 'ri-home-5-line', label1: 'Product', label2: 'delivered' },
-            ],
+// State
+const orders = ref([]);
+const selectedOrder = ref(null);
+const isLoading = ref(false);
+const isLoadingList = ref(false);
+const currentPage = ref(1);
+const totalPages = ref(1);
+const pageSize = ref(6);
 
-            stepMap: {
-                'Pending':    0,
-                'Processing': 1,
-                'Packing':    2,
-                'Dispatched': 3,
-                'Delivered':  4,
-                'Cancelled':  -1,
-            },
+const trackingSteps = [
+    { key: 'confirmed', icon: 'ri-shield-check-line', label1: 'Order', label2: 'confirmed' },
+    { key: 'processing', icon: 'ri-settings-4-line', label1: 'Processing', label2: 'order' },
+    { key: 'quality', icon: 'ri-gift-line', label1: 'Quality', label2: 'check' },
+    { key: 'dispatched', icon: 'ri-truck-line', label1: 'Product', label2: 'dispatched' },
+    { key: 'delivered', icon: 'ri-home-5-line', label1: 'Product', label2: 'delivered' },
+];
 
-            orders: [
-                {
-                    id: '9857', shipper: 'Grasshoppers', trackingCode: 'M254HT',
-                    status: 'Packing', date: 'Feb 10, 2025', expectedDate: 'Feb 17, 2025', total: '84.50',
-                    items: [
-                        { name: 'Organic Quinoa 500g', qty: 2, price: '24.00' },
-                        { name: 'Fresh Orange Juice 1L', qty: 1, price: '12.50' },
-                        { name: 'Almond Nuts 1kg', qty: 1, price: '24.00' },
-                    ]
-                },
-                {
-                    id: '9820', shipper: 'BlueDart', trackingCode: 'BD88923',
-                    status: 'Delivered', date: 'Jan 25, 2025', expectedDate: 'Feb 01, 2025', total: '56.00',
-                    items: [
-                        { name: 'Basmati Rice 5kg', qty: 1, price: '32.00' },
-                        { name: 'Honey 500g', qty: 2, price: '12.00' },
-                    ]
-                },
-                {
-                    id: '9790', shipper: 'FedEx', trackingCode: 'FX120045',
-                    status: 'Cancelled', date: 'Jan 10, 2025', expectedDate: 'Jan 18, 2025', total: '39.00',
-                    items: [
-                        { name: 'Coconut Oil 1L', qty: 1, price: '18.00' },
-                        { name: 'Green Tea 100g', qty: 3, price: '7.00' },
-                    ]
-                },
-                {
-                    id: '9750', shipper: 'DHL', trackingCode: 'DH99011',
-                    status: 'Dispatched', date: 'Jan 01, 2025', expectedDate: 'Jan 08, 2025', total: '110.00',
-                    items: [
-                        { name: 'Mixed Nuts 2kg', qty: 2, price: '45.00' },
-                        { name: 'Olive Oil 750ml', qty: 1, price: '20.00' },
-                    ]
-                },
-                {
-                    id: '9710', shipper: 'Grasshoppers', trackingCode: 'M100XZ',
-                    status: 'Processing', date: 'Dec 20, 2024', expectedDate: 'Dec 28, 2024', total: '67.00',
-                    items: [
-                        { name: 'Whole Wheat Bread', qty: 3, price: '9.00' },
-                        { name: 'Greek Yogurt 500g', qty: 2, price: '15.00' },
-                        { name: 'Avocado x5', qty: 1, price: '19.00' },
-                    ]
-                },
-                {
-                    id: '9685', shipper: 'BlueDart', trackingCode: 'BD44512',
-                    status: 'Pending', date: 'Dec 12, 2024', expectedDate: 'Dec 20, 2024', total: '45.00',
-                    items: [
-                        { name: 'Cashew Nuts 500g', qty: 1, price: '22.00' },
-                        { name: 'Oat Milk 1L', qty: 2, price: '11.50' },
-                    ]
-                },
-                {
-                    id: '9650', shipper: 'FedEx', trackingCode: 'FX009821',
-                    status: 'Delivered', date: 'Dec 01, 2024', expectedDate: 'Dec 09, 2024', total: '92.00',
-                    items: [
-                        { name: 'Flaxseed Oil 500ml', qty: 2, price: '18.00' },
-                        { name: 'Brown Rice 2kg', qty: 1, price: '28.00' },
-                        { name: 'Chia Seeds 250g', qty: 2, price: '14.00' },
-                    ]
-                },
-                {
-                    id: '9620', shipper: 'DHL', trackingCode: 'DH77342',
-                    status: 'Delivered', date: 'Nov 15, 2024', expectedDate: 'Nov 22, 2024', total: '33.50',
-                    items: [
-                        { name: 'Peanut Butter 400g', qty: 1, price: '14.00' },
-                        { name: 'Dark Chocolate 200g', qty: 2, price: '9.75' },
-                    ]
-                },
-            ]
-        };
-    },
+const stepMap = {
+    'pending':   0,
+    'paid':      1,
+    'shipped':   3,
+    'completed': 4,
+    'cancelled': -1,
+};
 
-    computed: {
-        pagedOrders() {
-            const start = (this.currentPage - 1) * this.pageSize;
-            return this.orders.slice(start, start + this.pageSize);
-        },
-        totalPages() {
-            return Math.ceil(this.orders.length / this.pageSize);
+// Actions
+const fetchOrderList = async (page = 1) => {
+    isLoadingList.value = true;
+    try {
+        const response = await orderService.getOrders(null, page);
+        orders.value = response.data;
+        if (response.meta) {
+            currentPage.value = response.meta.current_page;
+            totalPages.value = response.meta.last_page;
         }
-    },
-
-    mounted() {
-        // Auto-select the first order on load
-        if (this.orders.length > 0) {
-            this.selectedOrder = this.orders[0];
-        }
-    },
-
-    methods: {
-        selectOrder(order) {
-            this.selectedOrder = order;
-        },
-
-        goToPage(page) {
-            if (page < 1 || page > this.totalPages) return;
-            this.currentPage = page;
-            // Auto-select first order of new page if current selected not in view
-            const onPage = this.pagedOrders.find(o => this.selectedOrder && o.id === this.selectedOrder.id);
-            if (!onPage && this.pagedOrders.length > 0) {
-                this.selectedOrder = this.pagedOrders[0];
-            }
-        },
-
-        getStatusClass(status) {
-            const map = {
-                'Delivered':  'status-delivered',
-                'Dispatched': 'status-dispatched',
-                'Packing':    'status-packing',
-                'Processing': 'status-processing',
-                'Pending':    'status-pending',
-                'Cancelled':  'status-cancelled',
-            };
-            return map[status] || 'status-pending';
-        },
-
-        getStepIndex(status) {
-            return this.stepMap[status] ?? 0;
-        }
+    } catch (error) {
+        console.error('Failed to fetch orders:', error);
+    } finally {
+        isLoadingList.value = false;
     }
 };
+
+const fetchOrderDetail = async (id) => {
+    isLoading.value = true;
+    try {
+        const response = await orderService.getOrder(id);
+        selectedOrder.value = response.data;
+    } catch (error) {
+        console.error('Failed to fetch order details:', error);
+        selectedOrder.value = null;
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+const selectOrder = (order) => {
+    // Navigate to update URL which will trigger watch/mount detail fetch
+    router.push({ query: { id: order.id } });
+};
+
+const goToPage = (page) => {
+    if (page < 1 || page > totalPages.value) return;
+    fetchOrderList(page);
+};
+
+const getStatusClass = (status) => {
+    const map = {
+        'pending':   'status-pending',
+        'paid':      'status-processing',
+        'shipped':   'status-dispatched',
+        'completed': 'status-delivered',
+        'cancelled': 'status-cancelled',
+    };
+    return map[status] || 'status-pending';
+};
+
+const getStatusLabel = (status) => {
+    const labels = {
+        'pending':   'Chờ xử lý',
+        'paid':      'Đã thanh toán',
+        'shipped':   'Đang giao hàng',
+        'completed': 'Đã hoàn thành',
+        'cancelled': 'Đã hủy',
+    };
+    return labels[status] || status;
+};
+
+const getStepIndex = (status) => {
+    return stepMap[status] ?? 0;
+};
+
+const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('vi-VN', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+    });
+};
+
+// Watch query ID change
+watch(() => route.query.id, (newId) => {
+    if (newId) {
+        fetchOrderDetail(newId);
+    }
+}, { immediate: true });
+
+onMounted(() => {
+    fetchOrderList();
+    if (route.query.id) {
+        fetchOrderDetail(route.query.id);
+    }
+});
 </script>
 
 <style scoped>
