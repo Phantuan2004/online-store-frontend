@@ -106,20 +106,30 @@
                                     <div class="cr-checkout-block cr-check-bill">
                                         <h3 class="cr-checkout-title">Address Book</h3>
                                         
-                                        <div class="row pt-4 mb-4" style="border-bottom: 1px solid #eee;">
-                                            <div class="col-md-6 mb-3" v-for="(address, index) in addresses" :key="index">
+                                        <div v-if="isLoadingAddresses" class="text-center py-5">
+                                            <div class="spinner-border text-success" role="status">
+                                                <span class="visually-hidden">Loading...</span>
+                                            </div>
+                                            <p class="mt-2">Đang tải địa chỉ...</p>
+                                        </div>
+
+                                        <div v-else-if="addresses.length === 0" class="alert alert-info mt-4 mx-3">
+                                            Bạn chưa có địa chỉ nào trong sổ địa chỉ. Hãy thêm địa chỉ mới bên dưới.
+                                        </div>
+
+                                        <div v-else class="row pt-4 mb-4" style="border-bottom: 1px solid #eee;">
+                                            <div class="col-md-6 mb-3" v-for="(address, index) in addresses" :key="address.id">
                                                 <div class="card shadow-sm" style="height: 100%;">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">{{ address.title }}</h5>
+                                                        <h5 class="card-title">Địa chỉ #{{ index + 1 }}</h5>
                                                         <p class="card-text mt-3">
-                                                            <strong>{{ address.firstname }} {{ address.lastname }}</strong><br>
-                                                            {{ address.address }}<br>
-                                                            {{ address.city }}, {{ address.postalcode }}<br>
-                                                            {{ address.country }}
+                                                            <strong>Địa chỉ:</strong> {{ address.address_line }}<br>
+                                                            <strong>Quận/Huyện:</strong> {{ address.district }}<br>
+                                                            <strong>Thành Phố:</strong> {{ address.city }}
                                                         </p>
                                                         <div class="mt-3">
                                                             <a href="javascript:void(0)" class="text-primary me-3" @click="handleEditAddress(address)">Edit</a>
-                                                            <a href="javascript:void(0)" class="text-danger">Delete</a>
+                                                            <a href="javascript:void(0)" class="text-danger" @click="handleDeleteAddress(address.id)">Delete</a>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -130,32 +140,22 @@
                                         <div class="cr-bl-block-content mt-3">
                                             <div class="cr-check-bill-form mb-minus-24">
                                                 <form action="#" method="post" @submit.prevent="saveAddress">
-                                                    <span class="cr-bill-wrap cr-bill-half">
-                                                        <label>First Name*</label>
-                                                        <input type="text" v-model="addressForm.firstname" placeholder="Enter your first name" required>
-                                                    </span>
-                                                    <span class="cr-bill-wrap cr-bill-half">
-                                                        <label>Last Name*</label>
-                                                        <input type="text" v-model="addressForm.lastname" placeholder="Enter your last name" required>
-                                                    </span>
                                                     <span class="cr-bill-wrap">
-                                                        <label>Address Line 1*</label>
-                                                        <input type="text" v-model="addressForm.address" placeholder="Address" required>
+                                                        <label>Địa chỉ chi tiết*</label>
+                                                        <input type="text" v-model="addressForm.address_line" placeholder="Số nhà, tên đường..." required>
                                                     </span>
                                                     <span class="cr-bill-wrap cr-bill-half">
-                                                        <label>City *</label>
-                                                        <input type="text" v-model="addressForm.city" placeholder="City" required>
+                                                        <label>Quận / Huyện *</label>
+                                                        <input type="text" v-model="addressForm.district" placeholder="Quận/Huyện" required>
                                                     </span>
                                                     <span class="cr-bill-wrap cr-bill-half">
-                                                        <label>Post Code</label>
-                                                        <input type="text" v-model="addressForm.postalcode" placeholder="Post Code">
-                                                    </span>
-                                                    <span class="cr-bill-wrap cr-bill-half">
-                                                        <label>Country *</label>
-                                                        <input type="text" v-model="addressForm.country" placeholder="Country" required>
+                                                        <label>Thành Phố *</label>
+                                                        <input type="text" v-model="addressForm.city" placeholder="Thành Phố" required>
                                                     </span>
                                                     <div class="col-12 mb-3 d-flex gap-3" style="margin-left: 14px;">
-                                                        <button class="cr-button" type="submit">{{ isEditingAddress ? 'Update Address' : 'Save Address' }}</button>
+                                                        <button class="cr-button" type="submit" :disabled="isSavingAddress">
+                                                            {{ isSavingAddress ? 'Processing...' : (isEditingAddress ? 'Update Address' : 'Save Address') }}
+                                                        </button>
                                                         <button v-if="isEditingAddress" class="cr-button" style="background-color: #6c757d; color: white;" type="button" @click="resetAddressForm">Cancel</button>
                                                     </div>
                                                 </form>
@@ -177,8 +177,13 @@
 <script setup>
 import { ref, reactive, watch, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
+import addressService from '@/services/addressService';
 
 const authStore = useAuthStore();
+
+const addresses = ref([]);
+const isLoadingAddresses = ref(false);
+const isSavingAddress = ref(false);
 
 const accountInfo = reactive({
     name: '',
@@ -196,35 +201,34 @@ const populateUserData = () => {
 
 onMounted(() => {
     populateUserData();
+    loadAddresses();
 });
+
+const loadAddresses = async () => {
+    isLoadingAddresses.value = true;
+    try {
+        const response = await addressService.getAddresses();
+        addresses.value = response.data;
+    } catch (error) {
+        console.error('Failed to load addresses:', error);
+    } finally {
+        isLoadingAddresses.value = false;
+    }
+};
 
 watch(() => authStore.user, () => {
     populateUserData();
 }, { deep: true });
 
-const addresses = ref([
-    {
-        id: 1,
-        title: 'Default Shipping',
-        firstname: 'John',
-        lastname: 'Doe',
-        address: '123 Main Street, Apt 4B',
-        city: 'New York',
-        postalcode: '10001',
-        country: 'United States'
-    }
-]);
+// Removed static addresses
 
 const isEditingAddress = ref(false);
 const editingAddressId = ref(null);
 
 const defaultFormState = {
-    firstname: '',
-    lastname: '',
-    address: '',
+    address_line: '',
     city: '',
-    postalcode: '',
-    country: ''
+    district: ''
 };
 
 const addressForm = reactive({ ...defaultFormState });
@@ -234,13 +238,16 @@ const handleEditAddress = (address) => {
     editingAddressId.value = address.id;
     // Populate form
     Object.assign(addressForm, {
-        firstname: address.firstname,
-        lastname: address.lastname,
-        address: address.address,
+        address_line: address.address_line,
         city: address.city,
-        postalcode: address.postalcode,
-        country: address.country
+        district: address.district
     });
+
+    // Scroll to form
+    const formElement = document.querySelector('.cr-check-bill-form');
+    if (formElement) {
+        formElement.scrollIntoView({ behavior: 'smooth' });
+    }
 };
 
 const resetAddressForm = () => {
@@ -249,24 +256,39 @@ const resetAddressForm = () => {
     Object.assign(addressForm, { ...defaultFormState });
 };
 
-const saveAddress = () => {
-    // In a real app, you would make an API call here.
-    if (isEditingAddress.value) {
-        const index = addresses.value.findIndex(a => a.id === editingAddressId.value);
-        if (index !== -1) {
-            addresses.value[index] = { 
-                ...addresses.value[index],
-                ...addressForm
-            };
+const saveAddress = async () => {
+    isSavingAddress.value = true;
+    try {
+        if (isEditingAddress.value) {
+            const response = await addressService.updateAddress(editingAddressId.value, { ...addressForm });
+            const index = addresses.value.findIndex(a => a.id === editingAddressId.value);
+            if (index !== -1) {
+                addresses.value[index] = response.data;
+            }
+            alert('Cập nhật địa chỉ thành công!');
+        } else {
+            const response = await addressService.createAddress({ ...addressForm });
+            addresses.value.push(response.data);
+            alert('Thêm địa chỉ mới thành công!');
         }
-    } else {
-        addresses.value.push({
-            id: Date.now(),
-            title: 'New Address',
-            ...addressForm
-        });
+        resetAddressForm();
+    } catch (error) {
+        alert('Có lỗi xảy ra khi lưu địa chỉ. Vui lòng kiểm tra lại.');
+        console.error(error);
+    } finally {
+        isSavingAddress.value = false;
     }
-    resetAddressForm();
+};
+
+const handleDeleteAddress = async (id) => {
+    if (confirm('Bạn có chắc muốn xóa địa chỉ này?')) {
+        try {
+            await addressService.deleteAddress(id);
+            addresses.value = addresses.value.filter(a => a.id !== id);
+        } catch (error) {
+            alert('Không thể xóa địa chỉ này.');
+        }
+    }
 };
 </script>
 

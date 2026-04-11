@@ -151,10 +151,9 @@
                             style="top: 15px; right: 15px;"
                           >
                           <div class="address-content">
-                            <h6 class="mb-1">{{ addr.firstname }} {{ addr.lastname }}</h6>
-                            <p class="small text-muted mb-2">{{ addr.phone }}</p>
-                            <p class="small mb-0">{{ addr.address }}</p>
-                            <p class="small mb-0 text-uppercase">{{ addr.city }}, {{ addr.state }}, {{ addr.country }}</p>
+                            <h6 class="mb-1">Địa chỉ: {{ addr.address_line }}</h6>
+                            <p class="small mb-0">Phường/Xã: {{ addr.district }}</p>
+                            <p class="small mb-0">Quận/Huyện: {{ addr.city }}</p>
                           </div>
                         </label>
                       </div>
@@ -169,37 +168,17 @@
                     <div v-if="showNewAddressForm" class="cr-check-bill-form p-3 border rounded bg-white mt-2">
                         <h5 class="mb-3">Thêm địa chỉ giao hàng mới</h5>
                         <form @submit.prevent="saveNewAddress" class="row g-3">
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Tên *</label>
-                                <input v-model="newAddr.firstname" type="text" class="form-control" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Họ *</label>
-                                <input v-model="newAddr.lastname" type="text" class="form-control" required>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label">Số điện thoại *</label>
-                                <input v-model="newAddr.phone" type="text" class="form-control" required>
-                            </div>
                             <div class="col-12 mb-3">
                                 <label class="form-label">Địa chỉ chi tiết*</label>
-                                <input v-model="newAddr.address" type="text" class="form-control" placeholder="Số nhà, tên đường..." required>
+                                <input v-model="newAddr.address_line" type="text" class="form-control" placeholder="Số nhà, tên đường..." required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Thành phố *</label>
-                                <input v-model="newAddr.city" type="text" class="form-control" required>
+                                <label class="form-label">Phường / Xã *</label>
+                                <input v-model="newAddr.district" type="text" class="form-control" placeholder="Phường/Xã" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Tỉnh / Thành *</label>
-                                <input v-model="newAddr.state" type="text" class="form-control" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Quốc gia *</label>
-                                <input v-model="newAddr.country" type="text" class="form-control" placeholder="Vietnam" required>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Mã bưu điện</label>
-                                <input v-model="newAddr.postalcode" type="text" class="form-control">
+                                <label class="form-label">Quận / Huyện *</label>
+                                <input v-model="newAddr.city" type="text" class="form-control" placeholder="Quận/Huyện" required>
                             </div>
                             <div class="col-12 mt-2">
                                 <button type="submit" :disabled="isSavingAddress" class="cr-button">
@@ -268,14 +247,9 @@ const form = reactive({
 });
 
 const newAddr = reactive({
-  firstname: '',
-  lastname: '',
-  phone: '',
-  address: '',
+  address_line: '',
   city: '',
-  state: '',
-  country: 'Vietnam',
-  postalcode: ''
+  district: ''
 });
 
 // Load resources
