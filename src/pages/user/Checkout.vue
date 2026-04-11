@@ -152,8 +152,8 @@
                           >
                           <div class="address-content">
                             <h6 class="mb-1">Địa chỉ: {{ addr.address_line }}</h6>
-                            <p class="small mb-0">Phường/Xã: {{ addr.district }}</p>
-                            <p class="small mb-0">Quận/Huyện: {{ addr.city }}</p>
+                            <p class="small mb-0">Quận/Huyện: {{ addr.district }}</p>
+                            <p class="small mb-0">Thành Phố: {{ addr.city }}</p>
                           </div>
                         </label>
                       </div>
@@ -173,12 +173,12 @@
                                 <input v-model="newAddr.address_line" type="text" class="form-control" placeholder="Số nhà, tên đường..." required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Phường / Xã *</label>
-                                <input v-model="newAddr.district" type="text" class="form-control" placeholder="Phường/Xã" required>
+                                <label class="form-label">Quận / Huyện *</label>
+                                <input v-model="newAddr.district" type="text" class="form-control" placeholder="Quận/Huyện" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Quận / Huyện *</label>
-                                <input v-model="newAddr.city" type="text" class="form-control" placeholder="Quận/Huyện" required>
+                                <label class="form-label">Thành Phố *</label>
+                                <input v-model="newAddr.city" type="text" class="form-control" placeholder="Thành Phố" required>
                             </div>
                             <div class="col-12 mt-2">
                                 <button type="submit" :disabled="isSavingAddress" class="cr-button">
@@ -290,8 +290,15 @@ const saveNewAddress = async () => {
 };
 
 const submitOrder = async () => {
+    // 1. Kiểm tra địa chỉ
     if (!form.address_id) {
-        alert('Vui lòng chọn địa chỉ giao hàng.');
+        alert('Vui lòng chọn hoặc thêm địa chỉ giao hàng trước khi đặt hàng.');
+        
+        // Cuộn đến phần chọn địa chỉ để người dùng thấy
+        const addressSection = document.querySelector('.cr-check-bill');
+        if (addressSection) {
+            addressSection.scrollIntoView({ behavior: 'smooth' });
+        }
         return;
     }
 
@@ -299,18 +306,20 @@ const submitOrder = async () => {
     try {
         const response = await orderService.placeOrder({ ...form });
         
-        // Handle success
+        // 2. Xử lý sau khi đặt hàng thành công
         if (form.payment_method === 'vnpay' && response.payment_url) {
+            // Chuyển hướng sang cổng thanh toán VNPay
             window.location.href = response.payment_url;
         } else {
-            // COD success - clear cart and redirect to success page
-            cartStore.items = [];
-            alert('Đặt hàng thành công! Cảm ơn bạn đã mua hàng.');
-            router.push('/user/orders'); // Assuming there's an order history page
+            // Thanh toán COD - Xóa giỏ và thông báo
+            cartStore.clearCart();
+            alert('Đặt hàng thành công! Chúng tôi sẽ sớm liên hệ để giao hàng cho bạn.');
+            router.push('/shop'); // Chuyển về trang shop hoặc lịch sử đơn hàng
         }
     } catch (error) {
-        const errorMsg = error.response?.data?.message || 'Có lỗi xảy ra khi đặt hàng.';
+        const errorMsg = error.response?.data?.message || 'Có lỗi xảy ra khi đặt hàng. Vui lòng thử lại.';
         alert(errorMsg);
+        console.error('Checkout error:', error);
     } finally {
         isSubmitting.value = false;
     }
