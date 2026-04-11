@@ -2,7 +2,26 @@
     <!-- Product Detail Section -->
     <section class="section-product padding-t-100">
         <div class="container">
-        <div class="row">
+        <!-- Loading State -->
+        <div v-if="isLoading" class="row justify-content-center">
+            <div class="col-12 text-center" style="padding: 100px 0;">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+                <p class="mt-3">Loading product details...</p>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div v-else-if="error" class="row justify-content-center">
+            <div class="col-12 text-center" style="padding: 100px 0;">
+                <h3 class="text-danger">Oops!</h3>
+                <p>{{ error }}</p>
+                <router-link to="/shop" class="cr-button">Back to Shop</router-link>
+            </div>
+        </div>
+
+        <div v-else class="row">
             <div class="col-lg-12 col-12 md-30">
                 <div class="row mb-minus-24">
                     <!-- Column 1: Product Images -->
@@ -45,7 +64,7 @@
                         :specs="product.specs"
                         :reviews="reviews"
                         :new-review="newReview"
-                        :is-loading="false"
+                        :is-loading="isLoadingReview"
                         @tab-changed="switchTab"
                         @update:newReview="onNewReviewUpdate"
                         @review-submitted="submitReview"
