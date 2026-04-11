@@ -4,8 +4,11 @@ const orderService = {
     /**
      * Get user orders
      */
-    getOrders(status = null) {
-        const url = status ? `orders?status=${status}` : 'orders';
+    getOrders(status = null, page = 1) {
+        let url = `orders?page=${page}`;
+        if (status && status !== 'all') {
+            url += `&status=${status}`;
+        }
         return api.get(url);
     },
 

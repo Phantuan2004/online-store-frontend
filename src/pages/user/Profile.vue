@@ -61,38 +61,90 @@
                             <div class="cr-checkout-inner">
                                 <div class="cr-checkout-wrap mb-30">
                                     <div class="cr-checkout-block">
-                                        <h3 class="cr-checkout-title">Order History</h3>
-                                        <div class="table-responsive">
-                                            <table class="table table-bordered mb-0">
-                                                <thead class="thead-light">
-                                                    <tr>
-                                                        <th>Order ID</th>
-                                                        <th>Date</th>
-                                                        <th>Items</th>
-                                                        <th>Total</th>
-                                                        <th>Status</th>
-                                                        <th>Action</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td>#ORD-12345</td>
-                                                        <td>Oct 20, 2026</td>
-                                                        <td>3</td>
-                                                        <td>$150.00</td>
-                                                        <td><span class="badge bg-success">Delivered</span></td>
-                                                        <td><a href="#" class="cr-button" style="padding: 5px 15px; border-radius: 5px; min-width: auto; height: auto; line-height: normal;">View</a></td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>#ORD-12344</td>
-                                                        <td>Oct 15, 2026</td>
-                                                        <td>1</td>
-                                                        <td>$45.00</td>
-                                                        <td><span class="badge bg-warning text-dark">Processing</span></td>
-                                                        <td><a href="#" class="cr-button" style="padding: 5px 15px; border-radius: 5px; min-width: auto; height: auto; line-height: normal;">View</a></td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <h3 class="cr-checkout-title mb-0">Order History</h3>
+                                            <div class="d-flex align-items-center">
+                                                <span class="me-2 text-muted small">Lọc theo:</span>
+                                                <select v-model="filterStatus" @change="handleFilterChange" class="form-select form-select-sm" style="width: auto; min-width: 150px;">
+                                                    <option value="all">Tất cả đơn hàng</option>
+                                                    <option value="pending">Chờ xử lý</option>
+                                                    <option value="paid">Đã thanh toán</option>
+                                                    <option value="shipped">Đang giao hàng</option>
+                                                    <option value="completed">Đã hoàn thành</option>
+                                                    <option value="cancelled">Đã hủy</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div v-if="isLoadingOrders" class="text-center py-5">
+                                            <div class="spinner-border text-success" role="status"></div>
+                                            <p class="mt-2">Đang tải đơn hàng...</p>
+                                        </div>
+
+                                        <div v-else-if="orders.length === 0" class="text-center py-5">
+                                            <i class="ri-file-list-3-line display-4 text-muted"></i>
+                                            <p class="mt-3">Bạn chưa có đơn hàng nào khớp với bộ lọc.</p>
+                                        </div>
+
+                                        <div v-else>
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered mb-0">
+                                                    <thead class="thead-light">
+                                                        <tr>
+                                                            <th>Mã Đơn</th>
+                                                            <th>Ngày Đặt</th>
+                                                            <th>Sản Phẩm</th>
+                                                            <th>Tổng Tiền</th>
+                                                            <th>Trạng Thái</th>
+                                                            <th>Hành Động</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr v-for="order in orders" :key="order.id">
+                                                            <td><strong>#{{ order.id }}</strong></td>
+                                                            <td>{{ formatDate(order.created_at) }}</td>
+                                                            <td>
+                                                                <span class="small text-truncate d-inline-block" style="max-width: 200px;">
+                                                                    {{ order.items[0]?.product_name || 'Sản phẩm' }}
+                                                                    <span v-if="order.items.length > 1" class="text-muted">
+                                                                        (+ {{ order.items.length - 1 }} món)
+                                                                    </span>
+                                                                </span>
+                                                            </td>
+                                                            <td class="fw-bold">${{ order.total_price }}</td>
+                                                            <td>
+                                                                <span class="badge" :class="getStatusBadge(order.status)">
+                                                                    {{ getStatusLabel(order.status) }}
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <RouterLink :to="`/track-order?id=${order.id}`" class="btn btn-sm btn-outline-success">
+                                                                    Xem chi tiết
+                                                                </RouterLink>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <!-- Pagination -->
+                                            <div v-if="pagination.last_page > 1" class="mt-4 d-flex justify-content-center">
+                                                <nav aria-label="Page navigation">
+                                                    <ul class="pagination pagination-sm">
+                                                        <li class="page-item" :class="{ disabled: pagination.current_page === 1 }">
+                                                            <a @click.prevent="handlePageChange(pagination.current_page - 1)" class="page-item" href="#">Trước</a>
+                                                        </li>
+                                                        
+                                                        <li v-for="page in pagination.last_page" :key="page" class="page-item" :class="{ active: pagination.current_page === page }">
+                                                            <a @click.prevent="handlePageChange(page)" class="page-link" href="#">{{ page }}</a>
+                                                        </li>
+
+                                                        <li class="page-item" :class="{ disabled: pagination.current_page === pagination.last_page }">
+                                                            <a @click.prevent="handlePageChange(pagination.current_page + 1)" class="page-link" href="#">Sau</a>
+                                                        </li>
+                                                    </ul>
+                                                </nav>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -178,12 +230,22 @@
 import { ref, reactive, watch, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import addressService from '@/services/addressService';
+import orderService from '@/services/orderService';
 
 const authStore = useAuthStore();
 
 const addresses = ref([]);
 const isLoadingAddresses = ref(false);
 const isSavingAddress = ref(false);
+
+const orders = ref([]);
+const isLoadingOrders = ref(false);
+const filterStatus = ref('all');
+const pagination = reactive({
+    current_page: 1,
+    last_page: 1,
+    total: 0
+});
 
 const accountInfo = reactive({
     name: '',
@@ -202,7 +264,65 @@ const populateUserData = () => {
 onMounted(() => {
     populateUserData();
     loadAddresses();
+    fetchOrders();
 });
+
+
+const fetchOrders = async (page = 1) => {
+    isLoadingOrders.value = true;
+    try {
+        const response = await orderService.getOrders(filterStatus.value, page);
+        // Note: Laravel pagination returns data in .data, and meta in .meta
+        // Or if it's a simple Resource collection with pagination
+        orders.value = response.data;
+        if (response.meta) {
+            pagination.current_page = response.meta.current_page;
+            pagination.last_page = response.meta.last_page;
+            pagination.total = response.meta.total;
+        }
+    } catch (error) {
+        console.error('Failed to fetch orders:', error);
+    } finally {
+        isLoadingOrders.value = false;
+    }
+};
+
+const handleFilterChange = () => {
+    fetchOrders(1);
+};
+
+const handlePageChange = (page) => {
+    if (page >= 1 && page <= pagination.last_page) {
+        fetchOrders(page);
+    }
+};
+
+const getStatusBadge = (status) => {
+    const badges = {
+        'pending': 'bg-warning text-dark',
+        'paid': 'bg-primary',
+        'shipped': 'bg-info text-white',
+        'completed': 'bg-success',
+        'cancelled': 'bg-danger'
+    };
+    return badges[status] || 'bg-secondary';
+};
+
+const getStatusLabel = (status) => {
+    const labels = {
+        'pending': 'Chờ xử lý',
+        'paid': 'Đã thanh toán',
+        'shipped': 'Đang giao hàng',
+        'completed': 'Hoàn thành',
+        'cancelled': 'Đã hủy'
+    };
+    return labels[status] || status;
+};
+
+const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('vi-VN');
+};
 
 const loadAddresses = async () => {
     isLoadingAddresses.value = true;
