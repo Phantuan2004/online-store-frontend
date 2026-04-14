@@ -20,11 +20,15 @@
             <div class="col-lg-12 col-sm-6 col-6 cr-product-box mb-24">
               <div class="cr-product-tabs">
                 <ul>
-                  <li :class="{ active: currentFilter === 'all' }" @click="setFilter('all')">All</li>
-                  <li :class="{ active: currentFilter === 'snack' }" @click="setFilter('snack')">Snack</li>
-                  <li :class="{ active: currentFilter === 'vegetable' }" @click="setFilter('vegetable')">Vegetable</li>
-                  <li :class="{ active: currentFilter === 'fruit' }" @click="setFilter('fruit')">Fruit</li>
-                  <li :class="{ active: currentFilter === 'bakery' }" @click="setFilter('bakery')">Bakery</li>
+                  <li 
+                    v-for="cat in categories" 
+                    :key="cat"
+                    :class="{ active: currentFilter === cat }" 
+                    @click="setFilter(cat)"
+                    style="text-transform: capitalize;"
+                  >
+                    {{ cat }}
+                  </li>
                 </ul>
               </div>
             </div>
@@ -52,7 +56,7 @@
                 <div class="cr-product-card">
                   <div class="cr-product-image">
                     <div class="cr-image-inner zoom-image-hover">
-                      <img :src="product.img" :alt="product.title">
+                      <img :src="product.primary_image || product.img" :alt="product.name || product.title">
                     </div>
                     <div class="cr-side-view">
                       <a href="javascript:void(0)" class="wishlist">
@@ -68,16 +72,15 @@
                   </div>
                   <div class="cr-product-details">
                     <div class="cr-brand">
-                      <router-link to="/shop">{{ product.category }}</router-link>
+                      <router-link to="/shop">{{ product.category?.name || product.category }}</router-link>
                       <div class="cr-star">
-                        <i v-for="i in 5" :key="i" :class="i <= product.rating ? 'ri-star-fill' : 'ri-star-line'"></i>
-                        <p>({{ product.rating.toFixed(1) }})</p>
+                        <i v-for="i in 5" :key="i" :class="i <= (product.rating || 5) ? 'ri-star-fill' : 'ri-star-line'"></i>
+                        <p>({{ (product.rating || 5).toFixed(1) }})</p>
                       </div>
                     </div>
-                    <RouterLink :to="`/product/${product.id}`" class="title">{{ product.title }}</RouterLink>
+                    <RouterLink :to="`/product/${product.id}`" class="title">{{ product.name || product.title }}</RouterLink>
                     <p class="cr-price">
-                      <span class="new-price">${{ product.newPrice }}</span>
-                      <span class="old-price">${{ product.oldPrice }}</span>
+                      <span class="new-price">{{ new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(product.price || product.newPrice) }}</span>
                     </p>
                   </div>
                 </div>
@@ -94,31 +97,30 @@
 import { ref, computed, onMounted } from 'vue';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
-import productImg1 from '@/assets/user/img/product/1.jpg';
-import productImg2 from '@/assets/user/img/product/2.jpg';
-import productImg3 from '@/assets/user/img/product/3.jpg';
-import productImg9 from '@/assets/user/img/product/9.jpg';
-import productImg10 from '@/assets/user/img/product/10.jpg';
-import productImg11 from '@/assets/user/img/product/11.jpg';
-import productImg17 from '@/assets/user/img/product/17.jpg';
+import api from '@/services/api';
 import productBannerImg from '@/assets/user/img/product/product-banner.jpg';
 
 const currentFilter = ref('all');
+const products = ref([]);
+const categories = ref(['all']);
 
-const products = [
-  { id: 1, category: 'Vegetables', rating: 4.5, title: 'Fresh organic villa farm lomon 500gm pack', newPrice: 120.25, oldPrice: 123.25, img: productImg1, type: 'vegetable' },
-  { id: 2, category: 'Snacks', rating: 5.0, title: 'Best snakes with hazel nut pack 200gm', newPrice: 145, oldPrice: 150, img: productImg9, type: 'snack' },
-  { id: 3, category: 'Fruits', rating: 4.5, title: 'Fresh organic apple 1kg simla marming', newPrice: 120.25, oldPrice: 123.25, img: productImg2, type: 'fruit' },
-  { id: 4, category: 'Bakery', rating: 5.0, title: 'Delicious white baked fresh bread and toast', newPrice: 20, oldPrice: 22.10, img: productImg17, type: 'bakery' },
-  { id: 5, category: 'Snacks', rating: 5.0, title: 'Sweet crunchy nut mix 250gm pack', newPrice: 120.25, oldPrice: 123.25, img: productImg11, type: 'snack' },
-  { id: 6, category: 'Fruits', rating: 3.2, title: 'Organic fresh venila farm watermelon 5kg', newPrice: 50.3, oldPrice: 72.6, img: productImg3, type: 'fruit' },
-  { id: 7, category: 'Snacks', rating: 5.0, title: 'Sweet crunchy nut mix 250gm pack', newPrice: 120.25, oldPrice: 123.25, img: productImg10, type: 'snack' },
-  { id: 8, category: 'Bakery', rating: 5.0, title: 'Delicious white baked fresh bread and toast', newPrice: 20, oldPrice: 22.10, img: productImg17, type: 'bakery' }
-];
+const fetchProducts = async () => {
+  try {
+    const response = await api.get('/products');
+    if (response && response.data) {
+      products.value = response.data;
+      
+      const cats = new Set(products.value.map(p => p.category?.name).filter(Boolean));
+      categories.value = ['all', ...Array.from(cats)];
+    }
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+};
 
 const filteredProducts = computed(() => {
-  if (currentFilter.value === 'all') return products;
-  return products.filter(p => p.type === currentFilter.value);
+  if (currentFilter.value === 'all') return products.value;
+  return products.value.filter(p => p.category?.name === currentFilter.value);
 });
 
 const setFilter = (filter) => {
@@ -126,6 +128,7 @@ const setFilter = (filter) => {
 };
 
 onMounted(() => {
+  fetchProducts();
   AOS.init({
     duration: 2000,
   });
