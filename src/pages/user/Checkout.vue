@@ -21,7 +21,7 @@
                 <div class="cr-checkout-summary">
                   <div>
                     <span class="text-left">Sub-Total</span>
-                    <span class="text-right">${{ cartStore.cartTotal }}</span>
+                    <span class="text-right">{{ formatCurrency(cartStore.cartTotal) }}</span>
                   </div>
                   <div>
                     <span class="text-left">Delivery Charges</span>
@@ -29,7 +29,7 @@
                   </div>
                   <div class="cr-checkout-summary-total">
                     <span class="text-left">Total Amount</span>
-                    <span class="text-right">${{ cartStore.cartTotal }}</span>
+                    <span class="text-right">{{ formatCurrency(cartStore.cartTotal) }}</span>
                   </div>
                 </div>
 
@@ -48,7 +48,7 @@
                           <RouterLink :to="`/product/${item.product_id}`">{{ item.name }}</RouterLink>
                         </h5>
                         <p class="cr-price">
-                          <span class="new-price">${{ item.price }}</span>
+                          <span class="new-price">{{ formatCurrency(item.price) }}</span>
                           <span class="quantity ml-2">x {{ item.quantity }}</span>
                         </p>
                       </div>
@@ -222,6 +222,7 @@
 </template>
 
 <script setup>
+import { formatCurrency } from '@/utils/currency';
 import { ref, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useCartStore } from '@/stores/cart';

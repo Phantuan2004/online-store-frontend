@@ -79,7 +79,7 @@
             <tbody>
               <tr>
                 <td class="text-left">Total :</td>
-                <td class="text-right primary-color">${{ cartStore.cartTotal }}</td>
+                <td class="text-right primary-color">{{ formatCurrency(cartStore.cartTotal) }}</td>
               </tr>
             </tbody>
           </table>
@@ -109,6 +109,7 @@
 </template>
 
 <script setup>
+import { formatCurrency } from '@/utils/currency';
 import { onMounted } from 'vue';
 import { useCartStore } from '@/stores/cart';
 

@@ -34,8 +34,8 @@
                       </div>
                       <RouterLink :to="`/product/${product.id}`" class="title">{{ product.title }}</RouterLink>
                       <p class="cr-price">
-                        <span class="new-price">${{ product.newPrice }}</span>
-                        <span class="old-price">${{ product.oldPrice }}</span>
+                        <span class="new-price">{{ formatCurrency(product.newPrice) }}</span>
+                        <span class="old-price">{{ formatCurrency(product.oldPrice) }}</span>
                       </p>
                     </div>
                   </div>
@@ -63,6 +63,7 @@
 </template>
 
 <script setup>
+import { formatCurrency } from '@/utils/currency';
 import { onMounted, onUnmounted, ref, nextTick } from 'vue';
 import productImg1 from '@/assets/user/img/product/1.jpg';
 import productImg2 from '@/assets/user/img/product/2.jpg';

@@ -3,8 +3,8 @@
     <div class="cr-size-and-weight p-0 m-0 border-0">
       <!-- Price Section -->
       <div class="cr-product-price mb-3 d-flex align-items-center" style="line-height: 1.2;">
-        <span class="new-price">${{ formatPrice(product.price) }}</span>
-        <span v-if="product.oldPrice" class="old-price ms-2">${{ formatPrice(product.oldPrice) }}</span>
+        <span class="new-price">{{ formatCurrency(product.price) }}</span>
+        <span v-if="product.oldPrice" class="old-price ms-2">{{ formatCurrency(product.oldPrice) }}</span>
         <span v-if="discountPercentage > 0" class="discount-badge text-danger fw-bold ms-2" style="font-size: 15px; margin-top: 2px;">
           -{{ discountPercentage }}%
         </span>
@@ -94,6 +94,8 @@
 </template>
 
 <script>
+import { formatCurrency as formatCurrencyUtil } from '@/utils/currency';
+
 export default {
   name: "ProductActionBox",
   props: {
@@ -119,6 +121,7 @@ export default {
     }
   },
   methods: {
+    formatCurrency(val) { return formatCurrencyUtil(val); },
     decreaseQuantity() {
       if (this.quantity > 1) {
         this.$emit("quantity-changed", this.quantity - 1);
@@ -140,10 +143,6 @@ export default {
     toggleWishlist() {
       this.$emit("wishlist-toggled");
     },
-    formatPrice(price) {
-      if (!price && price !== 0) return '0.00';
-      return price.toFixed(2);
-    }
   }
 };
 </script>

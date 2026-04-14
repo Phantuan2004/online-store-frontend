@@ -34,7 +34,7 @@
                                     <span class="order-item-date">
                                         <i class="ri-calendar-line me-1"></i>{{ formatDate(order.created_at) }}
                                     </span>
-                                    <span class="order-item-total">${{ order.total_price }}</span>
+                                    <span class="order-item-total">{{ formatCurrency(order.total_price) }}</span>
                                 </div>
                             </li>
                             <li v-if="orders.length === 0" class="p-4 text-center text-muted small">
@@ -167,13 +167,13 @@
                                             </td>
                                             <td>{{ item.product_name }}</td>
                                             <td class="text-center">{{ item.quantity }}</td>
-                                            <td class="text-end">${{ item.price }}</td>
+                                            <td class="text-end">{{ formatCurrency(item.price) }}</td>
                                         </tr>
                                     </tbody>
                                     <tfoot>
                                         <tr>
                                             <td colspan="2" class="fw-bold">Total</td>
-                                            <td class="text-end fw-bold text-primary">${{ selectedOrder.total_price }}</td>
+                                            <td class="text-end fw-bold text-primary">{{ formatCurrency(selectedOrder.total_price) }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -189,6 +189,7 @@
 </template>
 
 <script setup>
+import { formatCurrency } from '@/utils/currency';
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import orderService from '@/services/orderService';

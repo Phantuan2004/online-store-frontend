@@ -91,8 +91,8 @@
 
       <!-- Price Section -->
       <div class="cr-product-price">
-        <span class="new-price">${{ formatPrice(product.price) }}</span>
-        <span class="old-price">${{ formatPrice(product.oldPrice) }}</span>
+        <span class="new-price">{{ formatCurrency(product.price) }}</span>
+        <span class="old-price">{{ formatCurrency(product.oldPrice) }}</span>
         <span v-if="discountPercentage > 0" class="discount-badge">
           -{{ discountPercentage }}%
         </span>
@@ -163,6 +163,8 @@
 </template>
 
 <script>
+import { formatCurrency as formatCurrencyUtil } from '@/utils/currency';
+
 
 
 export default {
@@ -202,6 +204,7 @@ export default {
     }
   },
   methods: {
+    formatCurrency(val) { return formatCurrencyUtil(val); },
 
     /**
      * Select size
@@ -237,9 +240,6 @@ export default {
     /**
      * Format price
      */
-    formatPrice(price) {
-      return price.toFixed(2);
-    }
   }
 };
 </script>

@@ -111,7 +111,7 @@
                                                                     </span>
                                                                 </span>
                                                             </td>
-                                                            <td class="fw-bold">${{ order.total_price }}</td>
+                                                            <td class="fw-bold">{{ formatCurrency(order.total_price) }}</td>
                                                             <td>
                                                                 <span class="badge" :class="getStatusBadge(order.status)">
                                                                     {{ getStatusLabel(order.status) }}
@@ -227,6 +227,7 @@
 </template>
 
 <script setup>
+import { formatCurrency } from '@/utils/currency';
 import { ref, reactive, watch, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import addressService from '@/services/addressService';

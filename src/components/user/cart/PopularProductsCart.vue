@@ -55,9 +55,9 @@
                     {{ product.name }}
                   </a>
                   <p class="cr-price">
-                    <span class="new-price">${{ formatPrice(product.price) }}</span>
+                    <span class="new-price">{{ formatCurrency(product.price) }}</span>
                     <span v-if="product.oldPrice" class="old-price">
-                      ${{ formatPrice(product.oldPrice) }}
+                      {{ formatCurrency(product.oldPrice) }}
                     </span>
                   </p>
                 </div>
@@ -71,6 +71,8 @@
 </template>
 
 <script>
+import { formatCurrency as formatCurrencyUtil } from '@/utils/currency';
+
 export default {
   name: 'PopularProductsCart',
   props: {
@@ -101,6 +103,7 @@ export default {
   },
 
   methods: {
+    formatCurrency(val) { return formatCurrencyUtil(val); },
     getSlider() {
       const $ = window.jQuery || window.$;
 
@@ -246,9 +249,6 @@ export default {
     /**
      * Format price
      */
-    formatPrice(price) {
-      return parseFloat(price).toFixed(2);
-    }
   }
 };
 </script>

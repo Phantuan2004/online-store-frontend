@@ -87,8 +87,8 @@
                     {{ product.title }}
                   </RouterLink>
                   <p class="cr-price">
-                    <span class="new-price">${{ formatPrice(product.price) }}</span>
-                    <span class="old-price">${{ formatPrice(product.oldPrice) }}</span>
+                    <span class="new-price">{{ formatCurrency(product.price) }}</span>
+                    <span class="old-price">{{ formatCurrency(product.oldPrice) }}</span>
                   </p>
                 </div>
               </div>
@@ -101,6 +101,8 @@
 </template>
 
 <script>
+import { formatCurrency as formatCurrencyUtil } from '@/utils/currency';
+
 export default {
   name: "PopularProducts",
   props: {
@@ -136,6 +138,7 @@ export default {
     }
   },
   methods: {
+    formatCurrency(val) { return formatCurrencyUtil(val); },
     initSlick() {
       if (typeof window.$ !== 'undefined') {
         const $slider = window.$(this.$refs.popularSlider);
@@ -221,9 +224,6 @@ export default {
     /**
      * Format price
      */
-    formatPrice(price) {
-      return price.toFixed(2);
-    }
   }
 };
 </script>

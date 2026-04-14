@@ -68,8 +68,8 @@
         </ul>
         
         <p class="cr-price">
-          <span class="new-price">${{ formatPrice(product.price) }}</span>
-          <span class="old-price">${{ formatPrice(product.oldPrice) }}</span>
+          <span class="new-price">{{ formatCurrency(product.price) }}</span>
+          <span class="old-price">{{ formatCurrency(product.oldPrice) }}</span>
         </p>
       </div>
     </div>
@@ -77,6 +77,8 @@
 </template>
 
 <script>
+import { formatCurrency as formatCurrencyUtil } from '@/utils/currency';
+
 export default {
   name: "ProductCard",
   props: {
@@ -101,6 +103,7 @@ export default {
     };
   },
   methods: {
+    formatCurrency(val) { return formatCurrencyUtil(val); },
     toggleWishlist() {
       this.isInWishlist = !this.isInWishlist;
       this.$emit("toggle-wishlist", {
@@ -114,9 +117,6 @@ export default {
     addToCart() {
       this.$emit("add-to-cart", this.product);
     },
-    formatPrice(price) {
-      return price.toFixed(2);
-    }
   }
 };
 </script>

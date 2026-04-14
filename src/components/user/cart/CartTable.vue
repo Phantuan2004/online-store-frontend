@@ -31,7 +31,7 @@
 
           <!-- Price -->
           <td class="cr-cart-price">
-            <span class="amount">${{ formatPrice(item.price) }}</span>
+            <span class="amount">{{ formatCurrency(item.price) }}</span>
           </td>
 
           <!-- Quantity -->
@@ -56,7 +56,7 @@
 
           <!-- Total -->
           <td class="cr-cart-subtotal">
-            ${{ formatPrice(getItemTotal(item)) }}
+            {{ formatCurrency(getItemTotal(item)) }}
           </td>
 
           <!-- Remove Button -->
@@ -96,6 +96,8 @@
 </template>
 
 <script>
+import { formatCurrency as formatCurrencyUtil } from '@/utils/currency';
+
 export default {
   name: 'CartTable',
   props: {
@@ -106,6 +108,7 @@ export default {
   },
 
   methods: {
+    formatCurrency(val) { return formatCurrencyUtil(val); },
     /**
      * Increment item quantity
      */
@@ -160,9 +163,6 @@ export default {
     /**
      * Format price
      */
-    formatPrice(price) {
-      return parseFloat(price).toFixed(2);
-    },
 
     /**
      * Keep template total as a fixed line value
