@@ -35,7 +35,7 @@
                             </div>
                             <div class="remember">
                                 <span class="form-group custom">
-                                    <input type="checkbox" id="html">
+                                    <input type="checkbox" id="html" v-model="rememberMe">
                                     <label for="html">Remember Me</label>
                                 </span>
                                 <RouterLink class="link" to="/forgot-password">Forgot Password?</RouterLink>
@@ -65,6 +65,7 @@ import { useAuthStore } from '@/stores/auth';
 
 const email = ref('');
 const password = ref('');
+const rememberMe = ref(false);
 const isLoading = ref(false);
 const errorMessage = ref('');
 const router = useRouter();
@@ -84,7 +85,8 @@ const handleLogin = async () => {
             credentials: 'include',
             body: JSON.stringify({
                 email: email.value,
-                password: password.value
+                password: password.value,
+                remember_me: rememberMe.value
             })
         });
 
