@@ -45,6 +45,9 @@
                       <li>
                         <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
                       </li>
+                      <li v-if="authStore.user.role === 'admin'">
+                        <RouterLink class="dropdown-item" to="/admin">Admin Dashboard</RouterLink>
+                      </li>
                       <li>
                         <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
                       </li>
@@ -366,6 +369,9 @@
                       <li>
                         <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
                       </li>
+                      <li v-if="authStore.user.role === 'admin'">
+                        <RouterLink class="dropdown-item" to="/admin">Admin Dashboard</RouterLink>
+                      </li>
                       <li>
                         <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
                       </li>
@@ -406,49 +412,24 @@
                 <li class="nav-item">
                   <RouterLink class="nav-link" to="/shop">Shop</RouterLink>
                 </li>
-                <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="javascript:void(0)">
-                    Pages
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li>
-                      <RouterLink class="dropdown-item" to="/about">About Us</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/contact">Contact Us</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/checkout">Checkout</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/track-order">Track Order</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/wishlist">Wishlist</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/faq">Faq</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/login">Login</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/register">Register</RouterLink>
-                    </li>
-                    <li>
-                      <RouterLink class="dropdown-item" to="/policy">Policy</RouterLink>
-                    </li>
-                  </ul>
+                <li class="nav-item">
+                  <RouterLink class="nav-link" to="/faq">Faq</RouterLink>
                 </li>
                 <li class="nav-item">
-                  <RouterLink class="nav-link" to="/cart">Cart</RouterLink>
+                  <RouterLink class="nav-link" to="/policy">Policy</RouterLink>
                 </li>
                 <li class="nav-item">
                   <RouterLink class="nav-link" to="/blog">Blog</RouterLink>
                 </li>
                 <li class="nav-item">
-                  <RouterLink class="nav-link" to="/admin">Admin</RouterLink>
+                  <RouterLink class="nav-link" to="/contact">Contact Us</RouterLink>
                 </li>
+                <li class="nav-item">
+                  <RouterLink class="nav-link" to="/about">About Us</RouterLink>
+                </li>
+                <!-- <li class="nav-item">
+                  <RouterLink class="nav-link" to="/admin">Admin</RouterLink>
+                </li> -->
               </ul>
             </div>
           </nav>
