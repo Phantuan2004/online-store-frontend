@@ -8717,6 +8717,10 @@ iframe {
   justify-content: center;
 }
 
+.form-logo img {
+  width: 100%;
+}
+
 /* Responsive */
 @media only screen and (max-width: 420px) {
   .cr-login .cr-content-form .remember {
