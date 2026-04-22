@@ -2,24 +2,37 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
-    const accessToken = ref(null);
-    const user = ref(null);
+    // Khôi phục token từ localStorage khi khởi tạo store
+    const accessToken = ref(localStorage.getItem('access_token') || null);
+    const user = ref(JSON.parse(localStorage.getItem('user') || 'null'));
     const isAuthReady = ref(false);
 
     const setToken = (token) => {
         accessToken.value = token;
+        if (token) {
+            localStorage.setItem('access_token', token);
+        } else {
+            localStorage.removeItem('access_token');
+        }
     };
 
     const clearToken = () => {
         accessToken.value = null;
+        localStorage.removeItem('access_token');
     };
 
     const setUser = (userData) => {
         user.value = userData;
+        if (userData) {
+            localStorage.setItem('user', JSON.stringify(userData));
+        } else {
+            localStorage.removeItem('user');
+        }
     };
 
     const clearUser = () => {
         user.value = null;
+        localStorage.removeItem('user');
     };
 
     const fetchUser = async () => {
@@ -35,7 +48,7 @@ export const useAuthStore = defineStore('auth', () => {
 
             if (response.ok) {
                 const data = await response.json();
-                user.value = data;
+                setUser(data);
                 return true;
             } else {
                 // Token may be invalid
@@ -59,8 +72,8 @@ export const useAuthStore = defineStore('auth', () => {
 
             if (response.ok) {
                 const data = await response.json();
-                accessToken.value = data.access_token;
-                user.value = data.user;
+                setToken(data.access_token);
+                setUser(data.user);
                 return true;
             }
         } catch (error) {
@@ -77,6 +90,12 @@ export const useAuthStore = defineStore('auth', () => {
         // If no token or invalid, try to refresh
         if (!isValid) {
             isValid = await refreshToken();
+        }
+
+        // Nếu vẫn không hợp lệ, xóa dữ liệu cũ
+        if (!isValid) {
+            clearToken();
+            clearUser();
         }
 
         isAuthReady.value = true;

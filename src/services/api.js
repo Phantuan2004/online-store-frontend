@@ -10,6 +10,21 @@ const api = axios.create({
   },
 })
 
+// Cờ chống gọi refresh trùng lặp
+let isRefreshing = false
+let failedQueue = []
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach(prom => {
+    if (error) {
+      prom.reject(error)
+    } else {
+      prom.resolve(token)
+    }
+  })
+  failedQueue = []
+}
+
 // Request Interceptor: Thêm Token vào Header từ Pinia Store
 api.interceptors.request.use(
   (config) => {
@@ -26,23 +41,68 @@ api.interceptors.request.use(
   }
 )
 
-// Response Interceptor: Xử lý lỗi tập trung
+// Response Interceptor: Xử lý lỗi tập trung + Auto Refresh Token
 api.interceptors.response.use(
   (response) => {
     return response.data
   },
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config
     const status = error.response ? error.response.status : null
 
-    if (status === 401) {
-      // Hết hạn token hoặc chưa đăng nhập
-      const authStore = useAuthStore()
-      authStore.clearToken()
-      authStore.clearUser()
-      
-      // Clear localStorage just in case any old logic still uses it
-      localStorage.removeItem('access_token')
-      localStorage.removeItem('user')
+    // Nếu 401 và chưa thử refresh cho request này
+    if (status === 401 && !originalRequest._retry) {
+      // Nếu request bị 401 là chính request refresh → logout luôn
+      if (originalRequest.url?.includes('/refresh')) {
+        const authStore = useAuthStore()
+        authStore.clearToken()
+        authStore.clearUser()
+        return Promise.reject(error)
+      }
+
+      // Nếu đang refresh rồi → xếp hàng chờ
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject })
+        }).then(token => {
+          originalRequest.headers.Authorization = `Bearer ${token}`
+          return api(originalRequest)
+        }).catch(err => {
+          return Promise.reject(err)
+        })
+      }
+
+      originalRequest._retry = true
+      isRefreshing = true
+
+      try {
+        // Thử refresh token (dùng function trong auth store)
+        const authStore = useAuthStore()
+        const refreshSuccess = await authStore.refreshToken()
+
+        if (refreshSuccess) {
+          const newToken = authStore.accessToken
+          processQueue(null, newToken)
+
+          // Retry request gốc với token mới
+          originalRequest.headers.Authorization = `Bearer ${newToken}`
+          return api(originalRequest)
+        } else {
+          // Refresh thất bại → logout
+          processQueue(new Error('Refresh failed'), null)
+          authStore.clearToken()
+          authStore.clearUser()
+          return Promise.reject(error)
+        }
+      } catch (refreshError) {
+        processQueue(refreshError, null)
+        const authStore = useAuthStore()
+        authStore.clearToken()
+        authStore.clearUser()
+        return Promise.reject(refreshError)
+      } finally {
+        isRefreshing = false
+      }
     }
 
     return Promise.reject(error)

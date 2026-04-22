@@ -32,6 +32,15 @@ const orderService = {
      */
     cancelOrder(id) {
         return api.post(`orders/${id}/cancel`);
+    },
+
+    /**
+     * Update order (Admin only)
+     * @param {number} id - Order ID
+     * @param {Object} data - { status?, address_id?, notes? }
+     */
+    updateOrder(id, data) {
+        return api.put(`orders/${id}`, data);
     }
 };
 
