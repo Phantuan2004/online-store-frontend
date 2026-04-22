@@ -207,18 +207,17 @@ const totalPages = ref(1);
 const pageSize = ref(6);
 
 const trackingSteps = [
-    { key: 'confirmed', icon: 'ri-shield-check-line', label1: 'Order', label2: 'confirmed' },
-    { key: 'processing', icon: 'ri-settings-4-line', label1: 'Processing', label2: 'order' },
-    { key: 'quality', icon: 'ri-gift-line', label1: 'Quality', label2: 'check' },
-    { key: 'dispatched', icon: 'ri-truck-line', label1: 'Product', label2: 'dispatched' },
-    { key: 'delivered', icon: 'ri-home-5-line', label1: 'Product', label2: 'delivered' },
+    { key: 'pending', icon: 'ri-shopping-bag-line', label1: 'Đơn hàng', label2: 'Đã đặt' },
+    { key: 'paid', icon: 'ri-shield-check-line', label1: 'Đã xác', label2: 'nhận' },
+    { key: 'shipped', icon: 'ri-truck-line', label1: 'Đang giao', label2: 'hàng' },
+    { key: 'completed', icon: 'ri-home-smile-line', label1: 'Giao hàng', label2: 'thành công' },
 ];
 
 const stepMap = {
     'pending':   0,
     'paid':      1,
-    'shipped':   3,
-    'completed': 4,
+    'shipped':   2,
+    'completed': 3,
     'cancelled': -1,
 };
 
@@ -275,10 +274,10 @@ const getStatusClass = (status) => {
 
 const getStatusLabel = (status) => {
     const labels = {
-        'pending':   'Chờ xử lý',
-        'paid':      'Đã thanh toán',
+        'pending':   'Chờ xác nhận',
+        'paid':      'Đã xác nhận',
         'shipped':   'Đang giao hàng',
-        'completed': 'Đã hoàn thành',
+        'completed': 'Hoàn thành',
         'cancelled': 'Đã hủy',
     };
     return labels[status] || status;
