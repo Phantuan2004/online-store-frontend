@@ -248,6 +248,7 @@ const form = reactive({
     tags: '',
 });
 
+const isLoading = ref(false);
 const categories = ref([]);
 
 // Images
@@ -407,66 +408,63 @@ const validateForm = () => {
 };
 
 const buildPayload = () => {
-    const formData = new FormData();
-    formData.append('name', form.name);
-    formData.append('description', form.description || '');
-    formData.append('category_id', form.category_id);
-    // You could also map tags and short_description if your backend supports it.
+    // Backend StoreProductRequest expects:
+    // name, description, price, category_id, images (array of URLs), 
+    // variants (array of {sku, price, stock, attribute_value_ids})
 
-    // Images
-    images.value.forEach((img, i) => {
-        // Here we just append files. For real backend, it depends on API structure.
-        // If it accepts array of files:
-        formData.append(`images[${i}]`, img.file);
-        if (img.isPrimary) {
-            formData.append('primary_image_index', i);
-        }
-    });
+    const payload = {
+        name: form.name,
+        description: form.description || '',
+        price: form.price,
+        category_id: form.category_id,
+        // Since the backend expects URLs, we use placeholders for now 
+        // as there is no dedicated file upload endpoint provided.
+        images: images.value.map((img, i) => `https://via.placeholder.com/500?text=Product+Image+${i + 1}`),
+        variants: []
+    };
 
     if (!form.has_variants) {
-        formData.append('price', form.price);
-        // Backend expects 'variants' array even for simple products usually,
-        // so we create a default single variant.
-        formData.append('variants[0][sku]', form.sku || `PROD-${Date.now()}`);
-        formData.append('variants[0][price]', form.price);
-        formData.append('variants[0][stock]', form.stock);
-    } else {
-        // Base product price can be the first variant's price or minimum
-        formData.append('price', generatedVariants.value[0]?.price || 0);
-        
-        generatedVariants.value.forEach((v, i) => {
-            formData.append(`variants[${i}][sku]`, v.sku || `VAR-${Date.now()}-${i}`);
-            formData.append(`variants[${i}][price]`, v.price);
-            formData.append(`variants[${i}][stock]`, v.stock);
-            
-            // Add attributes logic if backend supports it via attribute_value_ids
-            // Note: Mapping { Color: 'Red' } to backend attribute_value_ids requires 
-            // the backend to accept text attributes or we need complex lookups.
-            // Assuming simplified payload for now:
-            Object.entries(v.attributes).forEach(([attrName, attrValue], attrIdx) => {
-                 formData.append(`variants[${i}][attributes][${attrIdx}][name]`, attrName);
-                 formData.append(`variants[${i}][attributes][${attrIdx}][value]`, attrValue);
-            });
+        payload.variants.push({
+            sku: form.sku || `PROD-${Date.now()}`,
+            price: form.price,
+            stock: form.stock
         });
+    } else {
+        payload.variants = generatedVariants.value.map(v => ({
+            sku: v.sku,
+            price: v.price,
+            stock: v.stock
+            // attribute_value_ids: [] // Mapping text attributes to IDs requires additional logic
+        }));
     }
 
-    // Status (if supported)
-    formData.append('status', form.status);
-
-    return formData;
+    return payload;
 };
 
 const publishProduct = async () => {
     if (!validateForm()) return;
+    
+    isLoading.value = true;
     try {
         const payload = buildPayload();
-        // Adjust endpoint based on backend requirements
-        // await api.post('/admin/products', payload, { headers: { 'Content-Type': 'multipart/form-data' }});
-        alert("Product published successfully! (Mock)");
-        // router.push('/admin/products');
+        const response = await api.post('/admin/products', payload);
+        
+        alert("Sản phẩm đã được đăng thành công!");
+        // Redirect to product list
+        window.location.href = '/admin/products'; 
     } catch (error) {
-        console.error(error);
-        alert("Error publishing product.");
+        console.error("Publish error:", error);
+        const errorMsg = error.response?.data?.message || "Có lỗi xảy ra khi đăng sản phẩm.";
+        const errors = error.response?.data?.errors;
+        
+        if (errors) {
+            const firstError = Object.values(errors)[0][0];
+            alert(`${errorMsg}: ${firstError}`);
+        } else {
+            alert(errorMsg);
+        }
+    } finally {
+        isLoading.value = false;
     }
 };
 
