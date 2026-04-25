@@ -38,7 +38,7 @@
                                         <tbody>
                                             <tr v-for="product in products" :key="product.id">
                                                 <td>
-                                                    <img class="tbl-thumb" :src="product.images?.[0]?.url || product.image?.url || 'https://via.placeholder.com/50'" alt="Product Image" style="object-fit: cover;">
+                                                    <img class="tbl-thumb" :src="product.primary_image || product.images?.[0] || 'https://via.placeholder.com/50'" alt="Product Image" style="object-fit: cover;">
                                                 </td>
                                                 <td>{{ product.name }}</td>
                                                 <td>{{ product.category?.name || 'N/A' }}</td>
