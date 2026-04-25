@@ -80,13 +80,15 @@ onUnmounted(() => {
     <Sidebar />
 
     <!-- Header & Main Content -->
-    <div class="cr-main-wrapper">
+    <div class="cr-main-wrapper d-flex flex-column min-vh-100">
       <Header />
       
       <!-- Content Area -->
-      <router-view />
+      <div class="flex-grow-1">
+        <router-view />
+      </div>
 
-      <Footer />
+      <Footer class="mt-auto" />
     </div>
   </div>
 </template>
