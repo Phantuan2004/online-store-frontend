@@ -232,6 +232,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue';
 import api from '@/services/api';
+import { uploadImage } from '@/services/cloudinary';
 
 // --- State ---
 const form = reactive({
@@ -407,7 +408,7 @@ const validateForm = () => {
     return true;
 };
 
-const buildPayload = () => {
+const buildPayload = (uploadedUrls = []) => {
     // Backend StoreProductRequest expects:
     // name, description, price, category_id, images (array of URLs), 
     // variants (array of {sku, price, stock, attribute_value_ids})
@@ -417,9 +418,7 @@ const buildPayload = () => {
         description: form.description || '',
         price: form.price,
         category_id: form.category_id,
-        // Since the backend expects URLs, we use placeholders for now 
-        // as there is no dedicated file upload endpoint provided.
-        images: images.value.map((img, i) => `https://via.placeholder.com/500?text=Product+Image+${i + 1}`),
+        images: uploadedUrls, 
         variants: []
     };
 
@@ -434,7 +433,6 @@ const buildPayload = () => {
             sku: v.sku,
             price: v.price,
             stock: v.stock
-            // attribute_value_ids: [] // Mapping text attributes to IDs requires additional logic
         }));
     }
 
@@ -446,23 +444,26 @@ const publishProduct = async () => {
     
     isLoading.value = true;
     try {
-        const payload = buildPayload();
+        // 1. Upload images to Cloudinary
+        // Ensure primary image is at the first index
+        const sortedImages = [...images.value].sort((a, b) => b.isPrimary - a.isPrimary);
+        
+        let uploadedUrls = [];
+        if (sortedImages.length > 0) {
+            const uploadPromises = sortedImages.map(img => uploadImage(img.file));
+            uploadedUrls = await Promise.all(uploadPromises);
+        }
+
+        // 2. Build payload with real Cloudinary URLs
+        const payload = buildPayload(uploadedUrls);
         const response = await api.post('/admin/products', payload);
         
         alert("Sản phẩm đã được đăng thành công!");
-        // Redirect to product list
         window.location.href = '/admin/products'; 
     } catch (error) {
         console.error("Publish error:", error);
-        const errorMsg = error.response?.data?.message || "Có lỗi xảy ra khi đăng sản phẩm.";
-        const errors = error.response?.data?.errors;
-        
-        if (errors) {
-            const firstError = Object.values(errors)[0][0];
-            alert(`${errorMsg}: ${firstError}`);
-        } else {
-            alert(errorMsg);
-        }
+        const errorMsg = error.response?.data?.message || error.message || "Có lỗi xảy ra khi đăng sản phẩm.";
+        alert(errorMsg);
     } finally {
         isLoading.value = false;
     }
