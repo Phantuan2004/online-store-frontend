@@ -1,457 +1,311 @@
 <template>
     <div>
         <!-- main content -->
-		<div class="cr-main-content">
-			<div class="container-fluid">
-				<!-- Page title & breadcrumb -->
-				<div class="cr-page-title cr-page-title-2">
-					<div class="cr-breadcrumb">
-						<h5>Product List</h5>
-						<ul>
-							<li><router-link to="/admin">Carrot</router-link></li>
-							<li>Product List</li>
-						</ul>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-12">
-						<div class="cr-card card-default product-list">
-							<div class="cr-card-content ">
-								<div class="table-responsive">
-									<table id="product_list" class="table" style="width:100%">
-										<thead>
-											<tr>
-												<th>Product</th>
-												<th>Name</th>
-												<th>Price</th>
-												<th>Offer</th>
-												<th>Purchased</th>
-												<th>Stock</th>
-												<th>Status</th>
-												<th>Date</th>
-												<th>Action</th>
-											</tr>
-										</thead>
+        <div class="cr-main-content">
+            <div class="container-fluid">
+                <!-- Page title & breadcrumb -->
+                <div class="cr-page-title cr-page-title-2">
+                    <div class="cr-breadcrumb">
+                        <h5>Product List</h5>
+                        <ul>
+                            <li><router-link to="/admin">Admin</router-link></li>
+                            <li>Product List</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="cr-card card-default product-list">
+                            <div class="cr-card-content ">
+                                <div v-if="isLoading" class="text-center py-5">
+                                    <div class="spinner-border text-success" role="status"></div>
+                                    <p class="mt-2">Đang tải dữ liệu...</p>
+                                </div>
+                                <div class="table-responsive" v-else>
+                                    <table id="product_list" class="table" style="width:100%">
+                                        <thead>
+                                            <tr>
+                                                <th>Image</th>
+                                                <th>Name</th>
+                                                <th>Category</th>
+                                                <th>Price</th>
+                                                <th>Total Stock</th>
+                                                <th>Date</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
 
-										<tbody>
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/1.jpg"
-														alt="Product Image"></td>
-												<td>Mens t-shirt</td>
-												<td>$20</td>
-												<td>25% OFF</td>
-												<td>61</td>
-												<td>5421</td>
-												<td><span class="active">active</span></td>
-												<td>05/11/2023</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
+                                        <tbody>
+                                            <tr v-for="product in products" :key="product.id">
+                                                <td>
+                                                    <img class="tbl-thumb" :src="product.images?.[0]?.url || product.image?.url || 'https://via.placeholder.com/50'" alt="Product Image" style="object-fit: cover;">
+                                                </td>
+                                                <td>{{ product.name }}</td>
+                                                <td>{{ product.category?.name || 'N/A' }}</td>
+                                                <td>{{ formatCurrency(product.price) }}</td>
+                                                <td>{{ getTotalStock(product) }}</td>
+                                                <td>{{ formatDate(product.created_at) }}</td>
+                                                <td>
+                                                    <div class="dropdown d-flex justify-content-center">
+                                                        <button class="btn btn-sm btn-link text-dark text-decoration-none dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="box-shadow: none;">
+                                                            <i class="ri-more-2-fill fs-5"></i>
+                                                        </button>
+                                                        <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                                                            <li><a class="dropdown-item" href="#" @click.prevent="openView(product)"><i class="ri-eye-line me-2"></i> View</a></li>
+                                                            <li><a class="dropdown-item" href="#" @click.prevent="openEdit(product)"><i class="ri-edit-line me-2"></i> Edit</a></li>
+                                                            <li><hr class="dropdown-divider"></li>
+                                                            <li><a class="dropdown-item text-danger" href="#" @click.prevent="confirmDelete(product)"><i class="ri-delete-bin-line me-2"></i> Delete</a></li>
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            <tr v-if="products.length === 0">
+                                                <td colspan="7" class="text-center py-4">Không có sản phẩm nào.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
 
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/2.jpg"
-														alt="Product Image"></td>
-												<td>Sofa seat furniture</td>
-												<td>$400</td>
-												<td>30% OFF</td>
-												<td>80</td>
-												<td>25</td>
-												<td><span class="pending">pending</span></td>
-												<td>12/08/2022</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
+                                <!-- Pagination -->
+                                <div v-if="pagination.last_page > 1" class="mt-4 d-flex justify-content-center">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination pagination-sm">
+                                            <li class="page-item" :class="{ disabled: pagination.current_page === 1 }">
+                                                <a @click.prevent="handlePageChange(pagination.current_page - 1)" class="page-link" href="#">Trước</a>
+                                            </li>
+                                            
+                                            <li v-for="page in pagination.last_page" :key="page" class="page-item" :class="{ active: pagination.current_page === page }">
+                                                <a @click.prevent="handlePageChange(page)" class="page-link" href="#">{{ page }}</a>
+                                            </li>
 
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/3.jpg"
-														alt="Product Image"></td>
-												<td>Night lamp bedroom</td>
-												<td>$59</td>
-												<td>30% OFF</td>
-												<td>100</td>
-												<td>56</td>
-												<td><span class="disable">disable</span></td>
-												<td>25/05/2021</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
+                                            <li class="page-item" :class="{ disabled: pagination.current_page === pagination.last_page }">
+                                                <a @click.prevent="handlePageChange(pagination.current_page + 1)" class="page-link" href="#">Sau</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
 
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/4.jpg"
-														alt="Product Image"></td>
-												<td>Round Cap hoodies</td>
-												<td>$10</td>
-												<td>30% OFF</td>
-												<td>250</td>
-												<td>568</td>
-												<td><span class="active">active</span></td>
-												<td>13/09/2019</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/5.jpg"
-														alt="Product Image"></td>
-												<td>Digital watch black</td>
-												<td>$582</td>
-												<td>30% OFF</td>
-												<td>220</td>
-												<td>264</td>
-												<td><span class="pending">pending</span></td>
-												<td>18/02/2023</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
+        <!-- Right Drawer for View/Edit -->
+        <div class="offcanvas offcanvas-end" :class="{ show: isDrawerOpen }" tabindex="-1" :style="{ visibility: isDrawerOpen ? 'visible' : 'hidden' }" style="width: 450px; z-index: 1050;">
+            <div class="offcanvas-header border-bottom">
+                <h5 class="offcanvas-title">{{ isEditing ? 'Edit Product' : 'Product Details' }}</h5>
+                <button type="button" class="btn-close" @click="closeDrawer"></button>
+            </div>
+            <div class="offcanvas-body" v-if="selectedProduct">
+                <form @submit.prevent="saveProduct">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Name</label>
+                        <input type="text" class="form-control" v-model="selectedProduct.name" :readonly="!isEditing" :class="{'bg-light': !isEditing}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Price</label>
+                        <input type="number" class="form-control" v-model="selectedProduct.price" :readonly="!isEditing" :class="{'bg-light': !isEditing}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Category ID</label>
+                        <input type="number" class="form-control" v-model="selectedProduct.category_id" :readonly="!isEditing" :class="{'bg-light': !isEditing}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Description</label>
+                        <textarea class="form-control" v-model="selectedProduct.description" rows="4" :readonly="!isEditing" :class="{'bg-light': !isEditing}"></textarea>
+                    </div>
 
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/6.jpg"
-														alt="Product Image"></td>
-												<td>Digital camera dslr</td>
-												<td>$1254</td>
-												<td>20% OFF</td>
-												<td>154</td>
-												<td>365</td>
-												<td><span class="disable">disable</span></td>
-												<td>16/11/2021</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
+                    <div class="mt-4 pt-3 border-top d-flex justify-content-end gap-2">
+                        <template v-if="!isEditing">
+                            <button type="button" class="btn btn-primary px-4" @click="isEditing = true">Edit</button>
+                        </template>
+                        <template v-else>
+                            <button type="button" class="btn btn-secondary px-4" @click="cancelEdit">Cancel</button>
+                            <button type="submit" class="btn btn-success px-4" :disabled="isSaving">
+                                {{ isSaving ? 'Saving...' : 'Save' }}
+                            </button>
+                        </template>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="offcanvas-backdrop fade show" v-if="isDrawerOpen" @click="closeDrawer" style="z-index: 1040;"></div>
 
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/7.jpg"
-														alt="Product Image"></td>
-												<td>Headphone beater m3</td>
-												<td>$68</td>
-												<td>30% OFF</td>
-												<td>159</td>
-												<td>789</td>
-												<td><span class="active">active</span></td>
-												<td>23/04/2024</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade show" tabindex="-1" :style="{ display: showDeleteModal ? 'block' : 'none' }" style="background: rgba(0,0,0,0.5); z-index: 1060;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-danger">Are you sure?</h5>
+                        <button type="button" class="btn-close" @click="showDeleteModal = false"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="fs-6 mb-0">Bạn có chắc muốn xóa sản phẩm này?</p>
+                        <p class="text-muted small mt-1" v-if="productToDelete">Sản phẩm: {{ productToDelete.name }}</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @click="showDeleteModal = false">Cancel</button>
+                        <button type="button" class="btn btn-danger" @click="deleteProduct" :disabled="isDeleting">
+                            {{ isDeleting ? 'Deleting...' : 'Delete' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/8.jpg"
-														alt="Product Image"></td>
-												<td>Camera dron fly b2</td>
-												<td>$120</td>
-												<td>80% OFF</td>
-												<td>12</td>
-												<td>325</td>
-												<td><span class="active">active</span></td>
-												<td>21/06/2023</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/9.jpg"
-														alt="Product Image"></td>
-												<td>Drill machine dregon g1</td>
-												<td>$20</td>
-												<td>10% OFF</td>
-												<td>254</td>
-												<td>36</td>
-												<td><span class="pending">pending</span></td>
-												<td>12/12/2022</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/10.jpg"
-														alt="Product Image"></td>
-												<td>Fly cry dron camera</td>
-												<td>$548</td>
-												<td>50% OFF</td>
-												<td>25</td>
-												<td>12</td>
-												<td><span class="disable">disable</span></td>
-												<td>12/05/2023</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/5.jpg"
-														alt="Product Image"></td>
-												<td>Black watches s20</td>
-												<td>$254</td>
-												<td>30% OFF</td>
-												<td>65</td>
-												<td>12</td>
-												<td><span class="active">active</span></td>
-												<td>15/06/2012</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/6.jpg"
-														alt="Product Image"></td>
-												<td>Dslr digital camera</td>
-												<td>$325</td>
-												<td>40% OFF</td>
-												<td>265</td>
-												<td>21</td>
-												<td><span class="active">active</span></td>
-												<td>25/04/2019</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/7.jpg"
-														alt="Product Image"></td>
-												<td>Headphone drag g9</td>
-												<td>$65</td>
-												<td>40% OFF</td>
-												<td>487</td>
-												<td>35</td>
-												<td><span class="disable">disable</span></td>
-												<td>25/08/2022</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/8.jpg"
-														alt="Product Image"></td>
-												<td>Orbite dron ss2</td>
-												<td>$754</td>
-												<td>40% OFF</td>
-												<td>12</td>
-												<td>48</td>
-												<td><span class="active">active</span></td>
-												<td>15/06/2015</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-
-											<tr>
-												<td><img class="tbl-thumb" src="@/assets/admin/img/product/9.jpg"
-														alt="Product Image"></td>
-												<td>Drill machine br6</td>
-												<td>$548</td>
-												<td>30% OFF</td>
-												<td>250</td>
-												<td>84</td>
-												<td><span class="active">active</span></td>
-												<td>16/11/2023</td>
-												<td>
-													<div class="d-flex justify-content-center">
-														<button type="button"
-															class="btn btn-outline-success dropdown-toggle dropdown-toggle-split"
-															data-bs-toggle="dropdown" aria-haspopup="true"
-															aria-expanded="false" data-display="static">
-															<span class="sr-only"><i
-																	class="ri-settings-3-line"></i></span>
-														</button>
-														<div class="dropdown-menu">
-															<a class="dropdown-item" href="#">Edit</a>
-															<a class="dropdown-item" href="#">Delete</a>
-														</div>
-													</div>
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
     </div>
 </template>
 
-<script>
-export default {
-    name: "Products",
-}
+<script setup>
+import { ref, reactive, onMounted } from 'vue';
+import api from '@/services/api';
+import { formatCurrency } from '@/utils/currency';
+
+const products = ref([]);
+const isLoading = ref(false);
+const pagination = reactive({
+    current_page: 1,
+    last_page: 1,
+    total: 0
+});
+
+const fetchProducts = async (page = 1) => {
+    isLoading.value = true;
+    try {
+        const response = await api.get(`/products?page=${page}`);
+        products.value = response.data;
+        if (response.meta) {
+            pagination.current_page = response.meta.current_page;
+            pagination.last_page = response.meta.last_page;
+            pagination.total = response.meta.total;
+        }
+    } catch (error) {
+        console.error('Failed to fetch products:', error);
+    } finally {
+        isLoading.value = false;
+    }
+};
+
+onMounted(() => {
+    fetchProducts();
+});
+
+const handlePageChange = (page) => {
+    if (page >= 1 && page <= pagination.last_page) {
+        fetchProducts(page);
+    }
+};
+
+const getTotalStock = (product) => {
+    if (!product.variants || product.variants.length === 0) return 0;
+    return product.variants.reduce((sum, v) => sum + (v.stock || 0), 0);
+};
+
+const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('vi-VN');
+};
+
+// --- Drawer Logic ---
+const isDrawerOpen = ref(false);
+const isEditing = ref(false);
+const isSaving = ref(false);
+const selectedProduct = ref(null);
+let originalProductData = null;
+
+const openView = (product) => {
+    selectedProduct.value = { ...product };
+    originalProductData = { ...product };
+    isEditing.value = false;
+    isDrawerOpen.value = true;
+};
+
+const openEdit = (product) => {
+    selectedProduct.value = { ...product };
+    originalProductData = { ...product };
+    isEditing.value = true;
+    isDrawerOpen.value = true;
+};
+
+const closeDrawer = () => {
+    isDrawerOpen.value = false;
+    setTimeout(() => {
+        selectedProduct.value = null;
+        originalProductData = null;
+        isEditing.value = false;
+    }, 300); // Wait for transition
+};
+
+const cancelEdit = () => {
+    selectedProduct.value = { ...originalProductData };
+    isEditing.value = false;
+};
+
+const saveProduct = async () => {
+    isSaving.value = true;
+    try {
+        const payload = {
+            name: selectedProduct.value.name,
+            price: selectedProduct.value.price,
+            category_id: selectedProduct.value.category_id,
+            description: selectedProduct.value.description
+        };
+        await api.put(`/admin/products/${selectedProduct.value.id}`, payload);
+        
+        alert('Cập nhật sản phẩm thành công!');
+        fetchProducts(pagination.current_page); // Reload list
+        isEditing.value = false;
+        originalProductData = { ...selectedProduct.value }; // Update original data
+    } catch (error) {
+        console.error('Failed to update product:', error);
+        alert(error.response?.data?.message || 'Có lỗi xảy ra khi lưu sản phẩm.');
+    } finally {
+        isSaving.value = false;
+    }
+};
+
+// --- Delete Logic ---
+const showDeleteModal = ref(false);
+const isDeleting = ref(false);
+const productToDelete = ref(null);
+
+const confirmDelete = (product) => {
+    productToDelete.value = product;
+    showDeleteModal.value = true;
+};
+
+const deleteProduct = async () => {
+    if (!productToDelete.value) return;
+    
+    isDeleting.value = true;
+    try {
+        await api.delete(`/admin/products/${productToDelete.value.id}`);
+        alert('Xóa sản phẩm thành công!');
+        showDeleteModal.value = false;
+        fetchProducts(pagination.current_page);
+    } catch (error) {
+        console.error('Failed to delete product:', error);
+        alert('Không thể xóa sản phẩm.');
+    } finally {
+        isDeleting.value = false;
+        productToDelete.value = null;
+    }
+};
+
 </script>
+
+<style scoped>
+.tbl-thumb {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+}
+.dropdown-toggle::after {
+    display: none; /* Hide the default caret */
+}
+.offcanvas {
+    transition: transform 0.3s ease-in-out;
+}
+</style>
