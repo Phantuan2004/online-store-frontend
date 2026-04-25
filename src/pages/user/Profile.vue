@@ -10,10 +10,10 @@
                                 <h3 class="cr-sidebar-title">My Account</h3>
                             </div>
                             <div class="cr-sb-block-content mt-3">
-                                <div class="nav flex-column nav-pills cr-tab-list" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                    <button class="nav-link active" id="v-pills-profile-tab" data-bs-toggle="pill" data-bs-target="#v-pills-profile" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="true">Account Details</button>
-                                    <button class="nav-link" id="v-pills-orders-tab" data-bs-toggle="pill" data-bs-target="#v-pills-orders" type="button" role="tab" aria-controls="v-pills-orders" aria-selected="false">My Orders</button>
-                                    <button class="nav-link" id="v-pills-addresses-tab" data-bs-toggle="pill" data-bs-target="#v-pills-addresses" type="button" role="tab" aria-controls="v-pills-addresses" aria-selected="false">Manage Addresses</button>
+                                <div class="nav flex-column nav-pills cr-tab-list" role="tablist" aria-orientation="vertical">
+                                    <button class="nav-link" :class="{ active: activeTab === 'profile' }" @click="activeTab = 'profile'" type="button">Account Details</button>
+                                    <button class="nav-link" :class="{ active: activeTab === 'orders' }" @click="activeTab = 'orders'" type="button">My Orders</button>
+                                    <button class="nav-link" :class="{ active: activeTab === 'addresses' }" @click="activeTab = 'addresses'" type="button">Manage Addresses</button>
                                 </div>
                             </div>
                         </div>
@@ -25,17 +25,20 @@
                     <div class="tab-content cr-checkout-content" id="v-pills-tabContent">
                         
                         <!-- Account Details Tab -->
-                        <div class="tab-pane fade show active" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                        <div class="tab-pane fade show active" v-if="activeTab === 'profile'">
                             <div class="cr-checkout-inner">
                                 <div class="cr-checkout-wrap mb-30">
                                     <div class="cr-checkout-block cr-check-bill">
-                                        <h3 class="cr-checkout-title">Account Information</h3>
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <h3 class="cr-checkout-title mb-0">Account Information</h3>
+                                            <button type="button" class="btn btn-sm btn-outline-success" @click="isEditingProfile = true" v-if="!isEditingProfile">Edit Profile</button>
+                                        </div>
                                         <div class="cr-bl-block-content">
                                             <div class="cr-check-bill-form">
-                                                <form action="#" method="post" @submit.prevent>
-                                                    <span class="cr-bill-wrap cr-bill-half">
+                                                <form action="#" method="post" @submit.prevent="updateProfile">
+                                                    <span class="cr-bill-wrap" style="width: 100%;">
                                                         <label>Full Name*</label>
-                                                        <input type="text" name="name" v-model="accountInfo.name" required>
+                                                        <input type="text" name="name" v-model="accountInfo.name" required :disabled="!isEditingProfile" :style="!isEditingProfile ? 'background-color: #f8f9fa;' : ''">
                                                     </span>
                                                     <span class="cr-bill-wrap cr-bill-half">
                                                         <label>Email Address*</label>
@@ -43,10 +46,48 @@
                                                     </span>
                                                     <span class="cr-bill-wrap cr-bill-half">
                                                         <label>Phone Number</label>
-                                                        <input type="text" name="phone" v-model="accountInfo.phone" placeholder="Enter your phone">
+                                                        <input type="text" name="phone" v-model="accountInfo.phone" placeholder="Enter your phone" :disabled="!isEditingProfile" :style="!isEditingProfile ? 'background-color: #f8f9fa;' : ''">
                                                     </span>
-                                                    <span class="col-12 mb-3 d-flex gap-3" style="margin-left: 14px;">
-                                                        <button class="cr-button" type="button">Save Changes</button>
+                                                    
+                                                    <span class="col-12 mb-3 d-flex gap-3" style="margin-left: 14px; margin-top: 24px;" v-if="isEditingProfile">
+                                                        <button class="cr-button" type="submit" :disabled="isUpdatingProfile">
+                                                            {{ isUpdatingProfile ? 'Saving...' : 'Save Changes' }}
+                                                        </button>
+                                                        <button class="cr-button" style="background-color: #6c757d; color: white;" type="button" @click="cancelEditProfile" :disabled="isUpdatingProfile">Cancel</button>
+                                                    </span>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="cr-checkout-wrap mb-30">
+                                    <div class="cr-checkout-block cr-check-bill">
+                                        <div class="d-flex justify-content-between align-items-center mb-4">
+                                            <h3 class="cr-checkout-title mb-0">Change Password</h3>
+                                            <button type="button" class="btn btn-sm btn-outline-success" @click="isEditingPassword = true" v-if="!isEditingPassword">Edit Password</button>
+                                        </div>
+                                        <div class="cr-bl-block-content">
+                                            <div class="cr-check-bill-form">
+                                                <form action="#" method="post" @submit.prevent="updatePassword">
+                                                    <span class="cr-bill-wrap" style="width: 100%;">
+                                                        <label>Current Password*</label>
+                                                        <input type="password" name="current_password" v-model="passwordInfo.current_password" placeholder="Enter current password" required :disabled="!isEditingPassword" :style="!isEditingPassword ? 'background-color: #f8f9fa;' : ''">
+                                                    </span>
+                                                    <span class="cr-bill-wrap cr-bill-half">
+                                                        <label>New Password*</label>
+                                                        <input type="password" name="new_password" v-model="passwordInfo.new_password" placeholder="Enter new password" required :disabled="!isEditingPassword" :style="!isEditingPassword ? 'background-color: #f8f9fa;' : ''">
+                                                    </span>
+                                                    <span class="cr-bill-wrap cr-bill-half">
+                                                        <label>Confirm New Password*</label>
+                                                        <input type="password" name="confirm_password" v-model="passwordInfo.confirm_password" placeholder="Confirm new password" required :disabled="!isEditingPassword" :style="!isEditingPassword ? 'background-color: #f8f9fa;' : ''">
+                                                    </span>
+
+                                                    <span class="col-12 mb-3 d-flex gap-3" style="margin-left: 14px; margin-top: 24px;" v-if="isEditingPassword">
+                                                        <button class="cr-button" type="submit" :disabled="isUpdatingPassword">
+                                                            {{ isUpdatingPassword ? 'Saving...' : 'Save Password' }}
+                                                        </button>
+                                                        <button class="cr-button" style="background-color: #6c757d; color: white;" type="button" @click="cancelEditPassword" :disabled="isUpdatingPassword">Cancel</button>
                                                     </span>
                                                 </form>
                                             </div>
@@ -57,7 +98,7 @@
                         </div>
 
                         <!-- My Orders Tab -->
-                        <div class="tab-pane fade" id="v-pills-orders" role="tabpanel" aria-labelledby="v-pills-orders-tab">
+                        <div class="tab-pane fade show active" v-if="activeTab === 'orders'">
                             <div class="cr-checkout-inner">
                                 <div class="cr-checkout-wrap mb-30">
                                     <div class="cr-checkout-block">
@@ -152,7 +193,7 @@
                         </div>
 
                         <!-- Manage Addresses Tab -->
-                        <div class="tab-pane fade" id="v-pills-addresses" role="tabpanel" aria-labelledby="v-pills-addresses-tab">
+                        <div class="tab-pane fade show active" v-if="activeTab === 'addresses'">
                             <div class="cr-checkout-inner">
                                 <div class="cr-checkout-wrap mb-30">
                                     <div class="cr-checkout-block cr-check-bill">
@@ -232,12 +273,14 @@ import { ref, reactive, watch, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth';
 import addressService from '@/services/addressService';
 import orderService from '@/services/orderService';
+import api from '@/services/api';
 
 const authStore = useAuthStore();
 
 const addresses = ref([]);
 const isLoadingAddresses = ref(false);
 const isSavingAddress = ref(false);
+const activeTab = ref('profile');
 
 const orders = ref([]);
 const isLoadingOrders = ref(false);
@@ -254,11 +297,93 @@ const accountInfo = reactive({
     phone: ''
 });
 
+const isEditingProfile = ref(false);
+const isUpdatingProfile = ref(false);
+
 const populateUserData = () => {
     if (authStore.user) {
         accountInfo.name = authStore.user.name || '';
         accountInfo.email = authStore.user.email || '';
         accountInfo.phone = authStore.user.phone || '';
+    }
+};
+
+const cancelEditProfile = () => {
+    isEditingProfile.value = false;
+    populateUserData();
+};
+
+const passwordInfo = reactive({
+    current_password: '',
+    new_password: '',
+    confirm_password: ''
+});
+
+const isEditingPassword = ref(false);
+const isUpdatingPassword = ref(false);
+
+const cancelEditPassword = () => {
+    isEditingPassword.value = false;
+    passwordInfo.current_password = '';
+    passwordInfo.new_password = '';
+    passwordInfo.confirm_password = '';
+};
+
+const updatePassword = async () => {
+    if (passwordInfo.new_password !== passwordInfo.confirm_password) {
+        alert('Mật khẩu mới và mật khẩu xác nhận không khớp.');
+        return;
+    }
+
+    isUpdatingPassword.value = true;
+    try {
+        const payload = {
+            current_password: passwordInfo.current_password,
+            password: passwordInfo.new_password
+        };
+
+        const response = await api.put('/user/profile', payload);
+        
+        if (response.user) {
+            authStore.setUser(response.user);
+        } else {
+            await authStore.fetchUser();
+        }
+        
+        alert('Cập nhật mật khẩu thành công!');
+        cancelEditPassword();
+    } catch (error) {
+        console.error('Failed to update password:', error);
+        alert(error.response?.data?.message || 'Có lỗi xảy ra khi cập nhật mật khẩu.');
+    } finally {
+        isUpdatingPassword.value = false;
+    }
+};
+
+const updateProfile = async () => {
+    isUpdatingProfile.value = true;
+    try {
+        const payload = {
+            name: accountInfo.name,
+            phone: accountInfo.phone,
+        };
+        
+        const response = await api.put('/user/profile', payload);
+        
+        if (response.user) {
+            authStore.setUser(response.user);
+        } else {
+            await authStore.fetchUser();
+        }
+        
+        alert('Cập nhật thông tin thành công!');
+        isEditingProfile.value = false;
+        populateUserData();
+    } catch (error) {
+        console.error('Failed to update profile:', error);
+        alert(error.response?.data?.message || 'Có lỗi xảy ra khi cập nhật thông tin.');
+    } finally {
+        isUpdatingProfile.value = false;
     }
 };
 
