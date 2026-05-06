@@ -21,9 +21,7 @@
 								<li><router-link to="/admin/add-product" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Dashboard', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>Add Product</router-link></li>
 								<li><router-link to="/admin/add-category" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Dashboard', true)"><i
-											class="ri-checkbox-blank-circle-line"></i>Add Category</router-link></li>
-								<li><router-link to="/admin/add-sub-category" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Dashboard', true)"><i
-											class="ri-checkbox-blank-circle-line"></i>Add Sub Category</router-link></li>
+											class="ri-checkbox-blank-circle-line"></i>Categories</router-link></li>
 								<li><router-link to="/admin/orders" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Dashboard', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>Order List</router-link></li>
 
@@ -109,7 +107,7 @@ const syncMenu = () => {
     }
 
     const menus = {
-        Dashboard: ['/admin', '/admin/products', '/admin/add-product', '/admin/add-category', '/admin/add-sub-category', '/admin/orders'],
+        Dashboard: ['/admin', '/admin/products', '/admin/add-product', '/admin/add-category', '/admin/orders'],
         Authentication: ['/admin/auth/login', '/admin/auth/register', '/admin/auth/forgot-password', '/admin/auth/two-factor', '/admin/auth/reset-password', '/admin/auth/remember'],
         Vendor: ['/admin/vendor-profile', '/admin/vendor-update', '/admin/vendor-list', '/admin/invoice']
     };

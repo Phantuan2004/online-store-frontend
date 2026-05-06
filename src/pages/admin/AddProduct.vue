@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <!-- Page title & breadcrumb -->
             <div class="cr-page-title cr-page-title-2 mb-4 d-flex justify-content-between align-items-center">
-                <div class="cr-breadcrumb">
+                <div class="cr-breadcrumb" style="margin-right: 15px;">
                     <h5>Add Product</h5>
                     <ul>
                         <li><router-link to="/admin">Admin</router-link></li>
@@ -11,8 +11,8 @@
                     </ul>
                 </div>
                 <div class="d-none d-lg-flex gap-2">
-                    <button class="btn btn-outline-secondary" @click="saveDraft">Save Draft</button>
-                    <button class="btn btn-primary" @click="publishProduct">Publish Product</button>
+                    <button class="btn btn-outline-secondary h-50" style="font-size: 14px; font-weight: 500;" @click="saveDraft">Save Draft</button>
+                    <button class="btn btn-primary h-50" style="font-size: 14px; font-weight: 500;" @click="publishProduct">Publish Product</button>
                 </div>
             </div>
 

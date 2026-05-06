@@ -122,9 +122,9 @@ const routes = [
         component: () => import('../pages/admin/AddCategory.vue')
       },
       {
+        // Redirect old sub-category route to unified page
         path: 'add-sub-category',
-        name: 'AdminAddSubCategory',
-        component: () => import('../pages/admin/AddSubCategory.vue')
+        redirect: '/admin/add-category'
       },
       {
         path: 'orders',
