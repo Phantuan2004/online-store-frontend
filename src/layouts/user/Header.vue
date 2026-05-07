@@ -45,9 +45,9 @@
                       <li>
                         <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
                       </li>
-                      <li v-if="authStore.user.role === 'admin'">
+                      <!-- <li v-if="authStore.user.role === 'admin'">
                         <RouterLink class="dropdown-item" to="/admin">Admin Dashboard</RouterLink>
-                      </li>
+                      </li> -->
                       <li>
                         <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
                       </li>
@@ -369,9 +369,9 @@
                       <li>
                         <RouterLink class="dropdown-item" to="/profile">Profile</RouterLink>
                       </li>
-                      <li v-if="authStore.user.role === 'admin'">
+                      <!-- <li v-if="authStore.user.role === 'admin'">
                         <RouterLink class="dropdown-item" to="/admin">Admin Dashboard</RouterLink>
-                      </li>
+                      </li> -->
                       <li>
                         <a class="dropdown-item" href="javascript:void(0)" @click.prevent="handleLogout">Logout</a>
                       </li>

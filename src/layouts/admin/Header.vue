@@ -89,18 +89,18 @@
 								</div>
 								<div class="cr-hover-drop-panel right">
 									<div class="details">
-										<h6>Wiley Waites</h6>
-										<p>wiley@example.com</p>
+										<h6>{{ user?.name || 'Admin User' }}</h6>
+										<p>{{ user?.email || 'admin@example.com' }}</p>
 									</div>
 									<ul class="border-top">
-										<li><a href="team-profile.html">Profile</a></li>
-										<li><a href="faq.html">Help</a></li>
-										<li><a href="chatapp.html">Messages</a></li>
-										<li><a href="project-overview.html">Projects</a></li>
-										<li><a href="team-update.html">Settings</a></li>
+										<li><router-link to="/admin/vendor-profile">Profile</router-link></li>
+										<li><a href="javascript:void(0)">Help</a></li>
+										<li><a href="javascript:void(0)">Messages</a></li>
+										<li><a href="javascript:void(0)">Projects</a></li>
+										<li><a href="javascript:void(0)">Settings</a></li>
 									</ul>
 									<ul class="border-top">
-										<li><a href="signin.html"><i class="ri-logout-circle-r-line"></i>Logout</a></li>
+										<li><a href="javascript:void(0)" @click.prevent="handleLogout"><i class="ri-logout-circle-r-line"></i>Logout</a></li>
 									</ul>
 								</div>
 							</div>
@@ -115,7 +115,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import api from '@/services/api';
+
 import flagUs from '@/assets/admin/img/flag/us.png';
 import flagIn from '@/assets/admin/img/flag/in.png';
 import flagDe from '@/assets/admin/img/flag/de.png';
@@ -130,7 +134,25 @@ import app6 from '@/assets/admin/img/apps/6.png';
 import userImg from '@/assets/admin/img/user/1.jpg';
 import Notify from '@/components/admin/Notify.vue';
 
+const router = useRouter();
+const authStore = useAuthStore();
 const showNotify = ref(false);
+
+const user = computed(() => authStore.user);
+
+const handleLogout = async () => {
+	try {
+		// Optional: notify backend about logout
+		await api.post('/logout', {}, { withCredentials: true });
+	} catch (err) {
+		console.error('Logout error:', err);
+	} finally {
+		// Always clear local state
+		authStore.clearToken();
+		authStore.clearUser();
+		router.push('/admin/login');
+	}
+};
 </script>
 
 <style scoped>

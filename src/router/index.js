@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 import UserLayout from '../layouts/user/UserLayout.vue'
 import AdminLayout from '../layouts/admin/AdminLayout.vue'
 import AuthLayout from '../layouts/admin/AuthLayout.vue'
@@ -37,7 +38,8 @@ const routes = [
       {
         path: 'checkout',
         name: 'Checkout',
-        component: () => import('../pages/user/Checkout.vue')
+        component: () => import('../pages/user/Checkout.vue'),
+        meta: { requiresAuth: true }
       },
       {
         path: 'contact',
@@ -92,101 +94,99 @@ const routes = [
       {
         path: 'profile',
         name: 'Profile',
-        component: () => import('../pages/user/Profile.vue')
+        component: () => import('../pages/user/Profile.vue'),
+        meta: { requiresAuth: true }
       }
     ]
   },
-  // Nhóm các trang Admin sử dụng AdminLayout
+  // Nhóm các trang Admin
   {
     path: '/admin',
-    component: AdminLayout,
     children: [
-      {
-        path: '',
-        name: 'AdminHome',
-        component: () => import('../pages/admin/Home.vue')
-      },
-      {
-        path: 'products',
-        name: 'AdminProducts',
-        component: () => import('../pages/admin/Products.vue')
-      },
-      {
-        path: 'add-product',
-        name: 'AdminAddProduct',
-        component: () => import('../pages/admin/AddProduct.vue')
-      },
-      {
-        path: 'add-category',
-        name: 'AdminAddCategory',
-        component: () => import('../pages/admin/AddCategory.vue')
-      },
-      {
-        // Redirect old sub-category route to unified page
-        path: 'add-sub-category',
-        redirect: '/admin/add-category'
-      },
-      {
-        path: 'orders',
-        name: 'AdminOrders',
-        component: () => import('../pages/admin/Orders.vue')
-      },
-      {
-        path: 'vendor-list',
-        name: 'AdminVendorList',
-        component: () => import('../pages/admin/VendorList.vue')
-      },
-      {
-        path: 'vendor-profile',
-        name: 'AdminVendorProfile',
-        component: () => import('../pages/admin/VendorProfile.vue')
-      },
-      {
-        path: 'vendor-update',
-        name: 'AdminVendorUpdate',
-        component: () => import('../pages/admin/VendorUpdateProfile.vue')
-      },
-      {
-        path: 'invoice',
-        name: 'AdminInvoice',
-        component: () => import('../pages/admin/Invoice.vue')
-      }
-    ]
-  },
-  // Nhóm các trang Admin Auth
-  {
-    path: '/admin',
-    component: AuthLayout,
-    children: [
+      // Nhóm Auth (Sử dụng AuthLayout)
       {
         path: 'login',
-        name: 'AdminLogin',
-        component: () => import('../pages/admin/Auth/Login.vue')
+        component: AuthLayout,
+        children: [{ path: '', name: 'AdminLogin', component: () => import('../pages/admin/Auth/Login.vue') }]
       },
       {
         path: 'register',
-        name: 'AdminRegister',
-        component: () => import('../pages/admin/Auth/Register.vue')
+        component: AuthLayout,
+        children: [{ path: '', name: 'AdminRegister', component: () => import('../pages/admin/Auth/Register.vue') }]
       },
       {
         path: 'forgot-password',
-        name: 'AdminForgot',
-        component: () => import('../pages/admin/Auth/Forgot.vue')
+        component: AuthLayout,
+        children: [{ path: '', name: 'AdminForgot', component: () => import('../pages/admin/Auth/Forgot.vue') }]
       },
       {
         path: 'reset-password',
-        name: 'AdminResetPass',
-        component: () => import('../pages/admin/Auth/ResetPass.vue')
+        component: AuthLayout,
+        children: [{ path: '', name: 'AdminResetPass', component: () => import('../pages/admin/Auth/ResetPass.vue') }]
       },
       {
         path: 'two-factor',
-        name: 'AdminTwoFactor',
-        component: () => import('../pages/admin/Auth/TwoFactor.vue')
+        component: AuthLayout,
+        children: [{ path: '', name: 'AdminTwoFactor', component: () => import('../pages/admin/Auth/TwoFactor.vue') }]
       },
       {
         path: 'remember',
-        name: 'AdminRemember',
-        component: () => import('../pages/admin/Auth/Remember.vue')
+        component: AuthLayout,
+        children: [{ path: '', name: 'AdminRemember', component: () => import('../pages/admin/Auth/Remember.vue') }]
+      },
+      
+      // Nhóm Dashboard (Sử dụng AdminLayout + Bảo vệ bằng meta)
+      {
+        path: '',
+        component: AdminLayout,
+        meta: { requiresAdmin: true },
+        children: [
+          {
+            path: '',
+            name: 'AdminHome',
+            component: () => import('../pages/admin/Home.vue')
+          },
+          {
+            path: 'products',
+            name: 'AdminProducts',
+            component: () => import('../pages/admin/Products.vue')
+          },
+          {
+            path: 'add-product',
+            name: 'AdminAddProduct',
+            component: () => import('../pages/admin/AddProduct.vue')
+          },
+          {
+            path: 'add-category',
+            name: 'AdminAddCategory',
+            component: () => import('../pages/admin/AddCategory.vue')
+          },
+          {
+            path: 'orders',
+            name: 'AdminOrders',
+            component: () => import('../pages/admin/Orders.vue')
+          },
+          {
+            path: 'vendor-list',
+            name: 'AdminVendorList',
+            component: () => import('../pages/admin/VendorList.vue')
+          },
+          {
+            path: 'vendor-profile',
+            name: 'AdminVendorProfile',
+            component: () => import('../pages/admin/VendorProfile.vue')
+          },
+          {
+            path: 'vendor-update',
+            name: 'AdminVendorUpdate',
+            component: () => import('../pages/admin/VendorUpdateProfile.vue')
+          },
+          {
+            path: 'invoice',
+            name: 'AdminInvoice',
+            component: () => import('../pages/admin/Invoice.vue')
+          }
+        ]
       }
     ]
   }
@@ -204,6 +204,41 @@ const router = createRouter({
   }
 });
 
+// Navigation Guard
+router.beforeEach(async (to) => {
+  const authStore = useAuthStore();
+  
+  // Wait for auth to be ready
+  if (!authStore.isAuthReady) {
+    await authStore.checkAuthStatus();
+  }
+
+  const isAuthenticated = !!authStore.accessToken;
+  const userRole = authStore.user?.role;
+
+  // Check if route requires admin
+  if (to.matched.some(record => record.meta.requiresAdmin)) {
+    if (!isAuthenticated || userRole !== 'admin') {
+      return { name: 'AdminLogin' };
+    }
+  }
+
+  // Check if route requires generic auth
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!isAuthenticated) {
+      return { name: 'Login' };
+    }
+  }
+
+  // Redirect if already logged in as admin and trying to access admin auth pages
+  const isAdminAuthPage = ['AdminLogin', 'AdminRegister', 'AdminForgot', 'AdminResetPass', 'AdminTwoFactor', 'AdminRemember'].includes(to.name);
+  if (isAdminAuthPage && isAuthenticated && userRole === 'admin') {
+    return { name: 'AdminHome' };
+  }
+
+  return true; // Proceed
+});
+
 router.afterEach(() => {
   // Delay to allow components to mount and render DOM
   setTimeout(() => {
@@ -217,3 +252,4 @@ router.afterEach(() => {
 });
 
 export default router
+

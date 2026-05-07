@@ -108,7 +108,7 @@ const syncMenu = () => {
 
     const menus = {
         Dashboard: ['/admin', '/admin/products', '/admin/add-product', '/admin/add-category', '/admin/orders'],
-        Authentication: ['/admin/auth/login', '/admin/auth/register', '/admin/auth/forgot-password', '/admin/auth/two-factor', '/admin/auth/reset-password', '/admin/auth/remember'],
+        Authentication: ['/admin/login', '/admin/register', '/admin/forgot-password', '/admin/two-factor', '/admin/reset-password', '/admin/remember'],
         Vendor: ['/admin/vendor-profile', '/admin/vendor-update', '/admin/vendor-list', '/admin/invoice']
     };
 

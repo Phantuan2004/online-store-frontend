@@ -103,8 +103,8 @@
 							<div class="cr-card-header header-575">
 								<h4 class="cr-card-title">Revenue Overview</h4>
 								<div class="header-tools">
-									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></router-link>
+									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></a>
 									<div class="cr-date-range date">
 										<span></span>
 									</div>
@@ -181,8 +181,8 @@
 							<div class="cr-card-header">
 								<h4 class="cr-card-title">Best Seller</h4>
 								<div class="header-tools">
-									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></router-link>
+									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></a>
 									<div class="cr-date-range dots">
 										<span></span>
 									</div>
@@ -297,8 +297,8 @@
 							<div class="cr-card-header">
 								<h4 class="cr-card-title">Top Product</h4>
 								<div class="header-tools">
-									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></router-link>
+									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></a>
 									<div class="cr-date-range dots">
 										<span></span>
 									</div>
@@ -386,8 +386,8 @@
 							<div class="cr-card-header">
 								<h4 class="cr-card-title">Recent Orders</h4>
 								<div class="header-tools">
-									<router-link to="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
-											class="ri-fullscreen-line"></i></router-link>
+									<a href="javascript:void(0)" class="m-r-10 cr-full-card" title="Full Screen"><i
+											class="ri-fullscreen-line"></i></a>
 									<div class="cr-date-range dots">
 										<span></span>
 									</div>
