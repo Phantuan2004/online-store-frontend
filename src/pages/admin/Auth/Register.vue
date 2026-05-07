@@ -10,7 +10,7 @@
 									<div class="hero-container">
 										<!-- Signup form -->
 										<form class="signup-form" method="post">
-											<div class="imgcontainer">
+											<div class="imgcontainer" style="margin-left: 36%;">
 												<router-link to="/admin"><img src="@/assets/user/img/logo/logo.png" alt="logo" class="logo"></router-link>
 											</div>
 											<div class="input-control">
@@ -62,7 +62,7 @@
 														<i class="ri-linkedin-fill"></i>
 													</button>
 													<span class="already-acc">Already you have an account? <router-link
-															to="/admin/auth/login" class="login-btn">Login</router-link></span>
+															to="/admin/login" class="login-btn">Login</router-link></span>
 												</div>
 											</div>
 										</form>

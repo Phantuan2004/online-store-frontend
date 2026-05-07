@@ -10,7 +10,7 @@
 									<div class="hero-container">
 										<!-- Login form -->
 										<form class="login-form" method="post">
-											<div class="imgcontainer">
+											<div class="imgcontainer" style="margin-left: 32%;">
 												<router-link to="/admin"><img src="@/assets/user/img/logo/logo.png" alt="logo" class="logo"></router-link>
 											</div>
 											<div class="input-control">
