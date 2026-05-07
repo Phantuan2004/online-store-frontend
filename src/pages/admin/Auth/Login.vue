@@ -26,7 +26,7 @@
 													<input type="checkbox">
 													<span class="checkmark"></span>
 												</label>
-												<span class="psw"><router-link to="/admin/auth/forgot-password" class="forgot-btn">Forgot
+												<span class="psw"><router-link to="/admin/forgot-password" class="forgot-btn">Forgot
 														password?</router-link></span>
 												<div class="login-btns">
 													<button type="submit">Login</button>
@@ -47,7 +47,7 @@
 													<button type="button" class="linkedin">
 														<i class="ri-linkedin-fill"></i>
 													</button>
-													<span class="already-acc">Not a member? <router-link to="/admin/auth/register"
+													<span class="already-acc">Not a member? <router-link to="/admin/register"
 															class="signup-btn">Sign up</router-link></span>
 												</div>
 											</div>
