@@ -5033,27 +5033,22 @@ div.dataTables_wrapper div.dataTables_info {
   font-size: 15px;
   font-weight: 700;
 }
-.cr-login-page .login-form .imgcontainer,
-.cr-login-page .signup-form .imgcontainer,
-.cr-login-page .forgot-form .imgcontainer, .cr-error-page .login-form .imgcontainer,
-.cr-error-page .signup-form .imgcontainer,
-.cr-error-page .forgot-form .imgcontainer {
+.cr-login-page .imgcontainer,
+.cr-error-page .imgcontainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  margin: 24px 0 5px 0;
+  margin: 24px auto 10px auto;
+  width: 100%;
   position: relative;
 }
-.cr-login-page .login-form .imgcontainer img,
-.cr-login-page .signup-form .imgcontainer img,
-.cr-login-page .forgot-form .imgcontainer img, .cr-error-page .login-form .imgcontainer img,
-.cr-error-page .signup-form .imgcontainer img,
-.cr-error-page .forgot-form .imgcontainer img {
+.cr-login-page .imgcontainer img,
+.cr-error-page .imgcontainer img {
   width: 130px;
 }
-.cr-login-page .login-form .imgcontainer.user img,
-.cr-login-page .signup-form .imgcontainer.user img,
-.cr-login-page .forgot-form .imgcontainer.user img, .cr-error-page .login-form .imgcontainer.user img,
-.cr-error-page .signup-form .imgcontainer.user img,
-.cr-error-page .forgot-form .imgcontainer.user img {
+.cr-login-page .imgcontainer.user img,
+.cr-error-page .imgcontainer.user img {
   width: 70px;
   border-radius: 0;
 }

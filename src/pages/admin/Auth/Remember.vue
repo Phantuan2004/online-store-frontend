@@ -21,7 +21,7 @@
 													<button type="submit">Login</button>
 												</div>
 												<div class="login-with-btns">
-													<span class="already-acc">Not a member? <router-link to="/admin/auth/register"
+													<span class="already-acc">Not a member? <router-link to="/admin/register"
 														class="signup-btn">Sign up</router-link></span>
 												</div>
 											</div>

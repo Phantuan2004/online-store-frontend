@@ -22,7 +22,7 @@
 												</div>
 												<div class="login-with-btns">
 													<span class="already-acc">Return to <router-link
-															to="/admin/auth/login" class="login-btn">Login</router-link></span>
+															to="/admin/login" class="login-btn">Login</router-link></span>
 												</div>
 											</div>
 										</form>
