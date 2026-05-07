@@ -41,6 +41,20 @@ const orderService = {
      */
     updateOrder(id, data) {
         return api.put(`orders/${id}`, data);
+    },
+    
+    /**
+     * Get all orders (Admin only)
+     */
+    getAllOrders(params = {}) {
+        return api.get('admin/orders', { params });
+    },
+
+    /**
+     * Get order detail for admin (Admin only)
+     */
+    getAdminOrderDetail(id) {
+        return api.get(`admin/orders/${id}`);
     }
 };
 
