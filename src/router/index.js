@@ -155,7 +155,7 @@ const routes = [
   },
   // Nhóm các trang Admin Auth
   {
-    path: '/admin/auth',
+    path: '/admin/',
     component: AuthLayout,
     children: [
       {

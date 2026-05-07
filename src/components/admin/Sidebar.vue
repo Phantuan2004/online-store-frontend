@@ -50,17 +50,17 @@
 								<i class="ri-pages-line"></i><span class="condense">Authentication<i
 										class="drop-arrow ri-arrow-down-s-line"></i></span></a>
 							<ul class="cr-sb-drop condense" v-show="expandedMenu === 'Authentication'">
-								<li><router-link to="/admin/auth/login" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
+								<li><router-link to="/admin/login" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>Login</router-link></li>
-								<li><router-link to="/admin/auth/register" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
+								<li><router-link to="/admin/register" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>Signup</router-link></li>
-								<li><router-link to="/admin/auth/forgot-password" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
+								<li><router-link to="/admin/forgot-password" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>Forgot password</router-link></li>
-								<li><router-link to="/admin/auth/two-factor" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
+								<li><router-link to="/admin/two-factor" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>two factor</router-link></li>
-								<li><router-link to="/admin/auth/reset-password" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
+								<li><router-link to="/admin/reset-password" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>Reset password</router-link></li>
-								<li><router-link to="/admin/auth/remember" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
+								<li><router-link to="/admin/remember" class="cr-page-link drop" active-class="active-link" @click="toggleMenu('Authentication', true)"><i
 											class="ri-checkbox-blank-circle-line"></i>Remember</router-link></li>
 							</ul>
 
