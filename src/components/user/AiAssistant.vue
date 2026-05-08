@@ -1,17 +1,30 @@
 <script setup>
 import { ref, onMounted, nextTick, watch } from 'vue';
+import aiService from '@/services/aiService';
 
 const isOpen = ref(false);
 const messageInput = ref('');
 const isTyping = ref(false);
 const chatMessages = ref([]);
 const messageListRef = ref(null);
+const sliderRefs = ref({});
 
 const suggestedQuestions = [
   "Best iPhone 15 cases",
   "Gaming accessories under $50",
   "Fast charging cables",
 ];
+
+const scrollSlider = (id, direction) => {
+  const container = sliderRefs.value[id];
+  if (container) {
+    const scrollAmount = 150; // Width of one card + gap
+    container.scrollBy({
+      left: direction === 'left' ? -scrollAmount : scrollAmount,
+      behavior: 'smooth'
+    });
+  }
+};
 
 const toggleChat = () => {
   isOpen.value = !isOpen.value;
@@ -21,6 +34,7 @@ const toggleChat = () => {
 };
 
 const formatMessage = (text) => {
+  if (!text) return '';
   // Basic markdown-like formatting
   return text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
@@ -42,8 +56,8 @@ const sendInitialMessage = () => {
   }, 1000);
 };
 
-const handleSendMessage = () => {
-  if (!messageInput.value.trim()) return;
+const handleSendMessage = async () => {
+  if (!messageInput.value.trim() || isTyping.value) return;
 
   const userMessage = messageInput.value;
   chatMessages.value.push({
@@ -56,20 +70,30 @@ const handleSendMessage = () => {
   messageInput.value = '';
   scrollToBottom();
 
-  // Simulate AI response
+  // Call AI API
   isTyping.value = true;
-  setTimeout(() => {
-    let aiText = `I'm analyzing your request for **"${userMessage}"**. \n\nI can recommend some top-rated options from our current inventory. Would you like to see our *best-sellers* or *new arrivals* first?`;
+  try {
+    const response = await aiService.chat(userMessage);
     
     chatMessages.value.push({
       id: Date.now() + 1,
       sender: 'ai',
-      text: aiText,
+      text: response.message || "I'm sorry, I couldn't process that.",
+      products: response.products || [],
       timestamp: new Date()
     });
+  } catch (error) {
+    console.error('AI Assistant Error:', error);
+    chatMessages.value.push({
+      id: Date.now() + 1,
+      sender: 'ai',
+      text: "I'm sorry, I'm having trouble connecting right now. Please try again in a moment.",
+      timestamp: new Date()
+    });
+  } finally {
     isTyping.value = false;
     scrollToBottom();
-  }, 1500);
+  }
 };
 
 const selectSuggestion = (question) => {
@@ -152,8 +176,51 @@ watch(isOpen, (newVal) => {
         <!-- Messages Area -->
         <div class="chat-messages" ref="messageListRef">
           <div v-for="msg in chatMessages" :key="msg.id" :class="['message-wrapper', msg.sender]">
-            <div class="message-bubble shadow-sm">
-              <div class="message-text" v-html="formatMessage(msg.text)"></div>
+            <div class="message-bubble-group">
+              <div class="message-bubble shadow-sm">
+                <div class="message-text" v-html="formatMessage(msg.text)"></div>
+              </div>
+              
+              <!-- Product Recommendations Slider -->
+              <div v-if="msg.products && msg.products.length > 0" class="product-slider-wrapper">
+                <button 
+                  class="slider-btn prev" 
+                  @click="scrollSlider(msg.id, 'left')"
+                  aria-label="Previous"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="15 18 9 12 15 6"></polyline>
+                  </svg>
+                </button>
+                
+                <div 
+                  class="product-cards-container" 
+                  :ref="el => { if (el) sliderRefs[msg.id] = el }"
+                >
+                  <router-link 
+                    v-for="product in msg.products" 
+                    :key="product.id" 
+                    :to="`/product-details/${product.id}`"
+                    class="product-mini-card"
+                  >
+                    <img :src="product.image || '/src/assets/user/img/product/1.jpg'" :alt="product.name" />
+                    <div class="product-info">
+                      <span class="name">{{ product.name }}</span>
+                      <span class="price">${{ product.price }}</span>
+                    </div>
+                  </router-link>
+                </div>
+
+                <button 
+                  class="slider-btn next" 
+                  @click="scrollSlider(msg.id, 'right')"
+                  aria-label="Next"
+                >
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -442,6 +509,104 @@ button, input {
   color: #374151;
   border-bottom-left-radius: 4px;
   border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Product Cards in Chat */
+.product-slider-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.product-cards-container {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 4px 2px 12px;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  flex: 1;
+}
+
+.product-cards-container::-webkit-scrollbar {
+  display: none;
+}
+
+.slider-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% !important;
+  background: white !important;
+  color: var(--ai-primary) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.slider-btn:hover {
+  opacity: 1;
+  transform: scale(1.1);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+}
+
+.slider-btn.prev {
+  margin-right: -14px;
+}
+
+.slider-btn.next {
+  margin-left: -14px;
+}
+
+.product-mini-card {
+  flex: 0 0 140px;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.product-mini-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border-color: var(--ai-primary);
+}
+
+.product-mini-card img {
+  width: 100%;
+  height: 100px;
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.product-info .name {
+  font-size: 11px;
+  font-weight: 600;
+  color: #1f2937;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-info .price {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ai-primary);
 }
 
 /* Suggestions Refinement */
