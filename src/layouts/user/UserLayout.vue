@@ -7,6 +7,7 @@ import Menu from "../../components/user/Menu.vue";
 import Breadcrumb from "../../components/user/Breadcrumb.vue";
 import MyCart from "../../components/user/MyCart.vue";
 import TabToTop from "../../components/user/TabToTop.vue";
+import AiAssistant from "../../components/user/AiAssistant.vue";
 import { RouterView } from "vue-router";
 import { loadScripts, unloadScripts } from "../../utils/assetLoader";
 
@@ -56,6 +57,7 @@ onUnmounted(() => {
   <TabToTop />
   <router-view />
   <MyCart />
+  <AiAssistant />
   <Footer />
 </template>
 
