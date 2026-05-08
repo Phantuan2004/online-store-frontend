@@ -42,6 +42,14 @@ const formatMessage = (text) => {
     .replace(/\n/g, '<br>');
 };
 
+const formatCurrency = (value) => {
+  if (!value) return '0đ';
+  return new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+  }).format(value);
+};
+
 const sendInitialMessage = () => {
   isTyping.value = true;
   setTimeout(() => {
@@ -206,7 +214,7 @@ watch(isOpen, (newVal) => {
                     <img :src="product.image || '/src/assets/user/img/product/1.jpg'" :alt="product.name" />
                     <div class="product-info">
                       <span class="name">{{ product.name }}</span>
-                      <span class="price">${{ product.price }}</span>
+                      <span class="price">{{ formatCurrency(product.price) }}</span>
                     </div>
                   </router-link>
                 </div>
