@@ -22,7 +22,7 @@ export const shopLogic = {
       products: [],
       filteredProducts: [],
       categories: [],
-      selectedCategory: "All",
+      // Categories state is handled via draftSelectedCategories for checkboxes
       
       // Filter states
       priceRange: [minPrice, maxPrice],
@@ -68,7 +68,7 @@ export const shopLogic = {
 
     activeFiltersCount() {
       let count = 0;
-      if (this.selectedCategory !== "All") count++;
+      if (this.draftSelectedCategories.length > 0) count++;
       if (
         this.priceRange[0] !== this.priceBounds.min ||
         this.priceRange[1] !== this.priceBounds.max
@@ -80,8 +80,11 @@ export const shopLogic = {
   },
 
   watch: {
-    selectedCategory() {
-      this.applyFilters();
+    draftSelectedCategories: {
+      handler() {
+        this.applyFilters();
+      },
+      deep: true
     },
   },
 
@@ -140,25 +143,27 @@ export const shopLogic = {
     },
 
     applyFilters() {
+      // Sync price range from drafts when filtering is triggered
+      this.priceRange = [...this.draftPriceRange];
+      
       let result = [...this.products];
 
-      // Use draft selected categories if any (supporting the checkbox style)
+      // 1. Filter by Categories (Checkboxes)
       if (this.draftSelectedCategories.length > 0) {
-          // Find original names of categories from IDs
-          const selectedNames = this.categories
-            .filter(c => this.draftSelectedCategories.includes(c.id))
-            .map(c => c.name);
-          
-          if (selectedNames.length > 0) {
-            result = result.filter((p) => selectedNames.includes(p.category));
-          }
+          const selectedIds = this.draftSelectedCategories;
+          // In our logic, category.id is name.toLowerCase().replace(/\s+/g, '-')
+          result = result.filter((p) => {
+              const pCategoryId = p.category.toLowerCase().replace(/\s+/g, '-');
+              return selectedIds.includes(pCategoryId);
+          });
       }
 
-      // Apply applied price range
+      // 2. Filter by Price
       result = result.filter(
-        (p) => p.price >= this.priceRange[0] && p.price <= this.priceRange[1]
+          (p) => p.price >= this.priceRange[0] && p.price <= this.priceRange[1]
       );
 
+      // 3. Filter by Search Query
       if (this.searchQuery) {
         const query = this.searchQuery.toLowerCase();
         result = result.filter(
@@ -176,28 +181,7 @@ export const shopLogic = {
      * Triggered by "Filter" button in Sidebar
      */
     applySidebarFilters() {
-        this.priceRange = [...this.draftPriceRange];
         this.applyFilters();
-    },
-
-    // Alias for template compat
-    applyFilters() {
-        // Here we can actually just call the main logic
-        // But if user clicked "Filter" button, we sync drafts first
-        this.priceRange = [...this.draftPriceRange];
-        
-        let result = [...this.products];
-
-        if (this.selectedCategory !== "All") {
-            result = result.filter((p) => p.category === this.selectedCategory);
-        }
-
-        result = result.filter(
-            (p) => p.price >= this.priceRange[0] && p.price <= this.priceRange[1]
-        );
-
-        this.filteredProducts = result;
-        this.applySort();
     },
 
     onSortChange(value) {
@@ -257,7 +241,6 @@ export const shopLogic = {
     },
 
     clearFilters() {
-      this.selectedCategory = "All";
       this.draftPriceRange = [this.priceBounds.min, this.priceBounds.max];
       this.priceRange = [this.priceBounds.min, this.priceBounds.max];
       this.draftSelectedCategories = [];

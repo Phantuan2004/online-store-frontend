@@ -31,61 +31,34 @@
 
             <!-- Price Filter -->
             <div class="cr-shop-price">
-              <h4 class="cr-shop-sub-title">Price</h4>
+              <h4 class="cr-shop-sub-title">Price Range</h4>
               <div class="price-range-slider">
-                <div id="slider-range" ref="priceSlider" class="range-bar"></div>
-                <p class="range-value">
-                  <label>Price :</label>
-                  <input
-                    type="text"
-                    readonly
-                    :value="`$${draftPriceRange[0]} - $${draftPriceRange[1]}`"
-                  />
-                </p>
-                <button type="button" class="cr-button" @click="applyFilters">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="flex-grow-1">
+                    <label class="small text-muted mb-1">Min ($)</label>
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      v-model.number="draftPriceRange[0]"
+                      :min="priceBounds.min"
+                      :max="draftPriceRange[1]"
+                    />
+                  </div>
+                  <div class="mx-2 mt-3 text-muted">-</div>
+                  <div class="flex-grow-1">
+                    <label class="small text-muted mb-1">Max ($)</label>
+                    <input
+                      type="number"
+                      class="form-control form-control-sm"
+                      v-model.number="draftPriceRange[1]"
+                      :min="draftPriceRange[0]"
+                      :max="priceBounds.max"
+                    />
+                  </div>
+                </div>
+                <button type="button" class="cr-button w-100" @click="applyFilters">
                   Filter
                 </button>
-              </div>
-            </div>
-
-            <!-- Color Filter (Optional) -->
-            <div class="cr-shop-color">
-              <h4 class="cr-shop-sub-title">Colors</h4>
-              <div class="cr-checkbox">
-                <div class="checkbox-group">
-                  <input type="checkbox" id="blue" />
-                  <label for="blue">Blue</label>
-                  <span class="blue"></span>
-                </div>
-                <div class="checkbox-group">
-                  <input type="checkbox" id="yellow" />
-                  <label for="yellow">Yellow</label>
-                  <span class="yellow"></span>
-                </div>
-                <div class="checkbox-group">
-                  <input type="checkbox" id="red" />
-                  <label for="red">Red</label>
-                  <span class="red"></span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Weight Filter (Optional) -->
-            <div class="cr-shop-weight">
-              <h4 class="cr-shop-sub-title">Weight</h4>
-              <div class="cr-checkbox">
-                <div class="checkbox-group">
-                  <input type="checkbox" id="2kg" />
-                  <label for="2kg">2kg Pack</label>
-                </div>
-                <div class="checkbox-group">
-                  <input type="checkbox" id="20kg" />
-                  <label for="20kg">20kg Pack</label>
-                </div>
-                <div class="checkbox-group">
-                  <input type="checkbox" id="30kg" />
-                  <label for="30kg">30kg pack</label>
-                </div>
               </div>
             </div>
 

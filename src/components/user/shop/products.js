@@ -24,9 +24,6 @@ export const tags = [
 ];
 
 export const sortOptions = [
-  { value: "featured", label: "Featured" },
-  { value: "newest", label: "Newest" },
-  { value: "price-low", label: "Price Low to High" },
-  { value: "price-high", label: "Price High to Low" },
-  { value: "rating", label: "Highest Rating" }
+  { value: "price-low-high", label: "Price: Low to High" },
+  { value: "price-high-low", label: "Price: High to Low" }
 ];
