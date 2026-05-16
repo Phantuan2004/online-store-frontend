@@ -17,27 +17,35 @@
         <p>({{ product.reviews }} Review{{ product.reviews !== 1 ? "s" : "" }})</p>
       </div>
 
-      <!-- Specs List -->
-      <div class="list">
-        <ul>
-          <li v-for="(value, key) in product.specs" :key="key">
-            <label>{{ key }}<span>:</span></label>{{ value }}
-          </li>
-        </ul>
-      </div>
-
-      <!-- Size/Weight Selection -->
-      <div v-if="product.sizes && product.sizes.length > 0" class="cr-size-weight">
-        <h5><span>Size</span>/<span>Weight</span> :</h5>
+      <!-- Model Selection -->
+      <div v-if="product.models && product.models.length > 0" class="cr-size-weight mb-3">
+        <h5><span>Model</span> :</h5>
         <div class="cr-kg">
           <ul>
             <li
-              v-for="size in product.sizes"
-              :key="size"
-              @click="selectSize(size)"
-              :class="{ 'active-color': selectedSize === size }"
+              v-for="model in product.models"
+              :key="model"
+              @click="selectModel(model)"
+              :class="{ 'active-color': selectedModel === model }"
             >
-              {{ size }}
+              {{ model }}
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Color Selection -->
+      <div v-if="product.colors && product.colors.length > 0" class="cr-size-weight">
+        <h5><span>Color</span> :</h5>
+        <div class="cr-kg">
+          <ul>
+            <li
+              v-for="color in product.colors"
+              :key="color"
+              @click="selectColor(color)"
+              :class="{ 'active-color': selectedColor === color }"
+            >
+              {{ color }}
             </li>
           </ul>
         </div>
@@ -61,17 +69,27 @@ export default {
         );
       }
     },
-    selectedSize: {
+    selectedModel: {
+      type: String,
+      default: ""
+    },
+    selectedColor: {
       type: String,
       default: ""
     }
   },
   methods: {
     /**
-     * Select size
+     * Select model
      */
-    selectSize(size) {
-      this.$emit("size-selected", size);
+    selectModel(model) {
+      this.$emit("model-selected", model);
+    },
+    /**
+     * Select color
+     */
+    selectColor(color) {
+      this.$emit("color-selected", color);
     }
   }
 };

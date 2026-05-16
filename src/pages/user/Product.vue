@@ -36,8 +36,10 @@
                     <div class="col-lg-5 col-md-7 col-12 mb-24">
                         <ProductInfo
                             :product="product"
-                            :selected-size="selectedSize"
-                            @size-selected="onSizeSelected"
+                            :selected-model="selectedModel"
+                            :selected-color="selectedColor"
+                            @model-selected="onModelSelected"
+                            @color-selected="onColorSelected"
                         />
                     </div>
                     
@@ -148,10 +150,17 @@ export default {
         },
 
         /**
-         * Handler for size selection
+         * Handler for model selection
          */
-        onSizeSelected(newSize) {
-            this.selectedSize = newSize;
+        onModelSelected(newModel) {
+            this.selectedModel = newModel;
+        },
+
+        /**
+         * Handler for color selection
+         */
+        onColorSelected(newColor) {
+            this.selectedColor = newColor;
         },
 
         /**

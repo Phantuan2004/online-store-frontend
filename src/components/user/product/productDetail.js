@@ -15,14 +15,16 @@ export const productDetail = {
         reviews: 0,
         images: [],
         specs: {},
-        sizes: []
+        models: [],
+        colors: []
       },
 
       // UI State
       isLoading: true,
       error: null,
       quantity: 1,
-      selectedSize: null,
+      selectedModel: null,
+      selectedColor: null,
       activeTab: "description",
       inWishlist: false,
       showReviewForm: false,
@@ -127,13 +129,21 @@ export const productDetail = {
             acc[curr.name] = curr.values.join(", ");
             return acc;
           }, {}) : {},
-          sizes: data.variants ? Array.from(new Set(data.variants.flatMap(v => 
-            v.attributes ? Object.values(v.attributes) : []
-          ))) : []
+          // Extract unique models and colors from variants
+          models: data.variants ? Array.from(new Set(data.variants.map(v => 
+            v.attributes ? v.attributes.model : null
+          ).filter(Boolean))) : [],
+          colors: data.variants ? Array.from(new Set(data.variants.map(v => 
+            v.attributes ? v.attributes.color : null
+          ).filter(Boolean))) : []
         };
 
-        if (this.product.sizes.length > 0) {
-          this.selectedSize = this.product.sizes[0];
+        // Set default selections
+        if (this.product.models.length > 0) {
+          this.selectedModel = this.product.models[0];
+        }
+        if (this.product.colors.length > 0) {
+          this.selectedColor = this.product.colors[0];
         }
 
         this.loadWishlistStatus();
@@ -207,21 +217,20 @@ export const productDetail = {
       }
 
       try {
-        // Find variant ID from selected size or default to first variant
+        // Find variant ID from selected model and color
         let variantId = null;
         const response = await productService.getProductById(this.product.id);
         const fullProduct = response.data;
 
         if (fullProduct.variants && fullProduct.variants.length > 0) {
-          // If user selected a size, find matching variant
-          if (this.selectedSize) {
-             const variant = fullProduct.variants.find(v => 
-                v.attributes && Object.values(v.attributes).includes(this.selectedSize)
-             );
-             variantId = variant ? variant.id : fullProduct.variants[0].id;
-          } else {
-             variantId = fullProduct.variants[0].id;
-          }
+          // Find matching variant based on both model and color
+          const variant = fullProduct.variants.find(v => {
+            const hasModel = !this.selectedModel || (v.attributes && v.attributes.model === this.selectedModel);
+            const hasColor = !this.selectedColor || (v.attributes && v.attributes.color === this.selectedColor);
+            return hasModel && hasColor;
+          });
+          
+          variantId = variant ? variant.id : fullProduct.variants[0].id;
         }
 
         if (!variantId) {
