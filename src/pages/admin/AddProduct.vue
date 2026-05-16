@@ -432,7 +432,11 @@ const buildPayload = (uploadedUrls = []) => {
         payload.variants = generatedVariants.value.map(v => ({
             sku: v.sku,
             price: v.price,
-            stock: v.stock
+            stock: v.stock,
+            attributes: Object.keys(v.attributes).reduce((acc, key) => {
+                acc[key.toLowerCase()] = v.attributes[key];
+                return acc;
+            }, {})
         }));
     }
 
