@@ -2,17 +2,20 @@
   <div class="product-action-box">
     <div class="cr-size-and-weight p-0 m-0 border-0">
       <!-- Price Section -->
-      <div class="cr-product-price mb-3 d-flex align-items-center" style="line-height: 1.2;">
-        <span class="new-price">{{ formatCurrency(product.price) }}</span>
-        <span v-if="product.oldPrice" class="old-price ms-2">{{ formatCurrency(product.oldPrice) }}</span>
+      <div class="cr-product-price mb-3 d-flex align-items-center flex-wrap" style="line-height: 1.2;">
+        <span class="new-price">{{ formatCurrency(displayPrice) }}</span>
+        <span v-if="displayOldPrice && displayOldPrice > displayPrice" class="old-price ms-2">{{ formatCurrency(displayOldPrice) }}</span>
         <span v-if="discountPercentage > 0" class="discount-badge text-danger fw-bold ms-2" style="font-size: 15px; margin-top: 2px;">
           -{{ discountPercentage }}%
+        </span>
+        <span v-if="!hasVariantSelected && hasVariants" class="d-block w-100 mt-1" style="font-size: 12px; color: #999;">
+          <i class="ri-information-line"></i> Select a variant to see the exact price
         </span>
       </div>
       
       <!-- Stock Status -->
       <div class="stock-status mb-4">
-         <span v-if="isInStock" class="text-success fw-medium"><i class="ri-checkbox-circle-line"></i> In Stock</span>
+         <span v-if="isInStock" class="text-success fw-medium"><i class="ri-checkbox-circle-line"></i> In Stock ({{ displayStock }})</span>
          <span v-else class="text-danger fw-medium"><i class="ri-close-circle-line"></i> Out of Stock</span>
       </div>
 
@@ -118,6 +121,27 @@ export default {
     isInStock: {
       type: Boolean,
       default: true
+    },
+    displayPrice: {
+      type: Number,
+      default: 0
+    },
+    displayOldPrice: {
+      type: Number,
+      default: 0
+    },
+    displayStock: {
+      type: Number,
+      default: 0
+    },
+    hasVariantSelected: {
+      type: Boolean,
+      default: false
+    }
+  },
+  computed: {
+    hasVariants() {
+      return this.product.variants && this.product.variants.length > 0;
     }
   },
   methods: {

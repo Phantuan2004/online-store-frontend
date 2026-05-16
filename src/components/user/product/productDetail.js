@@ -16,7 +16,8 @@ export const productDetail = {
         images: [],
         specs: {},
         models: [],
-        colors: []
+        colors: [],
+        variants: []  // Raw variants from API for price/stock lookup
       },
 
       // UI State
@@ -65,13 +66,60 @@ export const productDetail = {
     },
 
     /**
-     * Calculate discount percentage
+     * Find the variant that matches the current model + color selection.
+     * Returns null if no variant is selected or no match found.
+     */
+    matchedVariant() {
+      if (!this.product.variants || this.product.variants.length === 0) return null;
+      // Only try to match if user has selected at least one attribute
+      if (!this.selectedModel && !this.selectedColor) return null;
+
+      return this.product.variants.find(v => {
+        const matchModel = !this.selectedModel || (v.attributes && v.attributes.model === this.selectedModel);
+        const matchColor = !this.selectedColor || (v.attributes && v.attributes.color === this.selectedColor);
+        return matchModel && matchColor;
+      }) || null;
+    },
+
+    /**
+     * Display price: variant price if a variant is selected, otherwise parent price.
+     */
+    displayPrice() {
+      if (this.matchedVariant && this.matchedVariant.price) {
+        return parseFloat(this.matchedVariant.price);
+      }
+      return this.product.price;
+    },
+
+    /**
+     * Display old price for discount calculation.
+     */
+    displayOldPrice() {
+      return this.displayPrice * 1.1;
+    },
+
+    /**
+     * Display stock: variant stock if a variant is selected, otherwise total stock.
+     */
+    displayStock() {
+      if (this.matchedVariant) {
+        return this.matchedVariant.stock || 0;
+      }
+      // Sum all variant stocks as total stock
+      if (this.product.variants && this.product.variants.length > 0) {
+        return this.product.variants.reduce((sum, v) => sum + (v.stock || 0), 0);
+      }
+      return 0;
+    },
+
+    /**
+     * Calculate discount percentage based on display prices.
      */
     discountPercentage() {
-      if (!this.product.oldPrice || this.product.oldPrice <= this.product.price) return 0;
+      if (!this.displayOldPrice || this.displayOldPrice <= this.displayPrice) return 0;
       return Math.round(
-        ((this.product.oldPrice - this.product.price) /
-          this.product.oldPrice) *
+        ((this.displayOldPrice - this.displayPrice) /
+          this.displayOldPrice) *
           100
       );
     },
@@ -80,14 +128,14 @@ export const productDetail = {
      * Total price with quantity
      */
     totalPrice() {
-      return (this.product.price * this.quantity).toFixed(2);
+      return (this.displayPrice * this.quantity).toFixed(2);
     },
 
     /**
      * Check if product is in stock
      */
     isInStock() {
-      return this.product.price > 0;
+      return this.displayStock > 0;
     }
   },
 
@@ -135,16 +183,14 @@ export const productDetail = {
           ).filter(Boolean))) : [],
           colors: data.variants ? Array.from(new Set(data.variants.map(v => 
             v.attributes ? v.attributes.color : null
-          ).filter(Boolean))) : []
+          ).filter(Boolean))) : [],
+          // Store raw variants for price/stock lookup
+          variants: data.variants || []
         };
 
-        // Set default selections
-        if (this.product.models.length > 0) {
-          this.selectedModel = this.product.models[0];
-        }
-        if (this.product.colors.length > 0) {
-          this.selectedColor = this.product.colors[0];
-        }
+        // Default: no variant selected, show parent product price
+        this.selectedModel = null;
+        this.selectedColor = null;
 
         this.loadWishlistStatus();
         
@@ -217,20 +263,18 @@ export const productDetail = {
       }
 
       try {
-        // Find variant ID from selected model and color
         let variantId = null;
-        const response = await productService.getProductById(this.product.id);
-        const fullProduct = response.data;
+        const variants = this.product.variants;
 
-        if (fullProduct.variants && fullProduct.variants.length > 0) {
-          // Find matching variant based on both model and color
-          const variant = fullProduct.variants.find(v => {
-            const hasModel = !this.selectedModel || (v.attributes && v.attributes.model === this.selectedModel);
-            const hasColor = !this.selectedColor || (v.attributes && v.attributes.color === this.selectedColor);
-            return hasModel && hasColor;
-          });
-          
-          variantId = variant ? variant.id : fullProduct.variants[0].id;
+        if (variants && variants.length > 0) {
+          // If the product has model/color variants, user must select one
+          if ((this.product.models.length > 0 || this.product.colors.length > 0) && !this.matchedVariant) {
+            alert("Vui lòng chọn phiên bản sản phẩm trước khi thêm vào giỏ hàng.");
+            return;
+          }
+
+          // Use matched variant if available, otherwise fall back to first variant
+          variantId = this.matchedVariant ? this.matchedVariant.id : variants[0].id;
         }
 
         if (!variantId) {
