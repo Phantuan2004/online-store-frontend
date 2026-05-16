@@ -25,25 +25,40 @@
                                     <table id="product_list" class="table" style="width:100%">
                                         <thead>
                                             <tr>
+                                                <th style="width: 40px;"></th>
                                                 <th>Image</th>
                                                 <th>Name</th>
                                                 <th>Category</th>
                                                 <th>Price</th>
                                                 <th>Total Stock</th>
                                                 <th>Date</th>
-                                                <th>Action</th>
+                                                <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
 
-                                        <tbody>
-                                            <tr v-for="product in products" :key="product.id">
+                                        <tbody v-for="product in products" :key="product.id">
+                                            <tr :class="{'table-active-row': expandedRows.includes(product.id)}">
+                                                <td>
+                                                    <button 
+                                                        v-if="product.variants && product.variants.length > 0"
+                                                        @click="toggleRow(product.id)"
+                                                        class="btn btn-sm btn-outline-success border-0 p-0"
+                                                        style="width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"
+                                                    >
+                                                        <i :class="expandedRows.includes(product.id) ? 'ri-subtract-line' : 'ri-add-line'"></i>
+                                                    </button>
+                                                </td>
                                                 <td>
                                                     <img class="tbl-thumb" :src="product.primary_image || product.images?.[0] || 'https://via.placeholder.com/50'" alt="Product Image" style="object-fit: cover;">
                                                 </td>
-                                                <td>{{ product.name }}</td>
+                                                <td class="fw-bold">{{ product.name }}</td>
                                                 <td>{{ product.category?.name || 'N/A' }}</td>
                                                 <td>{{ formatCurrency(product.price) }}</td>
-                                                <td>{{ getTotalStock(product) }}</td>
+                                                <td>
+                                                    <span class="badge rounded-pill" :class="getTotalStock(product) > 0 ? 'bg-success-light text-success' : 'bg-danger-light text-danger'">
+                                                        {{ getTotalStock(product) }}
+                                                    </span>
+                                                </td>
                                                 <td>{{ formatDate(product.created_at) }}</td>
                                                 <td>
                                                     <div class="dropdown d-flex justify-content-center">
@@ -59,8 +74,47 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                            <tr v-if="products.length === 0">
-                                                <td colspan="7" class="text-center py-4">Không có sản phẩm nào.</td>
+                                            
+                                            <!-- Variant Sub-table -->
+                                            <tr v-if="expandedRows.includes(product.id)" class="variant-row">
+                                                <td colspan="8" class="p-0 border-0">
+                                                    <div class="variant-container bg-light px-4 py-3">
+                                                        <h6 class="fs-13 fw-bold mb-2 text-success">Product Variants ({{ product.variants.length }})</h6>
+                                                        <table class="table table-sm table-bordered mb-0 bg-white shadow-sm rounded">
+                                                            <thead class="bg-light-gray">
+                                                                <tr class="fs-12">
+                                                                    <th>Model</th>
+                                                                    <th>Color</th>
+                                                                    <th>Price</th>
+                                                                    <th>Stock</th>
+                                                                    <th class="text-center">Status</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr v-for="variant in product.variants" :key="variant.id" class="fs-13">
+                                                                    <td>{{ variant.attributes?.model || 'Standard' }}</td>
+                                                                    <td>{{ variant.attributes?.color || 'N/A' }}</td>
+                                                                    <td class="fw-medium">{{ formatCurrency(variant.price || product.price) }}</td>
+                                                                    <td>
+                                                                        <span :class="variant.stock > 10 ? 'text-dark' : 'text-danger fw-bold'">
+                                                                            {{ variant.stock }}
+                                                                        </span>
+                                                                    </td>
+                                                                    <td class="text-center">
+                                                                        <span class="badge" :class="variant.stock > 0 ? 'bg-success' : 'bg-danger'">
+                                                                            {{ variant.stock > 0 ? 'Active' : 'Out of Stock' }}
+                                                                        </span>
+                                                                    </td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody v-if="products.length === 0">
+                                            <tr>
+                                                <td colspan="8" class="text-center py-4">Không có sản phẩm nào.</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -170,6 +224,17 @@ const pagination = reactive({
     last_page: 1,
     total: 0
 });
+
+// --- Expandable Row Logic ---
+const expandedRows = ref([]);
+const toggleRow = (id) => {
+    const index = expandedRows.value.indexOf(id);
+    if (index > -1) {
+        expandedRows.value.splice(index, 1);
+    } else {
+        expandedRows.value.push(id);
+    }
+};
 
 const fetchProducts = async (page = 1) => {
     isLoading.value = true;
@@ -307,5 +372,30 @@ const deleteProduct = async () => {
 }
 .offcanvas {
     transition: transform 0.3s ease-in-out;
+}
+.variant-row {
+    background-color: #f8f9fa !important;
+}
+.variant-container {
+    border-left: 4px solid #64b496; /* Primary theme color */
+    margin: 10px 0 20px 40px;
+}
+.bg-light-gray {
+    background-color: #f1f1f1;
+}
+.bg-success-light {
+    background-color: #e6f4ea;
+}
+.bg-danger-light {
+    background-color: #fce8e6;
+}
+.fs-13 {
+    font-size: 13px;
+}
+.fs-12 {
+    font-size: 12px;
+}
+.table-active-row {
+    background-color: #f0fdf4 !important;
 }
 </style>
