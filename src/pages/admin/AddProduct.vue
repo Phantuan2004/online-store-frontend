@@ -419,6 +419,7 @@ const buildPayload = (uploadedUrls = []) => {
         price: form.price,
         category_id: form.category_id,
         images: uploadedUrls, 
+        attributes: [],
         variants: []
     };
 
@@ -429,6 +430,14 @@ const buildPayload = (uploadedUrls = []) => {
             stock: form.stock
         });
     } else {
+        // Add top-level attributes definition for the backend to create Attribute/Value models
+        payload.attributes = attributes.value
+            .filter(a => a.name.trim() && a.values.length > 0)
+            .map(a => ({
+                name: a.name.toLowerCase(),
+                values: a.values
+            }));
+
         payload.variants = generatedVariants.value.map(v => ({
             sku: v.sku,
             price: v.price,
